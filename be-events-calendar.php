@@ -282,13 +282,16 @@ class BE_Events_Calendar {
 	}
 	
 	function event_query( $query ) {
-		global $wp_query;
+
 		// If you don't want the plugin to mess with the query, use this filter to override it
 		$override = apply_filters( 'be_events_manager_query_override', false );
-		if ( !is_admin() && $wp_query === $query && ( false === $override ) && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {
+		if( $override )
+			return;
+		
+		if( $query->is_main_query() && !is_admin() && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {	
 			$meta_query = array(
 				array(
-					'key' => 'be_events_manager_end_date',
+					'key' => 'be_event_end',
 					'value' => time(),
 					'compare' => '>'
 				)
@@ -296,7 +299,7 @@ class BE_Events_Calendar {
 			$query->set( 'orderby', 'meta_value_num' );
 			$query->set( 'order', 'ASC' );
 			$query->set( 'meta_query', $meta_query );
-			$query->set( 'meta_key', 'be_events_manager_start_date' );
+			$query->set( 'meta_key', 'be_event_start' );
 		}
 		
 	}
