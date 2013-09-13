@@ -169,26 +169,26 @@ class BE_Events_Calendar {
 		if ( isset( $vars['post_type'] ) && 'event' == $vars['post_type'] ) {
 	
 			/* Check if 'orderby' is set to 'start_date'. */
-			if ( isset( $vars['start_date'] ) && 'start_date' == $vars['orderby'] ) {
+			if ( isset( $vars['event_start'] ) && 'event_start' == $vars['orderby'] ) {
 	
 				/* Merge the query vars with our custom variables. */
 				$vars = array_merge(
 					$vars,
 					array(
-						'meta_key' => 'be_events_manager_start_date',
+						'meta_key' => 'be_event_start',
 						'orderby' => 'meta_value_num'
 					)
 				);
 			}
 			
 			/* Check if 'orderby' is set to 'end_date'. */
-			if ( isset( $vars['end_date'] ) && 'end_date' == $vars['orderby'] ) {
+			if ( isset( $vars['event_end'] ) && 'event_end' == $vars['orderby'] ) {
 	
 				/* Merge the query vars with our custom variables. */
 				$vars = array_merge(
 					$vars,
 					array(
-						'meta_key' => 'be_events_manager_end_date',
+						'meta_key' => 'be_event_end',
 						'orderby' => 'meta_value_num'
 					)
 				);
