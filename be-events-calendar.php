@@ -207,32 +207,33 @@ class BE_Events_Calendar {
 	 */
 	
 	function taxonomies() {
-		$override = apply_filters( 'be_events_manager_taxonomy_override', false );
-		if( false === $override ) {
+	
+		$supports = get_theme_support( 'be-events-calendar' );
+		if( !in_array( 'event-category', $supports[0] ) )
+			return;
+			
+		$labels = array(
+			'name' => 'Categories',
+			'singular_name' => 'Category',
+			'search_items' =>  'Search Categories',
+			'all_items' => 'All Categories',
+			'parent_item' => 'Parent Category',
+			'parent_item_colon' => 'Parent Category:',
+			'edit_item' => 'Edit Category',
+			'update_item' => 'Update Category',
+			'add_new_item' => 'Add New Category',
+			'new_item_name' => 'New Category Name',
+			'menu_name' => 'Category'
+		); 	
+	
+		register_taxonomy( 'event-category', array('event'), array(
+			'hierarchical' => true,
+			'labels' => $labels,
+			'show_ui' => true,
+			'query_var' => true,
+			'rewrite' => array( 'slug' => 'event-category' ),
+		));
 		
-			$labels = array(
-				'name' => 'Categories',
-				'singular_name' => 'Category',
-				'search_items' =>  'Search Categories',
-				'all_items' => 'All Categories',
-				'parent_item' => 'Parent Category',
-				'parent_item_colon' => 'Parent Category:',
-				'edit_item' => 'Edit Category',
-				'update_item' => 'Update Category',
-				'add_new_item' => 'Add New Category',
-				'new_item_name' => 'New Category Name',
-				'menu_name' => 'Category'
-			); 	
-		
-			register_taxonomy( 'event-category', array('event'), array(
-				'hierarchical' => true,
-				'labels' => $labels,
-				'show_ui' => true,
-				'query_var' => true,
-				'rewrite' => array( 'slug' => 'event-category' ),
-			));
-		
-		}
 	}
 	
 	/**
