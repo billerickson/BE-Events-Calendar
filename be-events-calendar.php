@@ -74,7 +74,7 @@ class BE_Events_Calendar {
 			'supports' => array('title','editor', 'excerpt')
 		); 
 	
-		register_post_type( 'event', $args );	
+		register_post_type( 'events', $args );	
 	}
 	
 	/**
