@@ -30,7 +30,7 @@ class BE_Recurring_Events {
 		
 		// Generate Events 
 		add_action( 'wp_insert_post', array( $this, 'generate_events' ) );
-		//add_action( 'save_post', array( $this, 'regenerate_events' ) );
+		add_action( 'wp_insert_post', array( $this, 'regenerate_events' ) );
 				
 	}
 	
@@ -238,22 +238,26 @@ class BE_Recurring_Events {
 		$args = array(
 			'post_type' => 'events',
 			'posts_per_page' => -1,
-			'post_parent' => $post_id,
 			'meta_query' => array(
 				array(
 					'key' => 'be_event_start',
 					'value' => time(),
 					'compare' => '>'
 				),
+				array(
+					'key' => 'be_recurring_event',
+					'value' => $post_id,
+				)
 			)
 		);
 		$loop = new WP_Query( $args );
 		if( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
-			wp_delete_post( get_the_ID(), true );
+			wp_delete_post( get_the_ID(), false );
 		endwhile; endif; wp_reset_postdata();
 		
-		// Turn off regenerate so this doesnt happen again
-		update_post_meta( $post_id, 'be_regenerate_events', false );
+		// Turn off regenerate and on generate
+		delete_post_meta( $post_id, 'be_regenerate_events' );
+		delete_post_meta( $post_id, 'be_generated_events' );
 		
 		// Generate new events
 		$this->generate_events( $post_id );
