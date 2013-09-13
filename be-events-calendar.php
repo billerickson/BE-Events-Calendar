@@ -80,7 +80,7 @@ class BE_Events_Calendar {
 			'has_archive' => true, 
 			'hierarchical' => false,
 			'menu_position' => null,
-			'supports' => array('title','editor', 'excerpt')
+			'supports' => array('title','editor')
 		); 
 	
 		register_post_type( 'events', $args );	

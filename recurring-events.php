@@ -70,7 +70,7 @@ class BE_Recurring_Events {
 			'hierarchical' => false,
 			'menu_position' => null,
 			'show_in_menu' => 'edit.php?post_type=events',
-			'supports' => array('title','editor', 'excerpt')
+			'supports' => array('title','editor')
 		); 
 	
 		register_post_type( 'recurring-events', $args );	
