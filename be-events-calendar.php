@@ -88,8 +88,8 @@ class BE_Events_Calendar {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 			'title' => __( 'Event' ),
-			'start_date' => __( 'Start Date' ),
-			'end_date' => __( 'End Date' ),
+			'event_start' => __( 'Starts' ),
+			'event_end' => __( 'Ends' ),
 			'date' => __( 'Published Date' )
 		);
 	
@@ -108,10 +108,10 @@ class BE_Events_Calendar {
 		switch( $column ) {
 	
 			/* If displaying the 'duration' column. */
-			case 'start_date' :
+			case 'event_start' :
 	
 				/* Get the post meta. */
-				$start = esc_attr( date( 'F j, Y', get_post_meta( $post_id, 'be_events_manager_start_date', true ) ) );
+				$start = esc_attr( date( 'M j, Y g:s A', get_post_meta( $post_id, 'be_event_start', true ) ) );
 	
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) )
@@ -124,10 +124,10 @@ class BE_Events_Calendar {
 				break;
 	
 			/* If displaying the 'genre' column. */
-			case 'end_date' :
+			case 'event_end' :
 	
 				/* Get the post meta. */
-				$end = esc_attr( date( 'F j, Y', get_post_meta( $post_id, 'be_events_manager_end_date', true ) ) );
+				$end = esc_attr( date( 'M j, Y g:s A', get_post_meta( $post_id, 'be_event_end', true ) ) );
 	
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) )
@@ -153,8 +153,8 @@ class BE_Events_Calendar {
 
 	function event_sortable_columns( $columns ) {
 	
-		$columns['start_date'] = 'start_date';
-		$columns['end_date'] = 'end_date';
+		$columns['event_start'] = 'start_date';
+		$columns['event_end'] = 'end_date';
 	
 		return $columns;
 	}	 
