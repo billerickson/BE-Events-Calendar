@@ -69,6 +69,7 @@ class BE_Recurring_Events {
 			'has_archive' => true, 
 			'hierarchical' => false,
 			'menu_position' => null,
+			'show_in_menu' => 'edit.php?post_type=events',
 			'supports' => array('title','editor', 'excerpt')
 		); 
 	
