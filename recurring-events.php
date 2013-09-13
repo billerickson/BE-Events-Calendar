@@ -44,7 +44,7 @@ class BE_Recurring_Events {
 		$labels = array(
 			'name' => 'Recurring Events',
 			'singular_name' => 'Recurring Event',
-			'add_new' => 'Add New',
+			'add_new' => 'Add Recurring Event',
 			'add_new_item' => 'Add New Recurring Event',
 			'edit_item' => 'Edit Recurring Event',
 			'new_item' => 'New Recurring Event',
