@@ -86,11 +86,17 @@ class BE_Recurring_Events {
 		$events_metabox = array(
 		    'id' => 'event-details',
 		    'title' => 'Event Details',
-		    'pages' => array('events'), 
+		    'pages' => array('recurring-events'), 
 			'context' => 'normal',
 			'priority' => 'high',
 			'show_names' => true, 
 		    'fields' => array(
+		    	array(
+		    		'name' => 'First Event',
+		    		'id' => 'be_event_details_label',
+					'desc' => 'Serves as as base for all events',
+					'type' => 'title',
+		    	),
 		    	array(
 		    		'name' => 'Start Date and Time',
 		    		'id' => 'be_event_start',
@@ -103,6 +109,27 @@ class BE_Recurring_Events {
 		    		'desc' => '',
 		    		'type' => 'text_datetime_timestamp',
 		    	),
+		    	array(
+		    		'name' => 'Recurring Options',
+		    		'id' => 'be_recurring_label',
+		    		'type' => 'title',
+		    	),
+		    	array(
+		    		'name' => 'Repeat period',
+		    		'id' => 'be_recurring_period',
+		    		'type' => 'select',
+		    		'options' => array(
+		    			array( 'name' => 'Daily', 'value' => 'daily' ),
+		    			array( 'name' => 'Weekly', 'value' => 'weekly' ),
+		    			array( 'name' => 'Monthly', 'value' => 'monthly' ),
+		    		)
+		    	),
+		    	array(
+		    		'name' => 'Repeating Ends',
+		    		'id' => 'be_recurring_end',
+		    		'type' => 'text_date_timestamp',
+		    		'desc' => '',
+		    	)
 		    )
 		
 		);
