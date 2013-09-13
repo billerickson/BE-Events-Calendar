@@ -162,8 +162,8 @@ class BE_Events_Calendar {
 
 	function event_sortable_columns( $columns ) {
 	
-		$columns['event_start'] = 'start_date';
-		$columns['event_end'] = 'end_date';
+		$columns['event_start'] = 'event_start';
+		$columns['event_end'] = 'event_end';
 	
 		return $columns;
 	}	 
@@ -175,10 +175,10 @@ class BE_Events_Calendar {
 	function sort_events( $vars ) {
 
 		/* Check if we're viewing the 'event' post type. */
-		if ( isset( $vars['post_type'] ) && 'event' == $vars['post_type'] ) {
+		if ( isset( $vars['post_type'] ) && 'events' == $vars['post_type'] ) {
 	
 			/* Check if 'orderby' is set to 'start_date'. */
-			if ( isset( $vars['event_start'] ) && 'event_start' == $vars['orderby'] ) {
+			if ( isset( $vars['orderby'] ) && 'event_start' == $vars['orderby'] ) {
 	
 				/* Merge the query vars with our custom variables. */
 				$vars = array_merge(
@@ -191,7 +191,7 @@ class BE_Events_Calendar {
 			}
 			
 			/* Check if 'orderby' is set to 'end_date'. */
-			if ( isset( $vars['event_end'] ) && 'event_end' == $vars['orderby'] ) {
+			if ( isset( $vars['orderby'] ) && 'event_end' == $vars['orderby'] ) {
 	
 				/* Merge the query vars with our custom variables. */
 				$vars = array_merge(
