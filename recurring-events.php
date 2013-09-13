@@ -23,6 +23,9 @@ class BE_Recurring_Events {
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
 		
+		// Admin Menu Order
+		add_filter( 'menu_order', array( $this, 'menu_order' ) );
+		
 		// Create Metabox
 		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
 		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
@@ -74,6 +77,17 @@ class BE_Recurring_Events {
 		register_post_type( 'recurring-events', $args );	
 	}
 	
+	/**
+	 * Menu Order
+	 *
+	 */
+	function menu_order( $menu_order ) {
+		ea_pp( $menu_order );
+		print_r( 'test' );
+		exit;
+		return $menu_order;
+	}
+		
 	/**
 	 * Create Metaboxes
 	 * @link http://www.billerickson.net/wordpress-metaboxes/
