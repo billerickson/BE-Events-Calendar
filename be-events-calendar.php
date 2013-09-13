@@ -226,7 +226,7 @@ class BE_Events_Calendar {
 			'menu_name' => 'Category'
 		); 	
 	
-		register_taxonomy( 'event-category', array('event'), array(
+		register_taxonomy( 'event-category', array('events'), array(
 			'hierarchical' => true,
 			'labels' => $labels,
 			'show_ui' => true,
@@ -247,7 +247,7 @@ class BE_Events_Calendar {
 		$events_metabox = array(
 		    'id' => 'event-details',
 		    'title' => 'Event Details',
-		    'pages' => array('event'), 
+		    'pages' => array('events'), 
 			'context' => 'normal',
 			'priority' => 'high',
 			'show_names' => true, 
@@ -285,7 +285,7 @@ class BE_Events_Calendar {
 		global $wp_query;
 		// If you don't want the plugin to mess with the query, use this filter to override it
 		$override = apply_filters( 'be_events_manager_query_override', false );
-		if ( !is_admin() && $wp_query === $query && ( false === $override ) && ( is_post_type_archive( 'event' ) || is_tax( 'event-category' ) ) ) {
+		if ( !is_admin() && $wp_query === $query && ( false === $override ) && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {
 			$meta_query = array(
 				array(
 					'key' => 'be_events_manager_end_date',
