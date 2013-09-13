@@ -30,6 +30,7 @@ class BE_Recurring_Events {
 		
 		// Generate Events 
 		add_action( 'wp_insert_post', array( $this, 'generate_events' ) );
+		add_action( 'save_post', array( $this, 'regenerate_events' ) );
 				
 	}
 	
@@ -133,7 +134,13 @@ class BE_Recurring_Events {
 		    		'id' => 'be_recurring_end',
 		    		'type' => 'text_date_timestamp',
 		    		'desc' => '',
-		    	)
+		    	),
+		    	array(
+		    		'name' => 'Regenerate Events',
+		    		'id' => 'be_regenerate_events',
+		    		'type' => 'checkbox',
+		    		'desc' => '<strong>This will delete all scheduled events!</strong> Past events will be unchanged.',
+		    	),
 		    )
 		
 		);
@@ -166,6 +173,8 @@ class BE_Recurring_Events {
 		
 		$first = false;
 		$stop = get_post_meta( $post_id, 'be_recurring_end', true );
+		if( empty( $stop ) )
+			$stop = strtotime( '+1 Years', $event_start );
 		$period = get_post_meta( $post_id, 'be_recurring_period', true );
 		while( $event_start < $stop ) {
 		
@@ -202,6 +211,45 @@ class BE_Recurring_Events {
 					break;
 			}
 		}
+	}
+	
+	/**
+	 * Regenerate Events
+	 *
+	 */
+	function regenerate_events( $post_id ) {
+		if( 'recurring-events' !== get_post_type( $post_id ) )
+			return;
+			
+		// Make sure they want to regenerate them
+		$regenerate = get_post_meta( $post_id, 'be_regenerate_events', true );
+		if( ! $regenerate )	
+			return;
+			
+		// Delete all future events
+		$args = array(
+			'post_type' => 'events',
+			'posts_per_page' => -1,
+			'post_parent' => $post_id,
+			'meta_query' => array(
+				array(
+					'key' => 'be_event_start',
+					'value' => time(),
+					'compare' => '>'
+				),
+			)
+		);
+		$loop = new WP_Query( $args );
+		if( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
+			wp_delete_post( get_the_ID(), true );
+		endwhile; endif; wp_reset_postdata();
+		
+		// Turn off regenerate so this doesnt happen again
+		delete_post_meta( $post_id, 'be_regenerate_events' );
+		
+		// Generate new events
+		$this->generate_events( $post_id );
+
 	}
 		
 }

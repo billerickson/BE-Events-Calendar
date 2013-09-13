@@ -29,9 +29,9 @@ class BE_Events_Calendar {
 	
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
-		add_filter( 'manage_edit-event_columns', array( $this, 'edit_event_columns' ) ) ;
-		add_action( 'manage_event_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
-		add_filter( 'manage_edit-event_sortable_columns', array( $this, 'event_sortable_columns' ) );
+		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ) ) ;
+		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
+		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ) );
 		add_action( 'load-edit.php', array( $this, 'edit_event_load' ) );
 		
 		// Create Taxonomy
