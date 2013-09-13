@@ -1,18 +1,21 @@
 <?php
-/*
-Plugin Name: BE Events Calendar
-Plugin URI: http://www.billerickson.net
-Description: Allows you to manage events
-Version: 1.0
-Author: Bill Erickson
-Author URI: http://www.billerickson.net
-License: GPLv2
-*/
-
+/**
+ * Event Calendar Base
+ *
+ * @package      CoreFunctionality
+ * @since        1.0.0
+ * @link         https://github.com/billerickson/Core-Functionality
+ * @author       Bill Erickson <bill@billerickson.net>
+ * @copyright    Copyright (c) 2011, Bill Erickson
+ * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ */
+ 
 class BE_Events_Calendar {
 	var $instance;
 
 	public function __construct() {
+
+		// Plugin Base
 		$this->instance =& $this;
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
@@ -40,6 +43,7 @@ class BE_Events_Calendar {
 		
 		// Modify Event Listings query
 		add_action( 'pre_get_posts', array( $this, 'event_query' ) );
+		
 	}
 	
 	/** 
