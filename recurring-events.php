@@ -30,7 +30,7 @@ class BE_Recurring_Events {
 		
 		// Generate Events 
 		add_action( 'wp_insert_post', array( $this, 'generate_events' ) );
-		add_action( 'save_post', array( $this, 'regenerate_events' ) );
+		//add_action( 'save_post', array( $this, 'regenerate_events' ) );
 				
 	}
 	
@@ -166,6 +166,11 @@ class BE_Recurring_Events {
 		if( 'recurring-events' !== get_post_type( $post_id ) )
 			return;
 			
+		// Only generate once
+		$generated = get_post_meta( $post_id, 'be_generated_events', true );
+		if( $generated )
+			return;
+			
 		$event_title = get_post( $post_id )->post_title;
 		$event_content = get_post( $post_id )->post_content;
 		$event_start = get_post_meta( $post_id, 'be_event_start', true );
@@ -184,12 +189,12 @@ class BE_Recurring_Events {
 				'post_content' => $event_content,
 				'post_status' => 'publish',
 				'post_type' => 'events',
-				'post_parent' => $post_id,
 			);
 			$event_id = wp_insert_post( $args );
 			if( $event_id ) {
 				update_post_meta( $event_id, 'be_event_start', $event_start );
 				update_post_meta( $event_id, 'be_event_end', $event_end );
+				update_post_meta( $event_id, 'be_recurring_event', $post_id );
 			}
 			
 			// Increment the date
@@ -211,6 +216,9 @@ class BE_Recurring_Events {
 					break;
 			}
 		}
+		
+		// Dont generate again
+		update_post_meta( $post_id, 'be_generated_events', true );
 	}
 	
 	/**
@@ -245,7 +253,7 @@ class BE_Recurring_Events {
 		endwhile; endif; wp_reset_postdata();
 		
 		// Turn off regenerate so this doesnt happen again
-		delete_post_meta( $post_id, 'be_regenerate_events' );
+		update_post_meta( $post_id, 'be_regenerate_events', false );
 		
 		// Generate new events
 		$this->generate_events( $post_id );
