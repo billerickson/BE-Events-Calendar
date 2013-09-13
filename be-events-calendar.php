@@ -243,7 +243,6 @@ class BE_Events_Calendar {
 	
 	function metaboxes( $meta_boxes ) {
 		
-		$prefix = 'be_events_manager_';
 		$events_metabox = array(
 		    'id' => 'event-details',
 		    'title' => 'Event Details',
@@ -253,14 +252,14 @@ class BE_Events_Calendar {
 			'show_names' => true, 
 		    'fields' => array(
 		    	array(
-		    		'name' => 'Start Date',
-		    		'id' => $prefix . 'start_date',
+		    		'name' => 'Start Date and Time',
+		    		'id' => 'be_event_start',
 		    		'desc' => '',
 		    		'type' => 'text_datetime_timestamp',
 		    	),
 		    	array(
-		    		'name' => 'End Date',
-		    		'id' => $prefix . 'end_date',
+		    		'name' => 'End Date and Time',
+		    		'id' => 'be_event_end',
 		    		'desc' => '',
 		    		'type' => 'text_datetime_timestamp',
 		    	),
