@@ -14,7 +14,12 @@ class BE_Events_Calendar {
 
 	public function __construct() {
 		$this->instance =& $this;
+		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
+	}
+	
+	public function activation() {
+		flush_rewrite_rules();
 	}
 
 	public function init() {
