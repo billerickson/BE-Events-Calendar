@@ -16,15 +16,16 @@ class BE_Recurring_Events {
 	public function __construct() {
 		$this->instance =& $this;
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
+
+		// Admin Menu Order
+		add_filter( 'menu_order', array( $this, 'menu_order' ) );
+		
 	}
 	
 	public function init() {
 
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
-		
-		// Admin Menu Order
-		add_filter( 'menu_order', array( $this, 'menu_order' ) );
 		
 		// Create Metabox
 		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
