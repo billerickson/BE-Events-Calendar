@@ -27,6 +27,9 @@ class BE_Recurring_Events {
 		// Create Metabox
 		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
 		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
+		
+		// Generate Events 
+		add_action( 'wp_insert_post', array( $this, 'generate_events' ) );
 				
 	}
 	
@@ -146,6 +149,59 @@ class BE_Recurring_Events {
 	    if (!class_exists('cmb_Meta_Box')) {
 	        require_once( 'lib/metabox/init.php' );
 	    }
+	}
+	
+	/**
+	 * Generate Events
+	 *
+	 */
+	function generate_events( $post_id ) {
+		if( 'recurring-events' !== get_post_type( $post_id ) )
+			return;
+			
+		$event_title = get_post( $post_id )->post_title;
+		$event_content = get_post( $post_id )->post_content;
+		$event_start = get_post_meta( $post_id, 'be_event_start', true );
+		$event_end = get_post_meta( $post_id, 'be_event_end', true );
+		
+		$first = false;
+		$stop = get_post_meta( $post_id, 'be_recurring_end', true );
+		$period = get_post_meta( $post_id, 'be_recurring_period', true );
+		while( $event_start < $stop ) {
+		
+			// Create the Event
+			$args = array(
+				'post_title' => $event_title,
+				'post_content' => $event_content,
+				'post_status' => 'publish',
+				'post_type' => 'events',
+				'post_parent' => $post_id,
+			);
+			$event_id = wp_insert_post( $args );
+			if( $event_id ) {
+				update_post_meta( $event_id, 'be_event_start', $event_start );
+				update_post_meta( $event_id, 'be_event_end', $event_end );
+			}
+			
+			// Increment the date
+			switch( $period ) {
+				
+				case 'daily':
+					$event_start = strtotime( '+1 Days', $event_start );
+					$event_end = strtotime( '+1 Days', $event_end );
+					break;
+					
+				case 'weekly':
+					$event_start = strtotime( '+1 Weeks', $event_start );
+					$event_end = strtotime( '+1 Weeks', $event_end );
+					break;
+					
+				case 'monthly':
+					$event_start = strtotime( '+1 Months', $event_start );
+					$event_end = strtotime( '+1 Months', $event_end );
+					break;
+			}
+		}
 	}
 		
 }
