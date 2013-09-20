@@ -24,6 +24,12 @@ class BE_Recurring_Events {
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
 		
+		// Edit Columns of Event post type
+		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ), 20 ) ;
+		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
+		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
+		//add_action( 'load-edit.php', array( $this, 'edit_event_load' ), 20 );
+
 		// Create Metabox
 		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
 		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
@@ -80,6 +86,78 @@ class BE_Recurring_Events {
 		register_post_type( 'recurring-events', $args );	
 	}
 	
+	/**
+	 * Edit Column Titles
+	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
+	 *
+	 */
+	
+	function edit_event_columns( $columns ) {
+		
+		$new_columns = array();
+		foreach( $columns as $key => $label ) {
+			$new_columns[$key] = $label;
+			if( 'title' == $key )
+				$new_columns['recurring'] = 'Part of Series';
+		}	
+		return $new_columns;
+	}
+	
+	/**
+	 * Edit Column Content
+	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
+	 *
+	 */
+
+	function manage_event_columns( $column, $post_id ) {
+		
+		if( 'recurring' == $column ) {
+			$parent = get_post_meta( get_the_ID(), 'be_recurring_event', true );
+			if( !empty( $parent ) )
+				echo '<a href="' . get_edit_post_link( $parent ) . '">' . get_the_title( $parent ) . '</a>';		
+		}
+
+	}	 
+	
+	/**
+	 * Make Columns Sortable
+	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
+	 *
+	 */
+
+	function event_sortable_columns( $columns ) {
+	
+		$columns['recurring'] = 'recurring';	
+		return $columns;
+	}	 
+	
+	function edit_event_load() {
+		add_filter( 'request', array( $this, 'sort_events' ) );
+	}
+	
+	function sort_events( $vars ) {
+
+		/* Check if we're viewing the 'event' post type. */
+		if ( isset( $vars['post_type'] ) && 'events' == $vars['post_type'] ) {
+	
+			/* Check if 'orderby' is set to 'recurring'. */
+			if ( isset( $vars['orderby'] ) && 'recurring' == $vars['orderby'] ) {
+	
+				/* Merge the query vars with our custom variables. */
+				$vars = array_merge(
+					$vars,
+					array(
+						'meta_key' => 'be_recurring_event',
+						'orderby' => 'meta_value_num'
+					)
+				);
+			}			
+		}
+	
+		return $vars;
+	
+	}
+
 	/**
 	 * Create Metaboxes
 	 * @link http://www.billerickson.net/wordpress-metaboxes/
@@ -146,7 +224,7 @@ class BE_Recurring_Events {
 		);
 		
 		// Use this to override the metabox and create your own
-		$override = apply_filters( 'be_events_manager_metabox_override', false );
+		$override = apply_filters( 'be_events_manager_recurring_metabox_override', false );
 		if ( false === $override ) $meta_boxes[] = $events_metabox;
 		
 		return $meta_boxes;
