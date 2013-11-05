@@ -120,7 +120,7 @@ class BE_Events_Calendar {
 			case 'event_start' :
 	
 				/* Get the post meta. */
-				$start = esc_attr( date( 'M j, Y g:s A', get_post_meta( $post_id, 'be_event_start', true ) ) );
+				$start = esc_attr( date( 'M j, Y g:i A', get_post_meta( $post_id, 'be_event_start', true ) ) );
 	
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) )
@@ -136,7 +136,7 @@ class BE_Events_Calendar {
 			case 'event_end' :
 	
 				/* Get the post meta. */
-				$end = esc_attr( date( 'M j, Y g:s A', get_post_meta( $post_id, 'be_event_end', true ) ) );
+				$end = esc_attr( date( 'M j, Y g:i A', get_post_meta( $post_id, 'be_event_end', true ) ) );
 	
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) )
