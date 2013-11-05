@@ -240,7 +240,7 @@ class BE_Recurring_Events {
 	 * Generate Events
 	 *
 	 */
-	function generate_events( $post_id ) {
+	function generate_events( $post_id, $regenerating = false ) {
 		if( 'recurring-events' !== get_post_type( $post_id ) )
 			return;
 			
@@ -261,19 +261,23 @@ class BE_Recurring_Events {
 		$period = get_post_meta( $post_id, 'be_recurring_period', true );
 		while( $event_start < $stop ) {
 		
-			// Create the Event
-			$args = array(
-				'post_title' => $event_title,
-				'post_content' => $event_content,
-				'post_status' => 'publish',
-				'post_type' => 'events',
-			);
-			$event_id = wp_insert_post( $args );
-			if( $event_id ) {
-				update_post_meta( $event_id, 'be_event_start', $event_start );
-				update_post_meta( $event_id, 'be_event_end', $event_end );
-				update_post_meta( $event_id, 'be_recurring_event', $post_id );
-			}
+			// For regenerating, only create future events
+			if( !$regenerating || ( $regenerating && $event_start > time() ) ):
+
+				// Create the Event
+				$args = array(
+					'post_title' => $event_title,
+					'post_content' => $event_content,
+					'post_status' => 'publish',
+					'post_type' => 'events',
+				);
+				$event_id = wp_insert_post( $args );
+				if( $event_id ) {
+					update_post_meta( $event_id, 'be_event_start', $event_start );
+					update_post_meta( $event_id, 'be_event_end', $event_end );
+					update_post_meta( $event_id, 'be_recurring_event', $post_id );
+				}
+			endif;
 			
 			// Increment the date
 			switch( $period ) {
@@ -338,7 +342,7 @@ class BE_Recurring_Events {
 		delete_post_meta( $post_id, 'be_generated_events' );
 		
 		// Generate new events
-		$this->generate_events( $post_id );
+		$this->generate_events( $post_id, true );
 
 	}
 		
