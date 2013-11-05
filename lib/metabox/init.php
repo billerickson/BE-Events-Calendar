@@ -489,7 +489,7 @@ class cmb_Meta_Box {
 				$new = strtotime( $new );
 			}
 
-			if ( $type_comp == true && $field['type'] == 'text_datetime_timestamp' ) {
+			if ( $field['type'] == 'text_datetime_timestamp' ) {
 				$string = $new['date'] . ' ' . $new['time'];
 				$new = strtotime( $string );
 			}
