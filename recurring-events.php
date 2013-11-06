@@ -276,6 +276,16 @@ class BE_Recurring_Events {
 					update_post_meta( $event_id, 'be_event_start', $event_start );
 					update_post_meta( $event_id, 'be_event_end', $event_end );
 					update_post_meta( $event_id, 'be_recurring_event', $post_id );
+					
+					// Event Category
+					$supports = get_theme_support( 'be-events-calendar' );
+					if( in_array( 'event-category', $supports[0] ) ) {
+						$terms = get_the_terms( $post_id, 'event-category' );
+						$terms = wp_list_pluck( $terms, 'slug' );
+						wp_set_object_terms( $event_id, $terms, 'event-category' );
+					}
+
+
 				}
 			endif;
 			
