@@ -3,7 +3,7 @@
 Plugin Name: BE Events Calendar
 Plugin URI: http://www.billerickson.net
 Description: Allows you to manage events
-Version: 1.0.1
+Version: 1.0.2
 Author: Bill Erickson
 Author URI: http://www.billerickson.net
 License: GPLv2

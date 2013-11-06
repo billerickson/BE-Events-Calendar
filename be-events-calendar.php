@@ -3,7 +3,7 @@
  * Event Calendar Base
  *
  * @package      CoreFunctionality
- * @since        1.0.1
+ * @since        1.0.0
  * @link         https://github.com/billerickson/Core-Functionality
  * @author       Bill Erickson <bill@billerickson.net>
  * @copyright    Copyright (c) 2011, Bill Erickson
