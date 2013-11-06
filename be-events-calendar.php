@@ -3,7 +3,7 @@
  * Event Calendar Base
  *
  * @package      CoreFunctionality
- * @since        1.0.0
+ * @since        1.0.1
  * @link         https://github.com/billerickson/Core-Functionality
  * @author       Bill Erickson <bill@billerickson.net>
  * @copyright    Copyright (c) 2011, Bill Erickson
@@ -221,6 +221,8 @@ class BE_Events_Calendar {
 		if( !in_array( 'event-category', $supports[0] ) )
 			return;
 			
+		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'events', 'recurring-events' ) : array( 'events' );
+			
 		$labels = array(
 			'name' => 'Categories',
 			'singular_name' => 'Category',
@@ -235,7 +237,7 @@ class BE_Events_Calendar {
 			'menu_name' => 'Category'
 		); 	
 	
-		register_taxonomy( 'event-category', array('events'), array(
+		register_taxonomy( 'event-category', $post_types, array(
 			'hierarchical' => true,
 			'labels' => $labels,
 			'show_ui' => true,
