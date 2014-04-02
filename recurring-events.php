@@ -94,6 +94,10 @@ class BE_Recurring_Events {
 	
 	function edit_event_columns( $columns ) {
 		
+		$supports = get_theme_support( 'be-events-calendar' );
+		if( !in_array( 'recurring-events', $supports[0] ) )
+			return $columns;
+	
 		$new_columns = array();
 		foreach( $columns as $key => $label ) {
 			$new_columns[$key] = $label;
