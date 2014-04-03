@@ -218,7 +218,7 @@ class BE_Events_Calendar {
 	function taxonomies() {
 	
 		$supports = get_theme_support( 'be-events-calendar' );
-		if( !in_array( 'event-category', $supports[0] ) )
+		if( !is_array( $supports ) || !in_array( 'event-category', $supports[0] ) )
 			return;
 			
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'events', 'recurring-events' ) : array( 'events' );
