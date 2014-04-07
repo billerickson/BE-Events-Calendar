@@ -49,7 +49,7 @@ class BE_Recurring_Events {
 	public function post_type() {
 	
 		$supports = get_theme_support( 'be-events-calendar' );
-		if( !in_array( 'recurring-events', $supports[0] ) )
+		if( !is_array( $supports ) || !in_array( 'recurring-events', $supports[0] ) )
 			return;
 	
 		$labels = array(
@@ -284,7 +284,7 @@ class BE_Recurring_Events {
 					
 					// Event Category
 					$supports = get_theme_support( 'be-events-calendar' );
-					if( in_array( 'event-category', $supports[0] ) ) {
+					if( is_array( $supports ) && in_array( 'event-category', $supports[0] ) ) {
 						$terms = get_the_terms( $post_id, 'event-category' );
 						$terms = wp_list_pluck( $terms, 'slug' );
 						wp_set_object_terms( $event_id, $terms, 'event-category' );
