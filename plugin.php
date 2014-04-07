@@ -16,3 +16,4 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once plugin_dir_path( __FILE__ ) . 'be-events-calendar.php';
 require_once plugin_dir_path( __FILE__ ) . 'recurring-events.php';
+require_once plugin_dir_path( __FILE__ ) . 'upcoming-events-widget.php';
