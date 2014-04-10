@@ -279,8 +279,12 @@ class BE_Recurring_Events {
 				$event_id = wp_insert_post( $args );
 				if( $event_id ) {
 					update_post_meta( $event_id, 'be_recurring_event', $post_id );
-					foreach( $metas as $meta )
-						update_post_meta( $event_id, $meta, get_post_meta( $post_id, $meta, true ) );
+					update_post_meta( $event_id, 'be_event_start', $event_start );
+					update_post_meta( $event_id, 'be_event_end', $event_end );
+
+					// Update Custom Post Meta @TODO 
+					//	foreach( $metas as $meta )
+					//		update_post_meta( $event_id, $meta, get_post_meta( $post_id, $meta, true ) );
 					
 					// Event Category
 					$supports = get_theme_support( 'be-events-calendar' );
