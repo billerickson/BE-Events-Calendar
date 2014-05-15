@@ -80,7 +80,8 @@ class BE_Events_Calendar {
 			'has_archive' => true, 
 			'hierarchical' => false,
 			'menu_position' => null,
-			'supports' => array('title','editor')
+			'supports' => array('title','editor'),
+			'menu_icon' => 'dashicons-calendar',
 		); 
 	
 		register_post_type( 'events', $args );	
