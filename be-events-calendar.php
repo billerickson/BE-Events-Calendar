@@ -54,34 +54,34 @@ class BE_Events_Calendar {
 
 	public function post_type() {
 		$labels = array(
-			'name' => 'Events',
-			'singular_name' => 'Event',
-			'add_new' => 'Add New',
-			'add_new_item' => 'Add New Event',
-			'edit_item' => 'Edit Event',
-			'new_item' => 'New Event',
-			'view_item' => 'View Event',
-			'search_items' => 'Search Events',
-			'not_found' =>  'No events found',
+			'name'               => 'Events',
+			'singular_name'      => 'Event',
+			'add_new'            => 'Add New',
+			'add_new_item'       => 'Add New Event',
+			'edit_item'          => 'Edit Event',
+			'new_item'           => 'New Event',
+			'view_item'          => 'View Event',
+			'search_items'       => 'Search Events',
+			'not_found'          =>  'No events found',
 			'not_found_in_trash' => 'No events found in trash',
-			'parent_item_colon' => '',
-			'menu_name' => 'Events'
+			'parent_item_colon'  => '',
+			'menu_name'          => 'Events'
 		);
 		
 		$args = array(
-			'labels' => $labels,
-			'public' => true,
+			'labels'             => $labels,
+			'public'             => true,
 			'publicly_queryable' => true,
-			'show_ui' => true, 
-			'show_in_menu' => true, 
-			'query_var' => true,
-			'rewrite' => true,
-			'capability_type' => 'post',
-			'has_archive' => true, 
-			'hierarchical' => false,
-			'menu_position' => null,
-			'supports' => array('title','editor'),
-			'menu_icon' => 'dashicons-calendar',
+			'show_ui'            => true, 
+			'show_in_menu'       => true, 
+			'query_var'          => true,
+			'rewrite'            => true,
+			'capability_type'    => 'post',
+			'has_archive'        => true, 
+			'hierarchical'       => false,
+			'menu_position'      => null,
+			'supports'           => array( 'title', 'editor' ),
+			'menu_icon'          => 'dashicons-calendar',
 		); 
 	
 		register_post_type( 'events', $args );	
@@ -96,11 +96,11 @@ class BE_Events_Calendar {
 	function edit_event_columns( $columns ) {
 	
 		$columns = array(
-			'cb' => '<input type="checkbox" />',
-			'title' => __( 'Event' ),
+			'cb'          => '<input type="checkbox" />',
+			'title'       => __( 'Event' ),
 			'event_start' => __( 'Starts' ),
-			'event_end' => __( 'Ends' ),
-			'date' => __( 'Published Date' )
+			'event_end'   => __( 'Ends' ),
+			'date'        => __( 'Published Date' )
 		);
 	
 		return $columns;
@@ -164,7 +164,7 @@ class BE_Events_Calendar {
 	function event_sortable_columns( $columns ) {
 	
 		$columns['event_start'] = 'event_start';
-		$columns['event_end'] = 'event_end';
+		$columns['event_end']   = 'event_end';
 	
 		return $columns;
 	}	 
@@ -225,25 +225,25 @@ class BE_Events_Calendar {
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'events', 'recurring-events' ) : array( 'events' );
 			
 		$labels = array(
-			'name' => 'Categories',
-			'singular_name' => 'Category',
-			'search_items' =>  'Search Categories',
-			'all_items' => 'All Categories',
-			'parent_item' => 'Parent Category',
+			'name'              => 'Categories',
+			'singular_name'     => 'Category',
+			'search_items'      =>  'Search Categories',
+			'all_items'         => 'All Categories',
+			'parent_item'       => 'Parent Category',
 			'parent_item_colon' => 'Parent Category:',
-			'edit_item' => 'Edit Category',
-			'update_item' => 'Update Category',
-			'add_new_item' => 'Add New Category',
-			'new_item_name' => 'New Category Name',
-			'menu_name' => 'Category'
+			'edit_item'         => 'Edit Category',
+			'update_item'       => 'Update Category',
+			'add_new_item'      => 'Add New Category',
+			'new_item_name'     => 'New Category Name',
+			'menu_name'         => 'Category'
 		); 	
 	
 		register_taxonomy( 'event-category', $post_types, array(
 			'hierarchical' => true,
-			'labels' => $labels,
-			'show_ui' => true,
-			'query_var' => true,
-			'rewrite' => array( 'slug' => 'event-category' ),
+			'labels'       => $labels,
+			'show_ui'      => true,
+			'query_var'    => true,
+			'rewrite'      => array( 'slug' => 'event-category' ),
 		));
 		
 	}
@@ -257,22 +257,22 @@ class BE_Events_Calendar {
 	function metaboxes( $meta_boxes ) {
 		
 		$events_metabox = array(
-		    'id' => 'event-details',
-		    'title' => 'Event Details',
-		    'pages' => array('events'), 
-			'context' => 'normal',
-			'priority' => 'high',
+		    'id'         => 'event-details',
+		    'title'      => 'Event Details',
+		    'pages'      => array('events'), 
+			'context'    => 'normal',
+			'priority'   => 'high',
 			'show_names' => true, 
-		    'fields' => array(
+		    'fields'     => array(
 		    	array(
 		    		'name' => 'Start Date and Time',
-		    		'id' => 'be_event_start',
+		    		'id'   => 'be_event_start',
 		    		'desc' => '',
 		    		'type' => 'text_datetime_timestamp',
 		    	),
 		    	array(
 		    		'name' => 'End Date and Time',
-		    		'id' => 'be_event_end',
+		    		'id'   => 'be_event_end',
 		    		'desc' => '',
 		    		'type' => 'text_datetime_timestamp',
 		    	),
