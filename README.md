@@ -9,6 +9,7 @@ This is a simple, clean base plugin for developing event calendars.
 - Creates simple metabox for collecting event date/time. This can be replaced with your own metabox (see Dev Notes below)
 - Customizes the query to sort by event start date and only show upcoming events
 - Creates an Upcoming Events widget
+- If you're using [Genesis](http://www.billerickson.net/go/genesis), it adds appropriate event schema markup.
 
 ## Optional Features
 

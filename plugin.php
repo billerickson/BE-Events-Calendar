@@ -3,7 +3,7 @@
 Plugin Name: BE Events Calendar
 Plugin URI: http://www.billerickson.net
 Description: Allows you to manage events
-Version: 1.0.2
+Version: 1.0.3
 Author: Bill Erickson
 Author URI: http://www.billerickson.net
 License: GPLv2
@@ -17,3 +17,4 @@ if ( ! defined( 'WPINC' ) ) {
 require_once plugin_dir_path( __FILE__ ) . 'be-events-calendar.php';
 require_once plugin_dir_path( __FILE__ ) . 'recurring-events.php';
 require_once plugin_dir_path( __FILE__ ) . 'upcoming-events-widget.php';
+require_once plugin_dir_path( __FILE__ ) . 'genesis-schema.php';
