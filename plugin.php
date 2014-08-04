@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: BE Events Calendar
-Plugin URI: http://www.billerickson.net
+Plugin URI: http://www.github.com/billerickson/BE-Events-Calendar
 Description: Allows you to manage events
 Version: 1.0.3
 Author: Bill Erickson

@@ -2,11 +2,11 @@
 /**
  * Schema for Genesis
  *
- * @package      CoreFunctionality
- * @since        1.0.0
- * @link         https://github.com/billerickson/Core-Functionality
+ * @package      BE-Events-Calendar
+ * @since        1.0.3
+ * @link        https://github.com/billerickson/BE-Events-Calendar
  * @author       Bill Erickson <bill@billerickson.net>
- * @copyright    Copyright (c) 2011, Bill Erickson
+ * @copyright    Copyright (c) 2014, Bill Erickson
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
  
