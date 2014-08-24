@@ -40,7 +40,7 @@ class BE_Events_Calendar {
 	 */
 	function init() {
 	
-		// Create Post Type, customize columns, add custom
+		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
 
 		// Post Type columns
