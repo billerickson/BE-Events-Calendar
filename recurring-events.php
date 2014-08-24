@@ -11,24 +11,35 @@
  */
  
 class BE_Recurring_Events {
-	var $instance;
 
-	public function __construct() {
-		$this->instance =& $this;
+	/**
+	 * Primary class constructor
+	 * 
+	 */
+	function __construct() {
+
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
-
 	}
 	
-	public function init() {
+	/**
+	 * Loads the class into WordPress
+	 *
+	 */
+	function init() {
 
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
 		
-		// Edit Columns of Event post type
+		// Post Type columns
 		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ), 20 ) ;
 		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
+		
+		// Post Type sorting
 		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
 		//add_action( 'load-edit.php', array( $this, 'edit_event_load' ), 20 );
+
+		// Post Type title placeholder
+		add_action( 'gettext',  array( $this, 'title_placeholder' ) );
 
 		// Create Metabox
 		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
@@ -42,45 +53,44 @@ class BE_Recurring_Events {
 	
 	/** 
 	 * Register Post Type
+	 * 
 	 * @link http://codex.wordpress.org/Function_Reference/register_post_type
-	 *
 	 */
-
-	public function post_type() {
+	function post_type() {
 	
 		$supports = get_theme_support( 'be-events-calendar' );
-		if( !is_array( $supports ) || !in_array( 'recurring-events', $supports[0] ) )
+		if ( !is_array( $supports ) || !in_array( 'recurring-events', $supports[0] ) )
 			return;
 	
 		$labels = array(
-			'name' => 'Recurring Events',
-			'singular_name' => 'Recurring Event',
-			'add_new' => 'Add Recurring Event',
-			'add_new_item' => 'Add New Recurring Event',
-			'edit_item' => 'Edit Recurring Event',
-			'new_item' => 'New Recurring Event',
-			'view_item' => 'View Recurring Event',
-			'search_items' => 'Search Recurring Events',
-			'not_found' =>  'No recurring events found',
+			'name'               => 'Recurring Events',
+			'singular_name'      => 'Recurring Event',
+			'add_new'            => 'Add Recurring Event',
+			'add_new_item'       => 'Add New Recurring Event',
+			'edit_item'          => 'Edit Recurring Event',
+			'new_item'           => 'New Recurring Event',
+			'view_item'          => 'View Recurring Event',
+			'search_items'       => 'Search Recurring Events',
+			'not_found'          =>  'No recurring events found',
 			'not_found_in_trash' => 'No recurring events found in trash',
-			'parent_item_colon' => '',
-			'menu_name' => 'Recurring Events'
+			'parent_item_colon'  => '',
+			'menu_name'          => 'Recurring Events'
 		);
 		
 		$args = array(
-			'labels' => $labels,
-			'public' => true,
+			'labels'             => $labels,
+			'public'             => true,
 			'publicly_queryable' => true,
-			'show_ui' => true, 
-			'show_in_menu' => true, 
-			'query_var' => true,
-			'rewrite' => true,
-			'capability_type' => 'post',
-			'has_archive' => true, 
-			'hierarchical' => false,
-			'menu_position' => null,
-			'show_in_menu' => 'edit.php?post_type=events',
-			'supports' => array('title','editor')
+			'show_ui'            => true, 
+			'show_in_menu'       => true, 
+			'query_var'          => true,
+			'rewrite'            => true,
+			'capability_type'    => 'post',
+			'has_archive'        => true, 
+			'hierarchical'       => false,
+			'menu_position'      => null,
+			'show_in_menu'       => 'edit.php?post_type=events',
+			'supports'           => array( 'title','editor') 
 		); 
 	
 		register_post_type( 'recurring-events', $args );	
@@ -88,10 +98,11 @@ class BE_Recurring_Events {
 	
 	/**
 	 * Edit Column Titles
+	 * 
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
-	 *
+	 * @param array $columns
+	 * @return array
 	 */
-	
 	function edit_event_columns( $columns ) {
 		
 		$supports = get_theme_support( 'be-events-calendar' );
@@ -109,36 +120,48 @@ class BE_Recurring_Events {
 	
 	/**
 	 * Edit Column Content
+	 * 
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
-	 *
+	 * @param string $column
+	 * @param int $post_id
 	 */
-
 	function manage_event_columns( $column, $post_id ) {
 		
-		if( 'recurring' == $column ) {
+		if ( 'recurring' == $column ) {
 			$parent = get_post_meta( get_the_ID(), 'be_recurring_event', true );
-			if( !empty( $parent ) )
+			if ( !empty( $parent ) )
 				echo '<a href="' . get_edit_post_link( $parent ) . '">' . get_the_title( $parent ) . '</a>';		
 		}
-
 	}	 
 	
 	/**
 	 * Make Columns Sortable
+	 * 
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
-	 *
+	 * @param array $columns
+	 * @return array
 	 */
-
 	function event_sortable_columns( $columns ) {
 	
 		$columns['recurring'] = 'recurring';	
 		return $columns;
 	}	 
 	
+	/**
+	 * Check for load request
+	 *
+	 */
 	function edit_event_load() {
+
 		add_filter( 'request', array( $this, 'sort_events' ) );
 	}
 	
+	/**
+	 * Sort events on load request
+	 *
+	 * @param array $vars
+	 * @return array
+	 */
 	function sort_events( $vars ) {
 
 		/* Check if we're viewing the 'event' post type. */
@@ -159,15 +182,29 @@ class BE_Recurring_Events {
 		}
 	
 		return $vars;
-	
+	}
+
+	/**
+	 * Change the default title placeholder text
+	 *
+	 * @global array $post
+	 * @param string $translation
+	 * @return string Customized translation for title
+	 */
+	function title_placeholder( $translation ) {
+
+		global $post;
+		if ( isset( $post ) && 'recurring-events' == $post->post_type && 'Enter title here' == $translation ) {
+			$translation = 'Enter Event Name Here';
+		}
+		return $translation;
 	}
 
 	/**
 	 * Create Metaboxes
+	 * 
 	 * @link http://www.billerickson.net/wordpress-metaboxes/
-	 *
 	 */
-	
 	function metaboxes( $meta_boxes ) {
 		
 		$events_metabox = array(
@@ -245,6 +282,7 @@ class BE_Recurring_Events {
 	 *
 	 */
 	function generate_events( $post_id, $regenerating = false ) {
+
 		if( 'recurring-events' !== get_post_type( $post_id ) )
 			return;
 			
@@ -365,7 +403,6 @@ class BE_Recurring_Events {
 		
 		// Generate new events
 		$this->generate_events( $post_id, true );
-
 	}
 		
 }
