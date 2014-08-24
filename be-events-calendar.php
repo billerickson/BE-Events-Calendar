@@ -12,17 +12,33 @@
  
 class BE_Events_Calendar {
 
-	public function __construct() {
+	/**
+	 * Primary class constructor
+	 * 
+	 */
+	function __construct() {
 
+		// Fire on activation
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
+
+		// Load the plugin base
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
 	}
 	
-	public function activation() {
+	/**
+	 * Flush the WordPress permalink rewrite rules on activation
+	 *
+	 */
+	function activation() {
+
 		flush_rewrite_rules();
 	}
 
-	public function init() {
+	/**
+	 * Loads the plugin base into WordPress
+	 *
+	 */
+	function init() {
 	
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
@@ -35,21 +51,18 @@ class BE_Events_Calendar {
 		add_action( 'init', array( $this, 'taxonomies' ) );
 		
 		// Create Metabox
-		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
-		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
 		
 		// Modify Event Listings query
 		add_action( 'pre_get_posts', array( $this, 'event_query' ) );
-		
 	}
 	
 	/** 
 	 * Register Post Type
+	 * 
 	 * @link http://codex.wordpress.org/Function_Reference/register_post_type
-	 *
 	 */
+	function post_type() {
 
-	public function post_type() {
 		$labels = array(
 			'name'               => 'Events',
 			'singular_name'      => 'Event',
@@ -86,18 +99,19 @@ class BE_Events_Calendar {
 	
 	/**
 	 * Edit Column Titles
+	 * 
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
-	 *
+	 * @param array $columns
+	 * @return array
 	 */
-	
 	function edit_event_columns( $columns ) {
 	
 		$columns = array(
 			'cb'          => '<input type="checkbox" />',
-			'title'       => __( 'Event' ),
-			'event_start' => __( 'Starts' ),
-			'event_end'   => __( 'Ends' ),
-			'date'        => __( 'Published Date' )
+			'title'       => 'Event',
+			'event_start' => 'Starts',
+			'event_end'   => 'Ends',
+			'date'        => 'Published Date',
 		);
 	
 		return $columns;
@@ -105,11 +119,13 @@ class BE_Events_Calendar {
 	
 	/**
 	 * Edit Column Content
+	 * 
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
-	 *
+	 * @param string $column
+	 * @param int $post_id
 	 */
-
 	function manage_event_columns( $column, $post_id ) {
+
 		global $post;
 	
 		switch( $column ) {
@@ -154,10 +170,11 @@ class BE_Events_Calendar {
 	
 	/**
 	 * Make Columns Sortable
+	 * 
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
-	 *
+	 * @param array $columns
+	 * @return array
 	 */
-
 	function event_sortable_columns( $columns ) {
 	
 		$columns['event_start'] = 'event_start';
@@ -166,10 +183,21 @@ class BE_Events_Calendar {
 		return $columns;
 	}	 
 	
+	/**
+	 * Check for load request
+	 *
+	 */
 	function edit_event_load() {
+
 		add_filter( 'request', array( $this, 'sort_events' ) );
 	}
 	
+	/**
+	 * Sort events on load request
+	 *
+	 * @param array $vars
+	 * @return array
+	 */
 	function sort_events( $vars ) {
 
 		/* Check if we're viewing the 'event' post type. */
@@ -204,19 +232,17 @@ class BE_Events_Calendar {
 		}
 	
 		return $vars;
-	
 	}
 
 	/**
 	 * Create Taxonomies
+	 * 
 	 * @link http://codex.wordpress.org/Function_Reference/register_taxonomy
-	 *
 	 */
-	
 	function taxonomies() {
 	
 		$supports = get_theme_support( 'be-events-calendar' );
-		if( !is_array( $supports ) || !in_array( 'event-category', $supports[0] ) )
+		if ( !is_array( $supports ) || !in_array( 'event-category', $supports[0] ) )
 			return;
 			
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'events', 'recurring-events' ) : array( 'events' );
@@ -224,7 +250,7 @@ class BE_Events_Calendar {
 		$labels = array(
 			'name'              => 'Categories',
 			'singular_name'     => 'Category',
-			'search_items'      =>  'Search Categories',
+			'search_items'      => 'Search Categories',
 			'all_items'         => 'All Categories',
 			'parent_item'       => 'Parent Category',
 			'parent_item_colon' => 'Parent Category:',
@@ -242,62 +268,21 @@ class BE_Events_Calendar {
 			'query_var'    => true,
 			'rewrite'      => array( 'slug' => 'event-category' ),
 		));
-		
 	}
 	
 	/**
-	 * Create Metaboxes
-	 * @link http://www.billerickson.net/wordpress-metaboxes/
+	 * Modify WordPress query where needed for event listings
 	 *
+	 * @param object $query
 	 */
-	
-	function metaboxes( $meta_boxes ) {
-		
-		$events_metabox = array(
-		    'id'         => 'event-details',
-		    'title'      => 'Event Details',
-		    'pages'      => array('events'), 
-			'context'    => 'normal',
-			'priority'   => 'high',
-			'show_names' => true, 
-		    'fields'     => array(
-		    	array(
-		    		'name' => 'Start Date and Time',
-		    		'id'   => 'be_event_start',
-		    		'desc' => '',
-		    		'type' => 'text_datetime_timestamp',
-		    	),
-		    	array(
-		    		'name' => 'End Date and Time',
-		    		'id'   => 'be_event_end',
-		    		'desc' => '',
-		    		'type' => 'text_datetime_timestamp',
-		    	),
-		    )
-		
-		);
-		
-		// Use this to override the metabox and create your own
-		$override = apply_filters( 'be_events_manager_metabox_override', false );
-		if ( false === $override ) $meta_boxes[] = $events_metabox;
-		
-		return $meta_boxes;
-	}
-
-	function initialize_meta_boxes() {
-	    if (!class_exists('cmb_Meta_Box')) {
-	        require_once( 'lib/metabox/init.php' );
-	    }
-	}
-	
 	function event_query( $query ) {
 
 		// If you don't want the plugin to mess with the query, use this filter to override it
 		$override = apply_filters( 'be_events_manager_query_override', false );
-		if( $override )
+		if ( $override )
 			return;
 		
-		if( $query->is_main_query() && !is_admin() && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {	
+		if ( $query->is_main_query() && !is_admin() && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {	
 			$meta_query = array(
 				array(
 					'key' => 'be_event_end',
@@ -310,7 +295,6 @@ class BE_Events_Calendar {
 			$query->set( 'meta_query', $meta_query );
 			$query->set( 'meta_key', 'be_event_start' );
 		}
-		
 	}
 	
 }
