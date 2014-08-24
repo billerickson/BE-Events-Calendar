@@ -14,6 +14,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Define version number for asset enqueueing
+define( 'BE_EVENTS_CALENDAR_VERSION', '1.0.3' );
+
+// Include files
 require_once plugin_dir_path( __FILE__ ) . 'be-events-calendar.php';
 require_once plugin_dir_path( __FILE__ ) . 'recurring-events.php';
 require_once plugin_dir_path( __FILE__ ) . 'upcoming-events-widget.php';

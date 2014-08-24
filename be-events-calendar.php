@@ -40,17 +40,31 @@ class BE_Events_Calendar {
 	 */
 	function init() {
 	
-		// Create Post Type
+		// Create Post Type, customize columns, add custom
 		add_action( 'init', array( $this, 'post_type' ) );
+
+		// Post Type columns
 		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ) ) ;
 		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
+
+		// Post Type sorting
 		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ) );
 		add_action( 'load-edit.php', array( $this, 'edit_event_load' ) );
+
+		// Post Type title placeholder
+		add_action( 'gettext',  array( $this, 'title_placeholder' ) );
 		
 		// Create Taxonomy
 		add_action( 'init', array( $this, 'taxonomies' ) );
 		
 		// Create Metabox
+		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
+		if ( false === $metabox ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_scripts' ) );
+			add_action( 'add_meta_boxes', array( $this, 'metabox_register' ) );
+			add_action( 'save_post', array( $this, 'metabox_save' ),  1, 2  );
+		}
 		
 		// Modify Event Listings query
 		add_action( 'pre_get_posts', array( $this, 'event_query' ) );
@@ -235,6 +249,22 @@ class BE_Events_Calendar {
 	}
 
 	/**
+	 * Change the default title placeholder text
+	 *
+	 * @global array $post
+	 * @param string $translation
+	 * @return string Customized translation for title
+	 */
+	function title_placeholder( $translation ) {
+
+		global $post;
+		if ( isset( $post ) && 'events' == $post->post_type && 'Enter title here' == $translation ) {
+			$translation = 'Enter Event Name Here';
+		}
+		return $translation;
+	}
+
+	/**
 	 * Create Taxonomies
 	 * 
 	 * @link http://codex.wordpress.org/Function_Reference/register_taxonomy
@@ -268,6 +298,134 @@ class BE_Events_Calendar {
 			'query_var'    => true,
 			'rewrite'      => array( 'slug' => 'event-category' ),
 		));
+	}
+
+	/**
+	 * Loads styles for metaboxes
+	 *
+	 */
+	function metabox_styles() {
+
+		if ( isset( get_current_screen()->base ) && 'post' !== get_current_screen()->base ) {
+			return;
+		}
+
+		if ( isset( get_current_screen()->post_type ) && 'events' != get_current_screen()->post_type ) {
+			return;
+		}
+
+		// Load styles
+		wp_register_style( 'be-events-calendar', plugins_url( 'css/events-admin.css', __FILE__ ), array(), BE_EVENTS_CALENDAR_VERSION );
+		wp_enqueue_style( 'be-events-calendar' );
+	}
+
+	/**
+	 * Loads scripts for metaboxes.
+	 *
+	 */
+	function metabox_scripts( $hook ) {
+
+		if ( isset( get_current_screen()->base ) && 'post' !== get_current_screen()->base ) {
+			return;
+		}
+
+		if ( isset( get_current_screen()->post_type ) && 'events' != get_current_screen()->post_type ) {
+			return;
+		}
+
+		// Load scripts.
+		wp_register_script( 'be-events-calendar', plugins_url( 'js/events-admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
+		wp_enqueue_script( 'be-events-calendar' );
+	}
+
+	/**
+	 * Initialize the metabox
+	 *
+	 */
+	function metabox_register() {
+
+		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array( $this, 'render_metabox' ), 'events', 'normal', 'high' );
+	}
+
+	/**
+	 * Render the metabox
+	 *
+	 * @since 1.0.0
+	 */
+	function render_metabox() {
+
+		$start = get_post_meta( get_the_ID() , 'be_event_start', true );
+		$end   = get_post_meta( get_the_ID() , 'be_event_end',   true );
+
+		if ( !empty( $start ) && !empty( $end ) ) {
+			$start_date = date( 'm/d/Y', $start );
+			$start_time = date( 'g:ia',  $start );
+			$end_date   = date( 'm/d/Y', $end   );
+			$end_time   = date( 'g:ia',  $end   );
+		}
+
+		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
+		?>
+
+		<div class="section">
+			<label for="be-events-calendar-start">Start date and time:</label> 
+			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start ) ? $start_date : ''; ?>" placeholder="Date">
+			<input name="be-events-calendar-start-time" type="text"  id="be-events-calendar-start-time" class="be-events-calendar-time" value="<?php echo !empty( $start ) ? $start_time : ''; ?>" placeholder="Time">
+		</div>
+		<div class="section">
+			<label for="be-events-calendar-end">End date and time:</label> 
+			<input name="be-events-calendar-end" type="text"  id="be-events-calendar-end" class="be-events-calendar-date" value="<?php echo !empty( $end ) ? $end_date : ''; ?>" placeholder="Date">
+			<input name="be-events-calendar-end-time" type="text"  id="be-events-calendar-end-time" class="be-events-calendar-time" value="<?php echo !empty( $end ) ? $end_time : ''; ?>" placeholder="Time">
+		</div>
+		<p class="desc">Date format should be <strong>MM/DD/YYYY</strong>. Time format should be <strong>H:MM am/pm</strong>.<br>Example: 05/12/2015 6:00pm</p>
+		<?php
+	}
+	
+	/**
+	 * Save metabox contents
+	 *
+	 * @param int $post_id
+	 * @param array $post
+	 */
+	function metabox_save( $post_id, $post ) {
+		
+		// Security check
+		if ( ! isset( $_POST['be_events_calendar_date_time_nonce'] ) || ! wp_verify_nonce( $_POST['be_events_calendar_date_time_nonce'], 'be_events_calendar_date_time' ) ) {
+			return;
+		}
+
+		// Bail out if running an autosave, ajax, cron, or revision.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return;
+		}
+
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			return;
+		}
+
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		 // Bail out if the user doesn't have the correct permissions to update the slider.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Make sure the event start/end dates were not left blank before we run the save
+		if ( isset( $_POST['be-events-calendar-start'] ) && isset( $_POST['be-events-calendar-end'] ) && !empty( $_POST['be-events-calendar-start'] ) && !empty( $_POST['be-events-calendar-end'] ) ) {
+			$start      = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
+			$start_unix = strtotime( $start );
+			$end        = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
+			$end_unix   = strtotime( $end );
+
+			update_post_meta( $post_id, 'be_event_start', $start_unix );
+			update_post_meta( $post_id, 'be_event_end',   $end_unix   );
+		}
 	}
 	
 	/**
