@@ -2,21 +2,18 @@
 /**
  * Event Calendar Base
  *
- * @package      BE-Events-Calendar
- * @since        1.0.0
- * @link        https://github.com/billerickson/BE-Events-Calendar
- * @author       Bill Erickson <bill@billerickson.net>
- * @copyright    Copyright (c) 2014, Bill Erickson
- * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package    BE-Events-Calendar
+ * @since      1.0.0
+ * @link       https://github.com/billerickson/BE-Events-Calendar
+ * @author     Bill Erickson <bill@billerickson.net>
+ * @copyright  Copyright (c) 2014, Bill Erickson
+ * @license    http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
  
 class BE_Events_Calendar {
-	var $instance;
 
 	public function __construct() {
 
-		// Plugin Base
-		$this->instance =& $this;
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
 	}

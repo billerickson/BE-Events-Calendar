@@ -1,12 +1,12 @@
 <?php
 /*
 Plugin Name: BE Events Calendar
-Plugin URI: http://www.github.com/billerickson/BE-Events-Calendar
+Plugin URI:  http://www.github.com/billerickson/BE-Events-Calendar
 Description: Allows you to manage events
-Version: 1.0.3
-Author: Bill Erickson
-Author URI: http://www.billerickson.net
-License: GPLv2
+Version:     1.0.3
+Author:      Bill Erickson
+Author URI:  http://www.billerickson.net
+License:     GPLv2
 */
 
 // If this file is called directly, abort.
