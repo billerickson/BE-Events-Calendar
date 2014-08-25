@@ -2,19 +2,19 @@
 /**
  * Schema for Genesis
  *
- * @package      BE-Events-Calendar
- * @since        1.0.3
- * @link        https://github.com/billerickson/BE-Events-Calendar
- * @author       Bill Erickson <bill@billerickson.net>
- * @copyright    Copyright (c) 2014, Bill Erickson
- * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package    BE-Events-Calendar
+ * @since      1.0.3
+ * @link       https://github.com/billerickson/BE-Events-Calendar
+ * @author     Bill Erickson <bill@billerickson.net>
+ * @copyright  Copyright (c) 2014, Bill Erickson
+ * @license    http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
  
 class BE_Event_Schema {
-	var $instance;
+
 
 	public function __construct() {
-		$this->instance =& $this;
+
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
 
 	}
