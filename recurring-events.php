@@ -384,6 +384,9 @@ class BE_Recurring_Events {
 		if( 'recurring-events' !== get_post_type( $post_id ) )
 			return;
 			
+		if( 'publish' !== get_post_status( $post_id ) )
+			return;
+			
 		// Only generate once
 		$generated = get_post_meta( $post_id, 'be_generated_events', true );
 		if( $generated )
