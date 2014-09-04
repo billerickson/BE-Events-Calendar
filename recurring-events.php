@@ -32,7 +32,7 @@ class BE_Recurring_Events {
 		
 		// Post Type columns
 		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ), 20 ) ;
-		add_action( 'manage_recurring-events_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
+		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
 		
 		// Post Type sorting
 		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
