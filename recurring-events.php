@@ -31,11 +31,11 @@ class BE_Recurring_Events {
 		add_action( 'init', array( $this, 'post_type' ) );
 		
 		// Post Type columns
-		add_filter( 'manage_edit-recurring-events_columns', array( $this, 'edit_event_columns' ), 20 ) ;
+		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ), 20 ) ;
 		add_action( 'manage_recurring-events_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
 		
 		// Post Type sorting
-		add_filter( 'manage_edit-recurring-events_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
+		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
 		//add_action( 'load-edit.php', array( $this, 'edit_event_load' ), 20 );
 
 		// Post Type title placeholder
