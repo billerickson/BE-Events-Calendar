@@ -19,6 +19,6 @@ These can be added with add_theme_support( 'be-events-calendar', array() ). Add 
 
 ## Dev Notes
 
-The metabox can be disabled using the 'be_events_manager_metabox_override' filter. [See wiki for more information.](https://github.com/billerickson/BE-Events-Calendar/wiki/Advanced-Custom-Fields)
+The metabox can be disabled using the 'be_events_manager_metabox_override' filter. [See wiki for more information.](https://github.com/billerickson/BE-Events-Calendar/wiki)
 
 Here's the code for an [event calendar widget](http://www.billerickson.net/code/event-calendar-widget/). It's not included in the plugin since it often requires modification. 
