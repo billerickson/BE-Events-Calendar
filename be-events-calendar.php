@@ -444,7 +444,7 @@ class BE_Events_Calendar {
 			$meta_query = array(
 				array(
 					'key' => 'be_event_end',
-					'value' => time(),
+					'value' => (int) current_time( 'timestamp' ),
 					'compare' => '>'
 				)
 			);
