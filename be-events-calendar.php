@@ -14,7 +14,8 @@ class BE_Events_Calendar {
 
 	/**
 	 * Primary class constructor
-	 * 
+	 *
+	 * @since 1.0.0
 	 */
 	function __construct() {
 
@@ -28,6 +29,7 @@ class BE_Events_Calendar {
 	/**
 	 * Flush the WordPress permalink rewrite rules on activation
 	 *
+	 * @since 1.0.0
 	 */
 	function activation() {
 
@@ -37,6 +39,7 @@ class BE_Events_Calendar {
 	/**
 	 * Loads the plugin base into WordPress
 	 *
+	 * @since 1.0.0
 	 */
 	function init() {
 	
@@ -72,8 +75,8 @@ class BE_Events_Calendar {
 	
 	/** 
 	 * Register Post Type
-	 * 
-	 * @link http://codex.wordpress.org/Function_Reference/register_post_type
+	 *
+	 * @since 1.0.0
 	 */
 	function post_type() {
 
@@ -113,7 +116,8 @@ class BE_Events_Calendar {
 	
 	/**
 	 * Edit Column Titles
-	 * 
+	 *
+	 * @since 1.0.0
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
 	 * @param array $columns
 	 * @return array
@@ -133,7 +137,8 @@ class BE_Events_Calendar {
 	
 	/**
 	 * Edit Column Content
-	 * 
+	 *
+	 * @since 1.0.0
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
 	 * @param string $column
 	 * @param int $post_id
@@ -184,7 +189,8 @@ class BE_Events_Calendar {
 	
 	/**
 	 * Make Columns Sortable
-	 * 
+	 *
+	 * @since 1.0.0
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
 	 * @param array $columns
 	 * @return array
@@ -200,6 +206,7 @@ class BE_Events_Calendar {
 	/**
 	 * Check for load request
 	 *
+	 * @since 1.0.0
 	 */
 	function edit_event_load() {
 
@@ -209,6 +216,7 @@ class BE_Events_Calendar {
 	/**
 	 * Sort events on load request
 	 *
+	 * @since 1.0.0
 	 * @param array $vars
 	 * @return array
 	 */
@@ -251,6 +259,7 @@ class BE_Events_Calendar {
 	/**
 	 * Change the default title placeholder text
 	 *
+	 * @since 1.0.0
 	 * @global array $post
 	 * @param string $translation
 	 * @return string Customized translation for title
@@ -266,8 +275,8 @@ class BE_Events_Calendar {
 
 	/**
 	 * Create Taxonomies
-	 * 
-	 * @link http://codex.wordpress.org/Function_Reference/register_taxonomy
+	 *
+	 * @since 1.0.0
 	 */
 	function taxonomies() {
 	
@@ -303,6 +312,7 @@ class BE_Events_Calendar {
 	/**
 	 * Loads styles for metaboxes
 	 *
+	 * @since 1.0.0
 	 */
 	function metabox_styles() {
 
@@ -322,8 +332,9 @@ class BE_Events_Calendar {
 	/**
 	 * Loads scripts for metaboxes.
 	 *
+	 * @since 1.0.0
 	 */
-	function metabox_scripts( $hook ) {
+	function metabox_scripts() {
 
 		if ( isset( get_current_screen()->base ) && 'post' !== get_current_screen()->base ) {
 			return;
@@ -341,6 +352,7 @@ class BE_Events_Calendar {
 	/**
 	 * Initialize the metabox
 	 *
+	 * @since 1.0.0
 	 */
 	function metabox_register() {
 
@@ -384,6 +396,7 @@ class BE_Events_Calendar {
 	/**
 	 * Save metabox contents
 	 *
+	 * @since 1.0.0
 	 * @param int $post_id
 	 * @param array $post
 	 */
@@ -431,6 +444,7 @@ class BE_Events_Calendar {
 	/**
 	 * Modify WordPress query where needed for event listings
 	 *
+	 * @since 1.0.0
 	 * @param object $query
 	 */
 	function event_query( $query ) {

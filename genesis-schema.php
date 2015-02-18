@@ -12,13 +12,21 @@
  
 class BE_Event_Schema {
 
-
+	/**
+	 * Primary class constructor
+	 *
+	 * @since 1.0.3
+	 */
 	public function __construct() {
 
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
-
 	}
 	
+	/**
+	 * Initialize and go
+	 *
+	 * @since 1.0.3
+	 */
 	public function init() {
 
 		add_filter( 'genesis_attr_content', array( $this, 'empty_schema' ), 20 );
@@ -32,6 +40,9 @@ class BE_Event_Schema {
 	/**
 	 * Empty Schema
 	 *
+	 * @since 1.0.3
+	 * @param array $attr
+	 * @return array
 	 */
 	function empty_schema( $attr ) {
 	
@@ -48,6 +59,9 @@ class BE_Event_Schema {
 	/**
 	 * Event Schema
 	 *
+	 * @since 1.0.3
+	 * @param array $attr
+	 * @return array
 	 */
 	function event_schema( $attr ) {
 
@@ -64,6 +78,9 @@ class BE_Event_Schema {
 	/**
 	 * Event Name Itemprop
 	 *
+	 * @since 1.0.3
+	 * @param array $attr
+	 * @return array
 	 */
 	function event_name_itemprop( $attr ) {
 		if( 'events' == get_post_type() )
@@ -73,7 +90,10 @@ class BE_Event_Schema {
 	
 	/**
 	 * Event Description Itemprop
-	 *
+	 * 
+	 * @since 1.0.3
+	 * @param array $attr
+	 * @return array
 	 */
 	function event_description_itemprop( $attr ) {
 		if( 'events' == get_post_type() )
@@ -83,7 +103,10 @@ class BE_Event_Schema {
 	
 	/**
 	 * Title Link
-	 *
+	 * 
+	 * @since 1.0.3
+	 * @param string $output
+	 * @return string
 	 */
 	function title_link( $output ) {
 		if( 'events' == get_post_type() )
@@ -94,6 +117,7 @@ class BE_Event_Schema {
 	/**
 	 * Event Date
 	 *
+	 * @since 1.0.3
 	 */
 	function event_date() {
 		if( 'events' !== get_post_type() )
