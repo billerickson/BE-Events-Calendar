@@ -229,7 +229,7 @@ class BE_Recurring_Events {
 		}
 
 		// Load styles
-		wp_register_style( 'be-events-calendar', plugins_url( 'css/events-admin.css', __FILE__ ), array(), BE_EVENTS_CALENDAR_VERSION );
+		wp_register_style( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'css/events-admin.css', array(), BE_EVENTS_CALENDAR_VERSION );
 		wp_enqueue_style( 'be-events-calendar' );
 	}
 
@@ -249,7 +249,7 @@ class BE_Recurring_Events {
 		}
 
 		// Load scripts.
-		wp_register_script( 'be-events-calendar', plugins_url( 'js/events-admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
+		wp_register_script( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'js/events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
 		wp_enqueue_script( 'be-events-calendar' );
 	}
 
