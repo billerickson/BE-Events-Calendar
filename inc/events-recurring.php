@@ -14,7 +14,8 @@ class BE_Recurring_Events {
 
 	/**
 	 * Primary class constructor
-	 * 
+	 *
+	 * @since 1.0.0
 	 */
 	function __construct() {
 
@@ -24,6 +25,7 @@ class BE_Recurring_Events {
 	/**
 	 * Loads the class into WordPress
 	 *
+	 * @since 1.0.0
 	 */
 	function init() {
 
@@ -58,7 +60,7 @@ class BE_Recurring_Events {
 	/** 
 	 * Register Post Type
 	 * 
-	 * @link http://codex.wordpress.org/Function_Reference/register_post_type
+	 * @since 1.0.0
 	 */
 	function post_type() {
 
@@ -103,7 +105,8 @@ class BE_Recurring_Events {
 	
 	/**
 	 * Edit Column Titles
-	 * 
+	 *
+	 * @since 1.0.0
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
 	 * @param array $columns
 	 * @return array
@@ -125,7 +128,8 @@ class BE_Recurring_Events {
 	
 	/**
 	 * Edit Column Content
-	 * 
+	 *
+	 * @since 1.0.0
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
 	 * @param string $column
 	 * @param int $post_id
@@ -141,7 +145,8 @@ class BE_Recurring_Events {
 	
 	/**
 	 * Make Columns Sortable
-	 * 
+	 *
+	 * @since 1.0.0
 	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
 	 * @param array $columns
 	 * @return array
@@ -155,6 +160,7 @@ class BE_Recurring_Events {
 	/**
 	 * Check for load request
 	 *
+	 * @since 1.0.0
 	 */
 	function edit_event_load() {
 
@@ -164,6 +170,7 @@ class BE_Recurring_Events {
 	/**
 	 * Sort events on load request
 	 *
+	 * @since 1.0.0
 	 * @param array $vars
 	 * @return array
 	 */
@@ -192,6 +199,7 @@ class BE_Recurring_Events {
 	/**
 	 * Change the default title placeholder text
 	 *
+	 * @since 1.0.0
 	 * @global array $post
 	 * @param string $translation
 	 * @return string Customized translation for title
@@ -208,6 +216,7 @@ class BE_Recurring_Events {
 	/**
 	 * Loads styles for metaboxes
 	 *
+	 * @since 1.0.0
 	 */
 	function metabox_styles() {
 
@@ -220,15 +229,16 @@ class BE_Recurring_Events {
 		}
 
 		// Load styles
-		wp_register_style( 'be-events-calendar', plugins_url( 'css/events-admin.css', __FILE__ ), array(), BE_EVENTS_CALENDAR_VERSION );
+		wp_register_style( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'css/events-admin.css', array(), BE_EVENTS_CALENDAR_VERSION );
 		wp_enqueue_style( 'be-events-calendar' );
 	}
 
 	/**
 	 * Loads scripts for metaboxes.
 	 *
+	 * @since 1.0.0
 	 */
-	function metabox_scripts( $hook ) {
+	function metabox_scripts() {
 
 		if ( isset( get_current_screen()->base ) && 'post' !== get_current_screen()->base ) {
 			return;
@@ -239,13 +249,14 @@ class BE_Recurring_Events {
 		}
 
 		// Load scripts.
-		wp_register_script( 'be-events-calendar', plugins_url( 'js/events-admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
+		wp_register_script( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'js/events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
 		wp_enqueue_script( 'be-events-calendar' );
 	}
 
 	/**
 	 * Initialize the metabox
 	 *
+	 * @since 1.0.0
 	 */
 	function metabox_register() {
 
@@ -319,6 +330,7 @@ class BE_Recurring_Events {
 	/**
 	 * Save metabox contents
 	 *
+	 * @since 1.0.0
 	 * @param int $post_id
 	 * @param array $post
 	 */
@@ -378,6 +390,9 @@ class BE_Recurring_Events {
 	/**
 	 * Generate Events
 	 *
+	 * @since 1.0.0
+	 * @param int $post_id
+	 * @param boolean $regenerating
 	 */
 	function generate_events( $post_id, $regenerating = false ) {
 
@@ -468,7 +483,9 @@ class BE_Recurring_Events {
 	
 	/**
 	 * Regenerate Events
-	 *
+	 * 
+	 * @since 1.0.0
+	 * @param int $post_id
 	 */
 	function regenerate_events( $post_id ) {
 		if( 'recurring-events' !== get_post_type( $post_id ) )
