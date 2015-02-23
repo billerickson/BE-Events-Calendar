@@ -36,5 +36,6 @@ define( 'BE_EVENTS_CALENDAR_URL', plugin_dir_url( __FILE__ ) );
 require_once BE_EVENTS_CALENDAR_DIR . 'inc/events.php';
 require_once BE_EVENTS_CALENDAR_DIR . 'inc/events-recurring.php';
 require_once BE_EVENTS_CALENDAR_DIR . 'inc/widget-upcoming-events.php';
+require_once BE_EVENTS_CALENDAR_DIR . 'inc/widget-calendar.php';
 require_once BE_EVENTS_CALENDAR_DIR . 'inc/genesis-schema.php';
 require_once BE_EVENTS_CALENDAR_DIR . 'inc/view-calendar.php';
