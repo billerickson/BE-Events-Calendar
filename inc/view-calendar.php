@@ -170,7 +170,7 @@ class BE_Events_Calendar_View {
 			// Determine if the event is "all day". If the start and end time are both
 			// set to 12:00am then the user did not specify a time, thus the event will
 			// be considered all day.
-			if ( $start_time == '12:00AM' && $end_time == '12:00AM' ) {
+			if ( $start_time == '12:01AM' && $end_time == '11:59AM' ) {
 				$all_day = true;
 			}
 

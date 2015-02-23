@@ -366,8 +366,9 @@ class BE_Events_Calendar {
 	 */
 	function render_metabox() {
 
-		$start = get_post_meta( get_the_ID() , 'be_event_start', true );
-		$end   = get_post_meta( get_the_ID() , 'be_event_end',   true );
+		$start  = get_post_meta( get_the_ID() , 'be_event_start',  true );
+		$end    = get_post_meta( get_the_ID() , 'be_event_end',    true );
+		$allday = get_post_meta( get_the_ID() , 'be_event_allday', true );
 
 		if ( !empty( $start ) && !empty( $end ) ) {
 			$start_date = date( 'm/d/Y', $start );
@@ -378,7 +379,10 @@ class BE_Events_Calendar {
 
 		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
 		?>
-
+		<div class="section" style="min-height:0;">
+			<label for="be-events-calendar-allday">All Day event?</label>
+			<input name="be-events-calendar-allday" type="checkbox" id="be-events-calendar-allday" value="1" <?php checked( '1', $allday ); ?>>
+		</div>
 		<div class="section">
 			<label for="be-events-calendar-start">Start date and time:</label> 
 			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start ) ? $start_date : ''; ?>" placeholder="Date">
@@ -435,9 +439,11 @@ class BE_Events_Calendar {
 			$start_unix = strtotime( $start );
 			$end        = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
 			$end_unix   = strtotime( $end );
+			$allday     = ( isset( $_POST['be-events-calendar-allday'] ) ? '1' : '0' );
 
-			update_post_meta( $post_id, 'be_event_start', $start_unix );
-			update_post_meta( $post_id, 'be_event_end',   $end_unix   );
+			update_post_meta( $post_id, 'be_event_start',  $start_unix );
+			update_post_meta( $post_id, 'be_event_end',    $end_unix   );
+			update_post_meta( $post_id, 'be_event_allday', $allday     );
 		}
 	}
 	
