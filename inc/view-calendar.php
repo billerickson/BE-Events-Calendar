@@ -163,14 +163,13 @@ class BE_Events_Calendar_View {
 		$events = new WP_Query( $events_args ); while( $events->have_posts() ) : $events->the_post();
 			$all_day         = false;
 			$start_timestamp = get_post_meta( get_the_ID(), 'be_event_start', true );
-			$start_time      = date( 'h:iA', $start_timestamp );
+			$start_time      = date( 'g:iA', $start_timestamp );
 			$end_timestamp   = get_post_meta( get_the_ID(), 'be_event_end', true );
-			$end_time        = date( 'h:iA', $end_timestamp );
+			$end_time        = date( 'g:iA', $end_timestamp );
 
-			// Determine if the event is "all day". If the start and end time are both
-			// set to 12:00am then the user did not specify a time, thus the event will
-			// be considered all day.
-			if ( $start_time == '12:00AM' && $end_time == '12:00AM' ) {
+			// Determine if the event is "all day". If the editor selects "All Day" checkbox,
+			// the start time will be set to 12:01 AM and end time to 11:59 PM automatically.
+			if ( $start_time == '12:01AM' && $end_time == '11:59PM' ) {
 				$all_day = true;
 			}
 

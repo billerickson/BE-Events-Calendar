@@ -2,7 +2,7 @@
 ----------------------------------*/
 #be-events-calendar-date-time .section {
 	overflow: auto;
-	padding: 10px 0;
+	padding: 5px 0;
 	min-height: 30px;
 }
 
@@ -21,7 +21,7 @@
 	font-size: 12px;
 	color: #666;
 	margin: 0;
-	padding: 10px 0;
+	padding: 5px 0;
 }
 
 #be-events-calendar-date-time input[type=text] {
