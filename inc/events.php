@@ -153,7 +153,9 @@ class BE_Events_Calendar {
 			case 'event_start' :
 	
 				/* Get the post meta. */
-				$start = esc_attr( date( 'M j, Y g:i A', get_post_meta( $post_id, 'be_event_start', true ) ) );
+				$allday = get_post_meta( $post_id, 'be_event_allday', true );
+				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
+				$start = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
 	
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) )
@@ -169,7 +171,9 @@ class BE_Events_Calendar {
 			case 'event_end' :
 	
 				/* Get the post meta. */
-				$end = esc_attr( date( 'M j, Y g:i A', get_post_meta( $post_id, 'be_event_end', true ) ) );
+				$allday = get_post_meta( $post_id, 'be_event_allday', true );
+				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
+				$end = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
 	
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) )
