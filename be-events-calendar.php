@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BE Events Calendar
  * Description: Allows you to manage events.
- * Version:     1.1.0
+ * Version:     1.2.0
  * Author:      Bill Erickson
  *
  * This program is free software; you can redistribute it and/or modify it under
