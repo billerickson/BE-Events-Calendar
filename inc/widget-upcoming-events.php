@@ -53,7 +53,7 @@ class BE_Upcoming_Events extends WP_Widget {
 			echo $before_widget;
 		
 			if( $instance['title'] )
-				echo $before_title . esc_attr( $instance['title'] ) . $after_title;
+				echo $before_title . apply_filters( 'widget_title', $instance['title'] ) . $after_title;
 			
 			echo '<ul>';
 			
