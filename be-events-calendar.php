@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'BE_EVENTS_CALENDAR_VERSION', '1.1.0' );
 define( 'BE_EVENTS_CALENDAR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BE_EVENTS_CALENDAR_URL', plugin_dir_url( __FILE__ ) );
+define( 'BE_EVENTS_CALENDAR_FILE', __FILE__ );
 
 // Include files
 require_once BE_EVENTS_CALENDAR_DIR . 'inc/events.php';

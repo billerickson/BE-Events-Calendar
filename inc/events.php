@@ -20,7 +20,7 @@ class BE_Events_Calendar {
 	function __construct() {
 
 		// Fire on activation
-		register_activation_hook( __FILE__, array( $this, 'activation' ) );
+		register_activation_hook( BE_EVENTS_CALENDAR_FILE, array( $this, 'activation' ) );
 
 		// Load the plugin base
 		add_action( 'plugins_loaded', array( $this, 'init' ) );	
@@ -33,6 +33,7 @@ class BE_Events_Calendar {
 	 */
 	function activation() {
 
+		$this->post_type();
 		flush_rewrite_rules();
 	}
 
@@ -45,7 +46,7 @@ class BE_Events_Calendar {
 	
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
-
+		
 		// Post Type columns
 		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ) ) ;
 		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
