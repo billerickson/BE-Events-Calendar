@@ -299,9 +299,12 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 						var cal = $(this).parent().parent();
 						var calWidth = cal.width();
 						var calOffset = cal.offset();
-						var pop = $(this).next('.events-pop');
-
-						pop.find( '.arrow').css({
+						var pop = $(this).next('.events-pop').addClass('current');
+						$(cal).find('.events-pop.visible').each(function(){
+							if( ! $(this).hasClass('current' ) )
+								$(this).removeClass('visible').fadeToggle();							
+						});
+						pop.removeClass('current').addClass('visible').find( '.arrow').css({
 							left: dayOffset.left - calOffset.left + 3
 						});
 						pop.css({
