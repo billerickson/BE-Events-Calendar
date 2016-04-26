@@ -1,0 +1,111 @@
+.be-events-calendar-widget-wrap .calendar-day {
+	text-align: center;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.be-events-calendar-widget-wrap .calendar-month {
+	text-align: center;
+	text-transform: uppercase;
+	padding: 0 0 10px 0;
+	font-size: 16px;
+}
+
+.be-events-calendar-widget-wrap .calendar-month a,
+.be-events-calendar-widget-wrap .calendar-month a:visited {
+	background-color: #999;
+	width: 20px;
+	height: 18px;
+	text-decoration: none;
+	color: #fff;
+}
+
+.be-events-calendar-widget-wrap .calendar-month a:hover {
+	background-color: #666;
+	color: #fff;
+	text-decoration: none;
+}
+
+.be-events-calendar-widget-wrap .calendar-month .prev {
+	float: left;
+}
+
+.be-events-calendar-widget-wrap .calendar-month .next {
+	float: right;
+}
+
+table.be-event-calendar-widget {
+	width: 100%;
+}
+
+table.be-event-calendar-widget th {
+	font-size: 10px;
+	text-transform: uppercase;
+	color: #000;
+	font-weight: 400;
+	text-align: center;
+	width: 14.285714286%;
+	line-height: 1;
+	padding: 5px 0;
+}
+
+table.be-event-calendar-widget td {
+	text-align: center;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1;
+	border: 1px solid #f1f1f1;
+	position: relative;
+}
+
+table.be-event-calendar-widget .day-number {
+	padding: 5px 0;
+	display: block;
+}
+
+table.be-event-calendar-widget .current .day-number {
+	font-weight: 700;
+}
+
+table.be-event-calendar-widget .day-number.has-events {
+	background: #FFFFE0;
+	color: #000;
+}
+
+table.be-event-calendar-widget .events-pop {
+	position: absolute;
+	background-color: #000;
+	z-index: 1;
+	top: 15px;
+	text-align: left;
+}
+
+table.be-event-calendar-widget .events-pop a {
+	color: #fff;
+	display: block;
+	font-size: 12px;
+	padding: 8px 10px;
+	text-decoration: none;
+	border-bottom: 1px solid #666;
+}
+
+table.be-event-calendar-widget .events-pop a:last-of-type {
+	border: none;
+}
+
+table.be-event-calendar-widget .events-pop .arrow {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 15px 15px 15px;
+	border-color: transparent transparent #000 transparent;
+	position: absolute;
+	top: -15px;
+	right: 0;
+}
+
+table.be-event-calendar-widget .events-pop .event-time {
+	font-size: 10px;
+	display: inline-block;
+	color: #ccc;
+}
