@@ -112,6 +112,7 @@ class BE_Events_Calendar {
 			'menu_icon'          => 'dashicons-calendar',
 		); 
 	
+		$args = apply_filters( 'be_events_manager_post_type_args', $args );
 		register_post_type( 'events', $args );	
 	}
 	
