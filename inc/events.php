@@ -119,7 +119,7 @@ class BE_Events_Calendar {
 	 * Edit Column Titles
 	 *
 	 * @since 1.0.0
-	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
+	 * @link http://justintadlock.com/archives/2011/06/27/custom-columns-for-custom-post-types
 	 * @param array $columns
 	 * @return array
 	 */
@@ -140,7 +140,7 @@ class BE_Events_Calendar {
 	 * Edit Column Content
 	 *
 	 * @since 1.0.0
-	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
+	 * @link http://justintadlock.com/archives/2011/06/27/custom-columns-for-custom-post-types
 	 * @param string $column
 	 * @param int $post_id
 	 */
@@ -196,7 +196,7 @@ class BE_Events_Calendar {
 	 * Make Columns Sortable
 	 *
 	 * @since 1.0.0
-	 * @link http://devpress.com/blog/custom-columns-for-custom-post-types/
+	 * @link http://justintadlock.com/archives/2011/06/27/custom-columns-for-custom-post-types
 	 * @param array $columns
 	 * @return array
 	 */
