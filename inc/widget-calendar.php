@@ -153,7 +153,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 				$today_events = array();
 
 				foreach( $calendar as $event ) {
-					if ( $event['start'] >= $today && $event['start'] <= $tomorrow  ) {
+					if( $event['start'] <= $tomorrow && $event['end'] >= $today ) {
 						$today_events[] = $event;
 					}
 				}
