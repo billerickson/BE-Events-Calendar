@@ -125,15 +125,22 @@ class BE_Events_Calendar {
 	 * @return array
 	 */
 	function edit_event_columns( $columns ) {
-	
-		$columns = array(
-			'cb'          => '<input type="checkbox" />',
-			'title'       => 'Event',
+
+		// Change Titles
+		$columns['title'] = 'Event';
+		$columns['date'] = 'Published Date';
+		
+		// New Columns
+		$new_columns = array(
 			'event_start' => 'Starts',
 			'event_end'   => 'Ends',
-			'date'        => 'Published Date',
 		);
-	
+		
+		// Add new columns after title column
+		$column_end = array_splice( $columns, 2 );
+		$column_start = array_splice( $columns, 0, 2);
+		$columns = array_merge( $column_start, $new_columns, $column_end );
+		
 		return $columns;
 	}
 	
