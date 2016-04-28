@@ -310,7 +310,7 @@ class BE_Events_Calendar {
 			'update_item'       => 'Update Category',
 			'add_new_item'      => 'Add New Category',
 			'new_item_name'     => 'New Category Name',
-			'menu_name'         => 'Category'
+			'menu_name'         => 'Categories'
 		); 	
 	
 		register_taxonomy( 'event-category', $post_types, array(
