@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file, formatted v
 ### Added
 - Calendar widget to view upcoming events, see #17
 - Filter for post type arguments: be_events_manager_post_type_args, see #12
+- Admin column for event categories
 
 ### Changed
 - Inline documentation contained an incorrect URL, see #16

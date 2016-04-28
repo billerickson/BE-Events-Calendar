@@ -307,11 +307,12 @@ class BE_Events_Calendar {
 		); 	
 	
 		register_taxonomy( 'event-category', $post_types, array(
-			'hierarchical' => true,
-			'labels'       => $labels,
-			'show_ui'      => true,
-			'query_var'    => true,
-			'rewrite'      => array( 'slug' => 'event-category' ),
+			'hierarchical'      => true,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'event-category' ),
 		));
 	}
 
