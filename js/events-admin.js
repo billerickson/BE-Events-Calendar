@@ -1,5 +1,7 @@
 jQuery(document).ready(function($){
-	$('.be-events-calendar-date').datepicker();
+	$('.be-events-calendar-date').datepicker({
+		dateFormat: "mm/dd/yy",
+	});
 	$('#be-events-calendar-allday').change(function(event) {
 		if ( $(this).is(":checked") ) {
 			$('#be-events-calendar-start-time').val('12:01AM').hide();
