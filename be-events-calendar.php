@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BE Events Calendar
  * Description: Allows you to manage events.
- * Version:     1.3.0
+ * Version:     1.3.1
  * Author:      Bill Erickson
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define plugin constants
-define( 'BE_EVENTS_CALENDAR_VERSION', '1.3.0' );
+define( 'BE_EVENTS_CALENDAR_VERSION', '1.3.1' );
 define( 'BE_EVENTS_CALENDAR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BE_EVENTS_CALENDAR_URL', plugin_dir_url( __FILE__ ) );
 define( 'BE_EVENTS_CALENDAR_FILE', __FILE__ );

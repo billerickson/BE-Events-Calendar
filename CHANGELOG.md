@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.3.1] - 2016-09-05
+### Changed
+- Specify date format since WordPress changed the defaults, see #21
+
 ## [1.3.0] - 2016-04-26
 ### Added
 - Calendar widget to view upcoming events, see #17
