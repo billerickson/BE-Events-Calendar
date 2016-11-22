@@ -9,7 +9,7 @@
  * @copyright  Copyright (c) 2014, Bill Erickson
  * @license    http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
- 
+
 class BE_Events_Calendar {
 
 	/**
@@ -23,9 +23,9 @@ class BE_Events_Calendar {
 		register_activation_hook( BE_EVENTS_CALENDAR_FILE, array( $this, 'activation' ) );
 
 		// Load the plugin base
-		add_action( 'plugins_loaded', array( $this, 'init' ) );	
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
-	
+
 	/**
 	 * Flush the WordPress permalink rewrite rules on activation
 	 *
@@ -43,10 +43,10 @@ class BE_Events_Calendar {
 	 * @since 1.0.0
 	 */
 	function init() {
-	
+
 		// Create Post Type
 		add_action( 'init', array( $this, 'post_type' ) );
-		
+
 		// Post Type columns
 		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ) ) ;
 		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
@@ -57,10 +57,10 @@ class BE_Events_Calendar {
 
 		// Post Type title placeholder
 		add_action( 'gettext',  array( $this, 'title_placeholder' ) );
-		
+
 		// Create Taxonomy
 		add_action( 'init', array( $this, 'taxonomies' ) );
-		
+
 		// Create Metabox
 		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
 		if ( false === $metabox ) {
@@ -69,12 +69,12 @@ class BE_Events_Calendar {
 			add_action( 'add_meta_boxes', array( $this, 'metabox_register' ) );
 			add_action( 'save_post', array( $this, 'metabox_save' ),  1, 2  );
 		}
-		
+
 		// Modify Event Listings query
 		add_action( 'pre_get_posts', array( $this, 'event_query' ) );
 	}
-	
-	/** 
+
+	/**
 	 * Register Post Type
 	 *
 	 * @since 1.0.0
@@ -95,27 +95,27 @@ class BE_Events_Calendar {
 			'parent_item_colon'  => '',
 			'menu_name'          => 'Events'
 		);
-		
+
 		$args = array(
 			'labels'             => $labels,
 			'public'             => true,
 			'publicly_queryable' => true,
-			'show_ui'            => true, 
-			'show_in_menu'       => true, 
+			'show_ui'            => true,
+			'show_in_menu'       => true,
 			'query_var'          => true,
 			'rewrite'            => array( 'slug' => 'events', 'with_front' => false ),
 			'capability_type'    => 'post',
-			'has_archive'        => true, 
+			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
 			'supports'           => array( 'title', 'editor' ),
 			'menu_icon'          => 'dashicons-calendar',
-		); 
-	
+		);
+
 		$args = apply_filters( 'be_events_manager_post_type_args', $args );
-		register_post_type( 'events', $args );	
+		register_post_type( 'events', $args );
 	}
-	
+
 	/**
 	 * Edit Column Titles
 	 *
@@ -129,21 +129,21 @@ class BE_Events_Calendar {
 		// Change Titles
 		$columns['title'] = 'Event';
 		$columns['date'] = 'Published Date';
-		
+
 		// New Columns
 		$new_columns = array(
 			'event_start' => 'Starts',
 			'event_end'   => 'Ends',
 		);
-		
+
 		// Add new columns after title column
 		$column_end = array_splice( $columns, 2 );
 		$column_start = array_splice( $columns, 0, 2);
 		$columns = array_merge( $column_start, $new_columns, $column_end );
-		
+
 		return $columns;
 	}
-	
+
 	/**
 	 * Edit Column Content
 	 *
@@ -155,51 +155,55 @@ class BE_Events_Calendar {
 	function manage_event_columns( $column, $post_id ) {
 
 		global $post;
-	
+
 		switch( $column ) {
-	
+
 			/* If displaying the 'duration' column. */
 			case 'event_start' :
-	
+
 				/* Get the post meta. */
 				$allday = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$start = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
-	
+
+                if ( get_post_meta( $post_id, 'be_event_start', true ) )
+    				$start = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
+
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) )
 					echo __( 'Unknown' );
-	
+
 				/* If there is a duration, append 'minutes' to the text string. */
 				else
 					echo $start;
-	
+
 				break;
-	
+
 			/* If displaying the 'genre' column. */
 			case 'event_end' :
-	
+
 				/* Get the post meta. */
 				$allday = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$end = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
-	
+
+                if ( get_post_meta( $post_id, 'be_event_end', true ) )
+    				$end = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
+
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) )
 					echo __( 'Unknown' );
-	
+
 				/* If there is a duration, append 'minutes' to the text string. */
 				else
 					echo $end;
-	
+
 				break;
-	
+
 			/* Just break out of the switch statement for everything else. */
 			default :
 				break;
 		}
-	}	 
-	
+	}
+
 	/**
 	 * Make Columns Sortable
 	 *
@@ -209,13 +213,13 @@ class BE_Events_Calendar {
 	 * @return array
 	 */
 	function event_sortable_columns( $columns ) {
-	
+
 		$columns['event_start'] = 'event_start';
 		$columns['event_end']   = 'event_end';
-	
+
 		return $columns;
-	}	 
-	
+	}
+
 	/**
 	 * Check for load request
 	 *
@@ -225,7 +229,7 @@ class BE_Events_Calendar {
 
 		add_filter( 'request', array( $this, 'sort_events' ) );
 	}
-	
+
 	/**
 	 * Sort events on load request
 	 *
@@ -237,10 +241,10 @@ class BE_Events_Calendar {
 
 		/* Check if we're viewing the 'event' post type. */
 		if ( isset( $vars['post_type'] ) && 'events' == $vars['post_type'] ) {
-	
+
 			/* Check if 'orderby' is set to 'start_date'. */
 			if ( isset( $vars['orderby'] ) && 'event_start' == $vars['orderby'] ) {
-	
+
 				/* Merge the query vars with our custom variables. */
 				$vars = array_merge(
 					$vars,
@@ -250,10 +254,10 @@ class BE_Events_Calendar {
 					)
 				);
 			}
-			
+
 			/* Check if 'orderby' is set to 'end_date'. */
 			if ( isset( $vars['orderby'] ) && 'event_end' == $vars['orderby'] ) {
-	
+
 				/* Merge the query vars with our custom variables. */
 				$vars = array_merge(
 					$vars,
@@ -263,9 +267,9 @@ class BE_Events_Calendar {
 					)
 				);
 			}
-			
+
 		}
-	
+
 		return $vars;
 	}
 
@@ -292,13 +296,13 @@ class BE_Events_Calendar {
 	 * @since 1.0.0
 	 */
 	function taxonomies() {
-	
+
 		$supports = get_theme_support( 'be-events-calendar' );
 		if ( !is_array( $supports ) || !in_array( 'event-category', $supports[0] ) )
 			return;
-			
+
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'events', 'recurring-events' ) : array( 'events' );
-			
+
 		$labels = array(
 			'name'              => 'Categories',
 			'singular_name'     => 'Category',
@@ -311,8 +315,8 @@ class BE_Events_Calendar {
 			'add_new_item'      => 'Add New Category',
 			'new_item_name'     => 'New Category Name',
 			'menu_name'         => 'Categories'
-		); 	
-	
+		);
+
 		register_taxonomy( 'event-category', $post_types, array(
 			'hierarchical'      => true,
 			'labels'            => $labels,
@@ -399,19 +403,19 @@ class BE_Events_Calendar {
 			<input name="be-events-calendar-allday" type="checkbox" id="be-events-calendar-allday" value="1" <?php checked( '1', $allday ); ?>>
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-start">Start date and time:</label> 
+			<label for="be-events-calendar-start">Start date and time:</label>
 			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start ) ? $start_date : ''; ?>" placeholder="Date">
 			<input name="be-events-calendar-start-time" type="text"  id="be-events-calendar-start-time" class="be-events-calendar-time" value="<?php echo !empty( $start ) ? $start_time : ''; ?>" placeholder="Time">
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-end">End date and time:</label> 
+			<label for="be-events-calendar-end">End date and time:</label>
 			<input name="be-events-calendar-end" type="text"  id="be-events-calendar-end" class="be-events-calendar-date" value="<?php echo !empty( $end ) ? $end_date : ''; ?>" placeholder="Date">
 			<input name="be-events-calendar-end-time" type="text"  id="be-events-calendar-end-time" class="be-events-calendar-time" value="<?php echo !empty( $end ) ? $end_time : ''; ?>" placeholder="Time">
 		</div>
 		<p class="desc">Date format should be <strong>MM/DD/YYYY</strong>. Time format should be <strong>H:MM am/pm</strong>.<br>Example: 05/12/2015 6:00pm</p>
 		<?php
 	}
-	
+
 	/**
 	 * Save metabox contents
 	 *
@@ -420,7 +424,7 @@ class BE_Events_Calendar {
 	 * @param array $post
 	 */
 	function metabox_save( $post_id, $post ) {
-		
+
 		// Security check
 		if ( ! isset( $_POST['be_events_calendar_date_time_nonce'] ) || ! wp_verify_nonce( $_POST['be_events_calendar_date_time_nonce'], 'be_events_calendar_date_time' ) ) {
 			return;
@@ -461,7 +465,7 @@ class BE_Events_Calendar {
 			update_post_meta( $post_id, 'be_event_allday', $allday     );
 		}
 	}
-	
+
 	/**
 	 * Modify WordPress query where needed for event listings
 	 *
@@ -474,8 +478,8 @@ class BE_Events_Calendar {
 		$override = apply_filters( 'be_events_manager_query_override', false );
 		if ( $override )
 			return;
-		
-		if ( $query->is_main_query() && !is_admin() && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {	
+
+		if ( $query->is_main_query() && !is_admin() && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {
 			$meta_query = array(
 				array(
 					'key' => 'be_event_end',
@@ -489,7 +493,7 @@ class BE_Events_Calendar {
 			$query->set( 'meta_key', 'be_event_start' );
 		}
 	}
-	
+
 }
 
 new BE_Events_Calendar;
