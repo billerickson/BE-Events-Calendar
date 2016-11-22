@@ -86,7 +86,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 						'compare' => 'BETWEEN',
 					)
 				),
-			);									
+			);
 			$events = new WP_Query( $events_args ); while( $events->have_posts() ) : $events->the_post();
 				$all_day         = false;
 				$start_timestamp = get_post_meta( get_the_ID(), 'be_event_start', true );
@@ -126,12 +126,12 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 			// Vars
 			$running_day       = date( 'w', mktime( 0, 0, 0, $month, 1, $year ) );
 			$days_in_this_week = 1;
-			$day_counter       = 0;	
+			$day_counter       = 0;
 
 			echo '<div class="calendar-month" id="' . date( 'F-Y', $timestamp ) . '">';
 				echo '<a href="#" class="prev be-event-calendar-widget-previous">&laquo;</a>';
 				echo '<strong>' . $month_text. ' ' . $year . '</strong>';
-				echo '<a href="" class="next be-event-calendar-widget-next">&raquo;</a>';	
+				echo '<a href="" class="next be-event-calendar-widget-next">&raquo;</a>';
 			echo '</div>';
 
 			// Begin calendar body
@@ -224,7 +224,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 		} else {
 			$month = strtotime('-1 month', $timestamp );
 		}
-	
+
 		ob_start();
 		$this->calendar( date( 'F-Y', $month ) );
 		$output = ob_get_clean();
@@ -236,8 +236,8 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 	 * Outputs the HTML for this widget.
 	 *
 	 * @since 1.1.0
-	 * @param array $args An array of standard parameters for widgets in this theme 
-	 * @param array $instance An array of settings for this widget instance 
+	 * @param array $args An array of standard parameters for widgets in this theme
+	 * @param array $instance An array of settings for this widget instance
 	 */
 	function widget( $args, $instance ) {
 
@@ -300,9 +300,9 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 						var calWidth = cal.width();
 						var calOffset = cal.offset();
 						var pop = $(this).next('.events-pop').addClass('current');
-						$(cal).find('.events-pop.visible').each(function(){
+						$(cal).find('.current .events-pop.visible').each(function(){
 							if( ! $(this).hasClass('current' ) )
-								$(this).removeClass('visible').fadeToggle();							
+								$(this).next('.events-pop.visible').removeClass('visible').fadeToggle();
 						});
 						pop.removeClass('current').addClass('visible').find( '.arrow').css({
 							left: dayOffset.left - calOffset.left + 3
@@ -319,14 +319,14 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 
 		echo $after_widget;
 	}
- 
+
 	/**
 	 * Deals with the settings when they are saved by the admin. Here is
 	 * where any validation should be dealt with.
 	 *
 	 * @since 1.1.0
 	 * @param array $new_instance An array of new settings as submitted by the admin
-	 * @param array $old_instance An array of the previous settings 
+	 * @param array $old_instance An array of the previous settings
 	 * @return array The validated and (if necessary) amended settings
 	 */
 	function update( $new_instance, $old_instance ) {
