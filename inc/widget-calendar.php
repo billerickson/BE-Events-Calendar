@@ -78,6 +78,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 			$calendar    = array();
 			$events_args = array(
 				'post_type' => 'events',
+				'post_per_page' => -1,
 				'meta_query' => array(
 					array(
 						'key'     => 'be_event_start',
