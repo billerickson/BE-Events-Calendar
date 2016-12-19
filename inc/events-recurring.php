@@ -99,7 +99,8 @@ class BE_Recurring_Events {
 			'show_in_menu'       => 'edit.php?post_type=events',
 			'supports'           => array( 'title','editor') 
 		); 
-	
+		
+		$args = apply_filters( 'be_events_manager_recurring_post_type_args', $args );
 		register_post_type( 'recurring-events', $args );	
 	}
 	
