@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.3.2] - 2017-01-16
+### Added
+- Filter for recurring post type args, `be_events_manager_recurring_post_type_args`
+
+### Fixed
+- Debug error if no date is specified for an event, see #23
+- Javascript bug in event calendar widget, see #25
+- Display all events on calendar widget, see #25
+
 ## [1.3.1] - 2016-09-05
 ### Changed
 - Specify date format since WordPress changed the defaults, see #21
