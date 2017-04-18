@@ -9,7 +9,7 @@
  * @copyright  Copyright (c) 2014, Bill Erickson
  * @license    http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
- 
+
 class BE_Event_Schema {
 
 	/**
@@ -19,9 +19,9 @@ class BE_Event_Schema {
 	 */
 	public function __construct() {
 
-		add_action( 'plugins_loaded', array( $this, 'init' ) );	
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
-	
+
 	/**
 	 * Initialize and go
 	 *
@@ -36,42 +36,48 @@ class BE_Event_Schema {
 		add_filter( 'genesis_post_title_output', array( $this, 'title_link' ), 20 );
 		add_action( 'genesis_entry_header', array( $this, 'event_date' ) );
 	}
-	
+
 	/**
 	 * Empty Schema
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
 	function empty_schema( $attr ) {
-	
+
 		// Only run on events archive
-		if( !is_post_type_archive( 'events' ) )
+		if ( ! is_post_type_archive( 'events' ) ) {
 			return $attr;
-			
-		$attr['itemtype'] = '';
-		$attr['itemprop'] = '';
+		}
+
+		$attr['itemtype']  = '';
+		$attr['itemprop']  = '';
 		$attr['itemscope'] = '';
-		return $attr;	
+
+		return $attr;
 	}
-	
+
 	/**
 	 * Event Schema
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
 	function event_schema( $attr ) {
 
 		// Only run on event
-		if( ! 'events' == get_post_type() )
+		if ( ! 'events' == get_post_type() ) {
 			return $attr;
-			
-		$attr['itemtype'] = 'http://schema.org/Event';
-		$attr['itemprop'] = '';
+		}
+
+		$attr['itemtype']  = 'http://schema.org/Event';
+		$attr['itemprop']  = '';
 		$attr['itemscope'] = 'itemscope';
+
 		return $attr;
 	}
 
@@ -79,58 +85,70 @@ class BE_Event_Schema {
 	 * Event Name Itemprop
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
 	function event_name_itemprop( $attr ) {
-		if( 'events' == get_post_type() )
+		if ( 'events' == get_post_type() ) {
 			$attr['itemprop'] = 'name';
+		}
+
 		return $attr;
 	}
-	
+
 	/**
 	 * Event Description Itemprop
-	 * 
+	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
 	function event_description_itemprop( $attr ) {
-		if( 'events' == get_post_type() )
+		if ( 'events' == get_post_type() ) {
 			$attr['itemprop'] = 'description';
+		}
+
 		return $attr;
 	}
-	
+
 	/**
 	 * Title Link
-	 * 
+	 *
 	 * @since 1.0.3
+	 *
 	 * @param string $output
 	 * @return string
 	 */
 	function title_link( $output ) {
-		if( 'events' == get_post_type() )
+		if ( 'events' == get_post_type() ) {
 			$output = str_replace( 'rel="bookmark"', 'rel="bookmark" itemprop="url"', $output );
+		}
+
 		return $output;
 	}
-	
+
 	/**
 	 * Event Date
 	 *
 	 * @since 1.0.3
 	 */
 	function event_date() {
-		if( 'events' !== get_post_type() )
+		if ( 'events' !== get_post_type() ) {
 			return;
-			
+		}
+
 		$start = get_post_meta( get_the_ID(), 'be_event_start', true );
-		if( $start )
-			 echo '<meta itemprop="startDate" content="' . date('c', $start ).'">';
-		
+		if ( $start ) {
+			echo '<meta itemprop="startDate" content="' . date( 'c', $start ) . '">';
+		}
+
 		$end = get_post_meta( get_the_ID(), 'be_event_end', true );
-		if( $end ) 
-			echo '<meta itemprop="endDate" content="' . date( 'c', $end ).'">';
-		
+		if ( $end ) {
+			echo '<meta itemprop="endDate" content="' . date( 'c', $end ) . '">';
+		}
+
 	}
 }
 
