@@ -35,7 +35,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 		// widget basics
 		$widget_ops = array(
 			'classname'   => 'be-events-calendar-widget',
-			'description' => '',
+			'description' => 'A calendar of your events.',
 		);
 
 		// widget controls
