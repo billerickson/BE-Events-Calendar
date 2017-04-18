@@ -153,8 +153,6 @@ class BE_Events_Calendar {
 	 * @param int $post_id
 	 */
 	function manage_event_columns( $column, $post_id ) {
-
-		global $post;
 	
 		switch( $column ) {
 	
