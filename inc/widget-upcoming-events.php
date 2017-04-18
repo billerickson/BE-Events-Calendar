@@ -19,7 +19,7 @@ class BE_Upcoming_Events extends WP_Widget {
      **/
 	function __construct() {
 		$widget_ops = array( 'classname' => 'widget_upcoming_events', 'description' => '' );
-		parent::__construct( 'upcoming-events-widget', __( 'Upcoming Events Widget' ), $widget_ops );
+		parent::__construct( 'upcoming-events-widget', __( 'Upcoming Events' ), $widget_ops );
 	}
 
     /**
