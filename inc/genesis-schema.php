@@ -48,7 +48,7 @@ class BE_Event_Schema {
 	function empty_schema( $attr ) {
 
 		// Only run on events archive
-		if ( ! is_post_type_archive( 'events' ) ) {
+		if ( ! is_post_type_archive( 'event' ) ) {
 			return $attr;
 		}
 
@@ -70,7 +70,7 @@ class BE_Event_Schema {
 	function event_schema( $attr ) {
 
 		// Only run on event
-		if ( ! 'events' == get_post_type() ) {
+		if ( ! 'event' == get_post_type() ) {
 			return $attr;
 		}
 
@@ -90,7 +90,7 @@ class BE_Event_Schema {
 	 * @return array
 	 */
 	function event_name_itemprop( $attr ) {
-		if ( 'events' == get_post_type() ) {
+		if ( 'event' == get_post_type() ) {
 			$attr['itemprop'] = 'name';
 		}
 
@@ -106,7 +106,7 @@ class BE_Event_Schema {
 	 * @return array
 	 */
 	function event_description_itemprop( $attr ) {
-		if ( 'events' == get_post_type() ) {
+		if ( 'event' == get_post_type() ) {
 			$attr['itemprop'] = 'description';
 		}
 
@@ -122,7 +122,7 @@ class BE_Event_Schema {
 	 * @return string
 	 */
 	function title_link( $output ) {
-		if ( 'events' == get_post_type() ) {
+		if ( 'event' == get_post_type() ) {
 			$output = str_replace( 'rel="bookmark"', 'rel="bookmark" itemprop="url"', $output );
 		}
 
@@ -135,7 +135,7 @@ class BE_Event_Schema {
 	 * @since 1.0.3
 	 */
 	function event_date() {
-		if ( 'events' !== get_post_type() ) {
+		if ( 'event' !== get_post_type() ) {
 			return;
 		}
 

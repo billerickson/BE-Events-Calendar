@@ -38,6 +38,43 @@ class BE_Events_Calendar {
 	}
 
 	/**
+	 * Loads the plugin base into WordPress
+	 *
+	 * @since 1.0.0
+	 */
+	function init() {
+
+		// Create Post Type
+		add_action( 'init', array( $this, 'post_type' ) );
+
+		// Post Type columns
+		add_filter( 'manage_edit-event_columns', array( $this, 'edit_event_columns' ) );
+		add_action( 'manage_event_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
+
+		// Post Type sorting
+		add_filter( 'manage_edit-event_sortable_columns', array( $this, 'event_sortable_columns' ) );
+		add_action( 'load-edit.php', array( $this, 'edit_event_load' ) );
+
+		// Post Type title placeholder
+		add_filter( 'enter_title_here', array( $this, 'title_placeholder' ) );
+
+		// Create Taxonomy
+		add_action( 'init', array( $this, 'taxonomies' ) );
+
+		// Create Metabox
+		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
+		if ( false === $metabox ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_scripts' ) );
+			add_action( 'add_meta_boxes', array( $this, 'metabox_register' ) );
+			add_action( 'save_post', array( $this, 'metabox_save' ), 1, 2 );
+		}
+
+		// Modify Event Listings query
+		add_action( 'pre_get_posts', array( $this, 'event_query' ) );
+	}
+
+	/**
 	 * Register Post Type
 	 *
 	 * @since 1.0.0
@@ -71,49 +108,12 @@ class BE_Events_Calendar {
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title', 'editor' ),
+			'supports'           => array( 'title', 'editor', 'thumbnail' ),
 			'menu_icon'          => 'dashicons-calendar',
 		);
 
 		$args = apply_filters( 'be_events_manager_post_type_args', $args );
-		register_post_type( 'events', $args );
-	}
-
-	/**
-	 * Loads the plugin base into WordPress
-	 *
-	 * @since 1.0.0
-	 */
-	function init() {
-
-		// Create Post Type
-		add_action( 'init', array( $this, 'post_type' ) );
-
-		// Post Type columns
-		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ) );
-		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
-
-		// Post Type sorting
-		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ) );
-		add_action( 'load-edit.php', array( $this, 'edit_event_load' ) );
-
-		// Post Type title placeholder
-		add_action( 'gettext', array( $this, 'title_placeholder' ) );
-
-		// Create Taxonomy
-		add_action( 'init', array( $this, 'taxonomies' ) );
-
-		// Create Metabox
-		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
-		if ( false === $metabox ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_styles' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_scripts' ) );
-			add_action( 'add_meta_boxes', array( $this, 'metabox_register' ) );
-			add_action( 'save_post', array( $this, 'metabox_save' ), 1, 2 );
-		}
-
-		// Modify Event Listings query
-		add_action( 'pre_get_posts', array( $this, 'event_query' ) );
+		register_post_type( 'event', $args );
 	}
 
 	/**
@@ -240,7 +240,7 @@ class BE_Events_Calendar {
 	function sort_events( $vars ) {
 
 		// Check if we're viewing the 'event' post type.
-		if ( isset( $vars['post_type'] ) && 'events' == $vars['post_type'] ) {
+		if ( isset( $vars['post_type'] ) && 'event' == $vars['post_type'] ) {
 
 			// Check if 'orderby' is set to 'start_date'.
 			if ( isset( $vars['orderby'] ) && 'event_start' == $vars['orderby'] ) {
@@ -282,14 +282,15 @@ class BE_Events_Calendar {
 	 * @param string $translation
 	 * @return string Customized translation for title
 	 */
-	function title_placeholder( $translation ) {
+	function title_placeholder( $title ) {
 
-		global $post;
-		if ( isset( $post ) && 'events' == $post->post_type && 'Enter title here' == $translation ) {
-			$translation = 'Enter Event Name Here';
+		$screen = get_current_screen();
+
+		if  ( 'event' === $screen->post_type ) {
+			$title = 'Enter Event Name Here';
 		}
 
-		return $translation;
+		return $title;
 	}
 
 	/**
@@ -304,7 +305,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'events', 'recurring-events' ) : array( 'events' );
+		$post_types = in_array( 'recurring-event', $supports[0] ) ? array( 'event', 'recurring-event' ) : array( 'event' );
 
 		$labels = array(
 			'name'              => 'Categories',
@@ -341,7 +342,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		if ( isset( get_current_screen()->post_type ) && 'events' != get_current_screen()->post_type ) {
+		if ( isset( get_current_screen()->post_type ) && 'event' != get_current_screen()->post_type ) {
 			return;
 		}
 
@@ -361,7 +362,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		if ( isset( get_current_screen()->post_type ) && 'events' != get_current_screen()->post_type ) {
+		if ( isset( get_current_screen()->post_type ) && 'event' != get_current_screen()->post_type ) {
 			return;
 		}
 
@@ -384,7 +385,7 @@ class BE_Events_Calendar {
 		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array(
 			$this,
 			'render_metabox',
-		), 'events', 'normal', 'high' );
+		), 'event', 'normal', 'high' );
 	}
 
 	/**
@@ -501,7 +502,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'events' ) || is_tax( 'event-category' ) ) ) {
+		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event-category' ) ) ) {
 			$meta_query = array(
 				array(
 					'key'     => 'be_event_end',

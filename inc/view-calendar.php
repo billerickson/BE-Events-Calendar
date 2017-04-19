@@ -154,7 +154,7 @@ class BE_Events_Calendar_View {
 		$end_unix    = strtotime( $end );
 		$calendar    = array();
 		$events_args = array(
-			'post_type'  => 'events',
+			'post_type'  => 'event',
 			'meta_query' => array(
 				array(
 					'key'     => 'be_event_start',

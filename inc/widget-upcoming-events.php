@@ -18,8 +18,8 @@ class BE_Upcoming_Events extends WP_Widget {
 	 * @return void
 	 **/
 	function __construct() {
-		$widget_ops = array( 'classname' => 'widget_upcoming_events', 'description' => '' );
-		parent::__construct( 'upcoming-events-widget', __( 'Upcoming Events Widget' ), $widget_ops );
+		$widget_ops = array( 'classname' => 'widget_upcoming_events', 'description' => 'A list of upcoming events.' );
+		parent::__construct( 'upcoming-events-widget', __( 'Upcoming Events' ), $widget_ops );
 	}
 
 	/**
@@ -35,7 +35,7 @@ class BE_Upcoming_Events extends WP_Widget {
 		$count = esc_attr( $instance['count'] );
 		$count = 0 < $count && $count < 10 ? $count : 2;
 		$loop  = new WP_Query( array(
-			'post_type'      => 'events',
+			'post_type'      => 'event',
 			'posts_per_page' => $count,
 			'order'          => 'ASC',
 			'orderby'        => 'meta_value_num',
@@ -96,8 +96,7 @@ class BE_Upcoming_Events extends WP_Widget {
 	/**
 	 * Displays the form for this widget on the Widgets page of the WP Admin area.
 	 *
-	 * @param array  An array of the current settings for this widget
-	 *
+	 * @param array An array of the current settings for this widget
 	 * @return void Echoes it's output
 	 **/
 	function form( $instance ) {

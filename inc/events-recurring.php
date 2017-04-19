@@ -33,15 +33,15 @@ class BE_Recurring_Events {
 		add_action( 'init', array( $this, 'post_type' ) );
 
 		// Post Type columns
-		add_filter( 'manage_edit-events_columns', array( $this, 'edit_event_columns' ), 20 );
-		add_action( 'manage_events_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
+		add_filter( 'manage_edit-event_columns', array( $this, 'edit_event_columns' ), 20 );
+		add_action( 'manage_event_posts_custom_column', array( $this, 'manage_event_columns' ), 20, 2 );
 
 		// Post Type sorting
-		add_filter( 'manage_edit-events_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
+		add_filter( 'manage_edit-event_sortable_columns', array( $this, 'event_sortable_columns' ), 20 );
 		//add_action( 'load-edit.php', array( $this, 'edit_event_load' ), 20 );
 
 		// Post Type title placeholder
-		add_action( 'gettext', array( $this, 'title_placeholder' ) );
+		add_filter( 'enter_title_here', array( $this, 'title_placeholder' ) );
 
 		// Create Metabox
 		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
@@ -52,7 +52,7 @@ class BE_Recurring_Events {
 			add_action( 'save_post', array( $this, 'metabox_save' ), 1, 2 );
 		}
 
-		// Generate Events 
+		// Generate Events
 		add_action( 'wp_insert_post', array( $this, 'generate_events' ) );
 		add_action( 'wp_insert_post', array( $this, 'regenerate_events' ) );
 	}
@@ -97,12 +97,11 @@ class BE_Recurring_Events {
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'show_in_menu'       => 'edit.php?post_type=events',
 			'supports'           => array( 'title', 'editor' ),
 		);
 
 		$args = apply_filters( 'be_events_manager_recurring_post_type_args', $args );
-		register_post_type( 'recurring-events', $args );
+		register_post_type( 'recurring-event', $args );
 	}
 
 	/**
@@ -188,7 +187,7 @@ class BE_Recurring_Events {
 	function sort_events( $vars ) {
 
 		// Check if we're viewing the 'event' post type.
-		if ( isset( $vars['post_type'] ) && 'events' == $vars['post_type'] ) {
+		if ( isset( $vars['post_type'] ) && 'event' == $vars['post_type'] ) {
 
 			// Check if 'orderby' is set to 'recurring'.
 			if ( isset( $vars['orderby'] ) && 'recurring' == $vars['orderby'] ) {
@@ -213,17 +212,17 @@ class BE_Recurring_Events {
 	 * @since 1.0.0
 	 * @global array $post
 	 *
-	 * @param string $translation
+	 * @param string $title
 	 * @return string Customized translation for title
 	 */
-	function title_placeholder( $translation ) {
+	function title_placeholder( $title ) {
 
-		global $post;
-		if ( isset( $post ) && 'recurring-events' == $post->post_type && 'Enter title here' == $translation ) {
-			$translation = 'Enter Event Name Here';
+		$screen = get_current_screen();
+		if  ( 'event' === $screen->post_type ) {
+			$title = 'Enter Event Name Here';
 		}
 
-		return $translation;
+		return $title;
 	}
 
 	/**
@@ -237,7 +236,7 @@ class BE_Recurring_Events {
 			return;
 		}
 
-		if ( isset( get_current_screen()->post_type ) && 'recurring-events' != get_current_screen()->post_type ) {
+		if ( isset( get_current_screen()->post_type ) && 'recurring_event' != get_current_screen()->post_type ) {
 			return;
 		}
 
@@ -257,7 +256,7 @@ class BE_Recurring_Events {
 			return;
 		}
 
-		if ( isset( get_current_screen()->post_type ) && 'recurring-events' != get_current_screen()->post_type ) {
+		if ( isset( get_current_screen()->post_type ) && 'recurring_event' != get_current_screen()->post_type ) {
 			return;
 		}
 
@@ -277,7 +276,7 @@ class BE_Recurring_Events {
 	 */
 	function metabox_register() {
 
-		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array( $this, 'render_metabox' ), 'events', 'normal', 'high' );
+		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array( $this, 'render_metabox' ), 'recurring_event', 'normal', 'high' );
 	}
 
 	/**
@@ -400,6 +399,7 @@ class BE_Recurring_Events {
 		     && ! empty( $_POST['be-events-calendar-end'] )
 		     && ! empty( $_POST['be-events-calendar-repeat-end'] )
 		) {
+
 			$start      = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
 			$start_unix = strtotime( $start );
 			$end        = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
@@ -417,55 +417,6 @@ class BE_Recurring_Events {
 	}
 
 	/**
-	 * Regenerate Events
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int $post_id
-	 */
-	function regenerate_events( $post_id ) {
-		if ( 'recurring-events' !== get_post_type( $post_id ) ) {
-			return;
-		}
-
-		// Make sure they want to regenerate them
-		$regenerate = get_post_meta( $post_id, 'be_regenerate_events', true );
-		if ( ! $regenerate ) {
-			return;
-		}
-
-		// Delete all future events
-		$args = array(
-			'post_type'      => 'events',
-			'posts_per_page' => - 1,
-			'meta_query'     => array(
-				array(
-					'key'     => 'be_event_start',
-					'value'   => time(),
-					'compare' => '>',
-				),
-				array(
-					'key'   => 'be_recurring_event',
-					'value' => $post_id,
-				),
-			),
-		);
-
-		$loop = new WP_Query( $args );
-		if ( $loop->have_posts() ): while ( $loop->have_posts() ): $loop->the_post();
-			wp_delete_post( get_the_ID(), false );
-		endwhile; endif;
-		wp_reset_postdata();
-
-		// Turn off regenerate and on generate
-		delete_post_meta( $post_id, 'be_regenerate_events' );
-		delete_post_meta( $post_id, 'be_generated_events' );
-
-		// Generate new events
-		$this->generate_events( $post_id, true );
-	}
-
-	/**
 	 * Generate Events
 	 *
 	 * @since 1.0.0
@@ -475,7 +426,7 @@ class BE_Recurring_Events {
 	 */
 	function generate_events( $post_id, $regenerating = false ) {
 
-		if ( 'recurring-events' !== get_post_type( $post_id ) ) {
+		if ( 'recurring-event' !== get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -510,7 +461,7 @@ class BE_Recurring_Events {
 					'post_title'   => $event_title,
 					'post_content' => $event_content,
 					'post_status'  => 'publish',
-					'post_type'    => 'events',
+					'post_type'    => 'event',
 				);
 				$event_id = wp_insert_post( $args );
 				if ( $event_id ) {
@@ -519,7 +470,7 @@ class BE_Recurring_Events {
 					update_post_meta( $event_id, 'be_event_end', $event_end );
 
 					// Add any additional metadata
-					$metas = apply_filters( 'be_events_manager_recurring_meta', array() );
+					$metas = apply_filters( 'be_events_manager_recurring_meta', array( '_thumbnail_id' ) );
 					if ( ! empty( $metas ) ) {
 						foreach ( $metas as $meta ) {
 							update_post_meta( $event_id, $meta, get_post_meta( $post_id, $meta, true ) );
@@ -561,6 +512,52 @@ class BE_Recurring_Events {
 
 		// Don't generate again
 		update_post_meta( $post_id, 'be_generated_events', true );
+	}
+
+	/**
+	 * Regenerate Events
+	 *
+	 * @since 1.0.0
+	 * @param int $post_id
+	 */
+	function regenerate_events( $post_id ) {
+		if ( 'recurring_event' !== get_post_type( $post_id ) ) {
+			return;
+		}
+
+		// Make sure they want to regenerate them
+		$regenerate = get_post_meta( $post_id, 'be_regenerate_events', true );
+		if ( ! $regenerate ) {
+			return;
+		}
+
+		// Delete all future events
+		$args = array(
+			'post_type' => 'event',
+			'posts_per_page' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'be_event_start',
+					'value' => time(),
+					'compare' => '>'
+				),
+				array(
+					'key' => 'be_recurring_event',
+					'value' => $post_id,
+				)
+			)
+		);
+		$loop = new WP_Query( $args );
+		if( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
+			wp_delete_post( get_the_ID(), false );
+		endwhile; endif; wp_reset_postdata();
+
+		// Turn off regenerate and on generate
+		delete_post_meta( $post_id, 'be_regenerate_events' );
+		delete_post_meta( $post_id, 'be_generated_events' );
+
+		// Generate new events
+		$this->generate_events( $post_id, true );
 	}
 
 }
