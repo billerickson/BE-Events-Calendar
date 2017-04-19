@@ -66,8 +66,9 @@ class BE_Recurring_Events {
 
 		// Only run if recurring event support has been added
 		$supports = get_theme_support( 'be-events-calendar' );
-		if ( !is_array( $supports ) || !in_array( 'recurring-events', $supports[0] ) )
+		if ( ! is_array( $supports ) || ! in_array( 'recurring-events', $supports[0] ) ) {
 			return;
+        }
 
 		$labels = array(
 			'name'               => 'Recurring Events',
@@ -81,7 +82,7 @@ class BE_Recurring_Events {
 			'not_found'          =>  'No recurring events found',
 			'not_found_in_trash' => 'No recurring events found in trash',
 			'parent_item_colon'  => '',
-			'menu_name'          => 'Recurring Events'
+			'menu_name'          => 'Recurring Events',
 		);
 
 		$args = array(
@@ -89,14 +90,14 @@ class BE_Recurring_Events {
 			'public'             => true,
 			'publicly_queryable' => true,
 			'show_ui'            => true,
-			'show_in_menu'       => 'edit.php?post_type=events', 
+			'show_in_menu'       => 'edit.php?post_type=events',
 			'query_var'          => true,
 			'rewrite'            => true,
 			'capability_type'    => 'post',
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title','editor')
+			'supports'           => array( 'title', 'editor' ),
 		);
 
 		$args = apply_filters( 'be_events_manager_recurring_post_type_args', $args );
@@ -114,14 +115,15 @@ class BE_Recurring_Events {
 	function edit_event_columns( $columns ) {
 
 		$supports = get_theme_support( 'be-events-calendar' );
-		if( !is_array( $supports ) || !in_array( 'recurring-events', $supports[0] ) )
+		if( ! is_array( $supports ) || ! in_array( 'recurring-events', $supports[0] ) )
 			return $columns;
 
 		$new_columns = array();
-		foreach( $columns as $key => $label ) {
-			$new_columns[$key] = $label;
-			if( 'title' == $key )
+		foreach ( $columns as $key => $label ) {
+			$new_columns[ $key ] = $label;
+			if( 'title' == $key ) {
 				$new_columns['recurring'] = 'Part of Series';
+            }
 		}
 		return $new_columns;
 	}
@@ -154,6 +156,7 @@ class BE_Recurring_Events {
 	function event_sortable_columns( $columns ) {
 
 		$columns['recurring'] = 'recurring';
+
 		return $columns;
 	}
 
@@ -176,18 +179,18 @@ class BE_Recurring_Events {
 	 */
 	function sort_events( $vars ) {
 
-		/* Check if we're viewing the 'event' post type. */
+		// Check if we're viewing the 'event' post type.
 		if ( isset( $vars['post_type'] ) && 'events' == $vars['post_type'] ) {
 
-			/* Check if 'orderby' is set to 'recurring'. */
+			// Check if 'orderby' is set to 'recurring'.
 			if ( isset( $vars['orderby'] ) && 'recurring' == $vars['orderby'] ) {
 
-				/* Merge the query vars with our custom variables. */
+				// Merge the query vars with our custom variables.
 				$vars = array_merge(
 					$vars,
 					array(
 						'meta_key' => 'be_recurring_event',
-						'orderby' => 'meta_value_num'
+						'orderby' => 'meta_value_num',
 					)
 				);
 			}
@@ -249,7 +252,11 @@ class BE_Recurring_Events {
 		}
 
 		// Load scripts.
-		wp_register_script( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'js/events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
+		wp_register_script( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'js/events-admin.js', array(
+            'jquery',
+            'jquery-ui-core',
+            'jquery-ui-datepicker'
+        ) , BE_EVENTS_CALENDAR_VERSION, true );
 		wp_enqueue_script( 'be-events-calendar' );
 	}
 
