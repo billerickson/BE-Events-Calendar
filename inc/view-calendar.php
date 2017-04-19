@@ -37,7 +37,7 @@ class BE_Events_Calendar_View {
 		// Load javascript assets
 		wp_enqueue_script( 'moment',       BE_EVENTS_CALENDAR_URL . 'js/moment.min.js',       array( 'jquery' ),           BE_EVENTS_CALENDAR_VERSION );
 		wp_enqueue_script( 'fullcalendar', BE_EVENTS_CALENDAR_URL . 'js/fullcalendar.min.js', array( 'jquery', 'moment' ), BE_EVENTS_CALENDAR_VERSION );
-		
+
 		// Setup JS vars
 		$data = array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -50,7 +50,7 @@ class BE_Events_Calendar_View {
 		if ( true === $css ) {
 			wp_enqueue_style( 'fullcalendar', BE_EVENTS_CALENDAR_URL . 'css/fullcalendar.min.css' );
 		}
-		
+
 		ob_start();
 
 		do_action( 'be_events_calendar_view_before' );
@@ -71,7 +71,7 @@ class BE_Events_Calendar_View {
 		<script type="text/javascript">
 			jQuery(document).ready(function($){
 				$('#be-event-calendar').fullCalendar({
-					<?php 
+					<?php
 					// Add hook so other args can be easily added if needed
 					do_action( 'be_events_calendar_view_js' );
 					?>
@@ -82,7 +82,7 @@ class BE_Events_Calendar_View {
 					},
 					fixedWeekCount: <?php echo $calendar_args['fixedWeekCount']; ?>,
 					aspectRatio: <?php echo $calendar_args['aspectRatio']; ?>,
-					eventRender: function(event, element, view) {					
+					eventRender: function(event, element, view) {
 						var ntoday = new Date().getTime();
 						var eventEnd = moment( event.end ).valueOf();
 						var eventStart = moment( event.start ).valueOf();
@@ -150,7 +150,7 @@ class BE_Events_Calendar_View {
 		$end_unix    = strtotime( $end );
 		$calendar    = array();
 		$events_args = array (
-			'post_type' => 'events',
+			'post_type' => 'event',
 			'meta_query' => array(
 				array(
 					'key'     => 'be_event_start',
@@ -159,7 +159,7 @@ class BE_Events_Calendar_View {
 					'compare' => 'BETWEEN',
 				)
 			),
-		);									
+		);
 		$events = new WP_Query( $events_args ); while( $events->have_posts() ) : $events->the_post();
 			$all_day         = false;
 			$start_timestamp = get_post_meta( get_the_ID(), 'be_event_start', true );
