@@ -20,7 +20,7 @@ class BE_Events_Calendar_View {
 	function __construct() {
 
 		// Setup ajax
-		add_action( 'wp_ajax_be_events_calendar',        array( $this, 'ajax' ) );
+		add_action( 'wp_ajax_be_events_calendar', array( $this, 'ajax' ) );
 		add_action( 'wp_ajax_nopriv_be_events_calendar', array( $this, 'ajax' ) );
 
 		// Register shortcode
@@ -35,8 +35,11 @@ class BE_Events_Calendar_View {
 	function output() {
 
 		// Load javascript assets
-		wp_enqueue_script( 'moment',       BE_EVENTS_CALENDAR_URL . 'js/moment.min.js',       array( 'jquery' ),           BE_EVENTS_CALENDAR_VERSION );
-		wp_enqueue_script( 'fullcalendar', BE_EVENTS_CALENDAR_URL . 'js/fullcalendar.min.js', array( 'jquery', 'moment' ), BE_EVENTS_CALENDAR_VERSION );
+		wp_enqueue_script( 'moment', BE_EVENTS_CALENDAR_URL . 'js/moment.min.js', array( 'jquery' ), BE_EVENTS_CALENDAR_VERSION );
+		wp_enqueue_script( 'fullcalendar', BE_EVENTS_CALENDAR_URL . 'js/fullcalendar.min.js', array(
+			'jquery',
+			'moment',
+		), BE_EVENTS_CALENDAR_VERSION );
 
 		// Setup JS vars
 		$data = array(
@@ -69,60 +72,60 @@ class BE_Events_Calendar_View {
 		$calendar_args = apply_filters( 'be_events_calendar_view_js_args', $calendar_args );
 		?>
 		<script type="text/javascript">
-			jQuery(document).ready(function($){
-				$('#be-event-calendar').fullCalendar({
+			jQuery( document ).ready( function ( $ ) {
+				$( '#be-event-calendar' ).fullCalendar( {
 					<?php
 					// Add hook so other args can be easily added if needed
 					do_action( 'be_events_calendar_view_js' );
 					?>
-					header: {
-						left: '<?php echo $calendar_args['header_left']; ?>',
+					header        : {
+						left  : '<?php echo $calendar_args['header_left']; ?>',
 						center: '<?php echo $calendar_args['header_center']; ?>',
-						right: '<?php echo $calendar_args['header_right']; ?>'
+						right : '<?php echo $calendar_args['header_right']; ?>'
 					},
 					fixedWeekCount: <?php echo $calendar_args['fixedWeekCount']; ?>,
-					aspectRatio: <?php echo $calendar_args['aspectRatio']; ?>,
-					eventRender: function(event, element, view) {
+					aspectRatio   : <?php echo $calendar_args['aspectRatio']; ?>,
+					eventRender   : function ( event, element, view ) {
 						var ntoday = new Date().getTime();
 						var eventEnd = moment( event.end ).valueOf();
 						var eventStart = moment( event.start ).valueOf();
-						if (!event.end){
-							if (eventStart < ntoday){
-								element.addClass("past-event");
-								element.children().addClass("past-event");
+						if ( !event.end ) {
+							if ( eventStart < ntoday ) {
+								element.addClass( "past-event" );
+								element.children().addClass( "past-event" );
 							}
 						} else {
-							if (eventEnd < ntoday){
-								element.addClass("past-event");
-								element.children().addClass("past-event");
+							if ( eventEnd < ntoday ) {
+								element.addClass( "past-event" );
+								element.children().addClass( "past-event" );
 							}
 						}
 						if ( event.allDay === true ) {
-							element.addClass("allday-event");
-							element.children().addClass("allday-event");
+							element.addClass( "allday-event" );
+							element.children().addClass( "allday-event" );
 						}
 					},
-					eventSources: [
+					eventSources  : [
 						{
-							url: be_events_calendar.ajax_url,
-							type: 'POST',
-							cache: true,
-							data: {
-								nonce: be_events_calendar.nonce,
+							url    : be_events_calendar.ajax_url,
+							type   : 'POST',
+							cache  : true,
+							data   : {
+								nonce : be_events_calendar.nonce,
 								action: 'be_events_calendar'
 							},
-							success: function( res ) {
+							success: function ( res ) {
 								// enjoy the shot
 							},
-							error: function( xhr, textStatus, e ) {
+							error  : function ( xhr, textStatus, e ) {
 								if ( xhr.responseText ) {
-									console.log(xhr.responseText);
+									console.log( xhr.responseText );
 								}
 							}
 						}
 					]
-				})
-			});
+				} )
+			} );
 		</script>
 		<?php
 
@@ -130,6 +133,7 @@ class BE_Events_Calendar_View {
 
 		// Let's kick it.
 		$output = ob_get_clean();
+
 		return $output;
 	}
 
@@ -149,26 +153,29 @@ class BE_Events_Calendar_View {
 		$end         = $_POST['end'];
 		$end_unix    = strtotime( $end );
 		$calendar    = array();
-		$events_args = array (
-			'post_type' => 'event',
+		$events_args = array(
+			'post_type'  => 'event',
 			'meta_query' => array(
 				array(
 					'key'     => 'be_event_start',
 					'value'   => array( $start_unix, $end_unix ),
 					'type'    => 'NUMERIC',
 					'compare' => 'BETWEEN',
-				)
+				),
 			),
 		);
-		$events = new WP_Query( $events_args ); while( $events->have_posts() ) : $events->the_post();
+		$events      = new WP_Query( $events_args );
+		while ( $events->have_posts() ) : $events->the_post();
 			$all_day         = false;
 			$start_timestamp = get_post_meta( get_the_ID(), 'be_event_start', true );
 			$start_time      = date( 'g:iA', $start_timestamp );
 			$end_timestamp   = get_post_meta( get_the_ID(), 'be_event_end', true );
 			$end_time        = date( 'g:iA', $end_timestamp );
 
-			// Determine if the event is "all day". If the editor selects "All Day" checkbox,
-			// the start time will be set to 12:01 AM and end time to 11:59 PM automatically.
+			/*
+			 * Determine if the event is "all day". If the editor selects "All Day" checkbox,
+			 * the start time will be set to 12:01 AM and end time to 11:59 PM automatically.
+			 */
 			if ( $start_time == '12:01AM' && $end_time == '11:59PM' ) {
 				$all_day = true;
 			}
@@ -186,4 +193,5 @@ class BE_Events_Calendar_View {
 		die;
 	}
 }
+
 new BE_Events_Calendar_View();

@@ -41,6 +41,7 @@ class BE_Event_Schema {
 	 * Empty Schema
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
@@ -49,11 +50,12 @@ class BE_Event_Schema {
 		// Only run on events archive
 		if ( ! is_post_type_archive( 'event' ) ) {
 			return $attr;
-        }
+		}
 
-		$attr['itemtype'] = '';
-		$attr['itemprop'] = '';
+		$attr['itemtype']  = '';
+		$attr['itemprop']  = '';
 		$attr['itemscope'] = '';
+
 		return $attr;
 	}
 
@@ -61,6 +63,7 @@ class BE_Event_Schema {
 	 * Event Schema
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
@@ -69,11 +72,12 @@ class BE_Event_Schema {
 		// Only run on event
 		if ( ! 'event' == get_post_type() ) {
 			return $attr;
-        }
+		}
 
-		$attr['itemtype'] = 'http://schema.org/Event';
-		$attr['itemprop'] = '';
+		$attr['itemtype']  = 'http://schema.org/Event';
+		$attr['itemprop']  = '';
 		$attr['itemscope'] = 'itemscope';
+
 		return $attr;
 	}
 
@@ -81,14 +85,14 @@ class BE_Event_Schema {
 	 * Event Name Itemprop
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
 	function event_name_itemprop( $attr ) {
-
-		if( 'event' == get_post_type() ) {
+		if ( 'event' == get_post_type() ) {
 			$attr['itemprop'] = 'name';
-        }
+		}
 
 		return $attr;
 	}
@@ -97,14 +101,14 @@ class BE_Event_Schema {
 	 * Event Description Itemprop
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param array $attr
 	 * @return array
 	 */
 	function event_description_itemprop( $attr ) {
-
-        if( 'event' == get_post_type() ) {
+		if ( 'event' == get_post_type() ) {
 			$attr['itemprop'] = 'description';
-        }
+		}
 
 		return $attr;
 	}
@@ -113,14 +117,14 @@ class BE_Event_Schema {
 	 * Title Link
 	 *
 	 * @since 1.0.3
+	 *
 	 * @param string $output
 	 * @return string
 	 */
 	function title_link( $output ) {
-
-		if( 'event' == get_post_type() ) {
+		if ( 'event' == get_post_type() ) {
 			$output = str_replace( 'rel="bookmark"', 'rel="bookmark" itemprop="url"', $output );
-        }
+		}
 
 		return $output;
 	}
@@ -131,18 +135,19 @@ class BE_Event_Schema {
 	 * @since 1.0.3
 	 */
 	function event_date() {
-
-        if( 'event' !== get_post_type() ) {
+		if ( 'event' !== get_post_type() ) {
 			return;
-        }
+		}
 
 		$start = get_post_meta( get_the_ID(), 'be_event_start', true );
-		if( $start )
-			 echo '<meta itemprop="startDate" content="' . date('c', $start ).'">';
+		if ( $start ) {
+			echo '<meta itemprop="startDate" content="' . date( 'c', $start ) . '">';
+		}
 
 		$end = get_post_meta( get_the_ID(), 'be_event_end', true );
-		if( $end )
-			echo '<meta itemprop="endDate" content="' . date( 'c', $end ).'">';
+		if ( $end ) {
+			echo '<meta itemprop="endDate" content="' . date( 'c', $end ) . '">';
+		}
 
 	}
 }
