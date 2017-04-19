@@ -35,7 +35,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 		// widget basics
 		$widget_ops = array(
 			'classname'   => 'be-events-calendar-widget',
-			'description' => '',
+			'description' => 'A calendar of your events.',
 		);
 
 		// widget controls
@@ -44,7 +44,7 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 		);
 
 		// load widget
-		parent::__construct( 'be-events-calendar-widget', 'Events Calendar Widget', $widget_ops, $control_ops );
+		parent::__construct( 'be-events-calendar-widget', 'Events Calendar', $widget_ops, $control_ops );
 
 		// Ajax
 		add_action( 'wp_ajax_be_events_calendar_widget',        array( $this, 'ajax' ) );
