@@ -41,7 +41,7 @@ class BE_Recurring_Events {
 		//add_action( 'load-edit.php', array( $this, 'edit_event_load' ), 20 );
 
 		// Post Type title placeholder
-		add_action( 'gettext',  array( $this, 'title_placeholder' ) );
+		add_filter( 'enter_title_here', array( $this, 'title_placeholder' ) );
 
 		// Create Metabox
 		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
@@ -201,17 +201,17 @@ class BE_Recurring_Events {
 	 * Change the default title placeholder text
 	 *
 	 * @since 1.0.0
-	 * @global array $post
-	 * @param string $translation
+	 *
+	 * @param string $title
 	 * @return string Customized translation for title
 	 */
-	function title_placeholder( $translation ) {
+	function title_placeholder( $title ) {
 
-		global $post;
-		if ( isset( $post ) && 'recurring-events' == $post->post_type && 'Enter title here' == $translation ) {
-			$translation = 'Enter Event Name Here';
+		$screen = get_current_screen();
+		if  ( 'events' === $screen->post_type ) {
+			$title = 'Enter Event Name Here';
 		}
-		return $translation;
+		return $title;
 	}
 
 	/**
