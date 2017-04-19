@@ -97,7 +97,7 @@ class BE_Recurring_Events {
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title', 'editor' ),
+			'supports'           => array( 'title', 'editor', 'thumbnail' ),
 		);
 
 		$args = apply_filters( 'be_events_manager_recurring_post_type_args', $args );
@@ -443,7 +443,7 @@ class BE_Recurring_Events {
 					update_post_meta( $event_id, 'be_event_end', $event_end );
 
 					// Add any additional metadata
-					$metas = apply_filters( 'be_events_manager_recurring_meta', array() );
+					$metas = apply_filters( 'be_events_manager_recurring_meta', array( '_thumbnail_id') );
 					if( !empty( $metas ) ) {
 						foreach( $metas as $meta ) {
 							update_post_meta( $event_id, $meta, get_post_meta( $post_id, $meta, true ) );
