@@ -48,7 +48,7 @@ class BE_Events_Calendar {
 		add_action( 'init', array( $this, 'post_type' ) );
 
 		// Post Type columns
-		add_filter( 'manage_edit-event_columns', array( $this, 'edit_event_columns' ) ) ;
+		add_filter( 'manage_edit-event_columns', array( $this, 'edit_event_columns' ) );
 		add_action( 'manage_event_posts_custom_column', array( $this, 'manage_event_columns' ), 10, 2 );
 
 		// Post Type sorting
@@ -67,7 +67,7 @@ class BE_Events_Calendar {
 			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_styles' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'metabox_scripts' ) );
 			add_action( 'add_meta_boxes', array( $this, 'metabox_register' ) );
-			add_action( 'save_post', array( $this, 'metabox_save' ),  1, 2  );
+			add_action( 'save_post', array( $this, 'metabox_save' ), 1, 2 );
 		}
 
 		// Modify Event Listings query
@@ -90,10 +90,10 @@ class BE_Events_Calendar {
 			'new_item'           => 'New Event',
 			'view_item'          => 'View Event',
 			'search_items'       => 'Search Events',
-			'not_found'          =>  'No events found',
+			'not_found'          => 'No events found',
 			'not_found_in_trash' => 'No events found in trash',
 			'parent_item_colon'  => '',
-			'menu_name'          => 'Events'
+			'menu_name'          => 'Events',
 		);
 
 		$args = array(
@@ -120,7 +120,9 @@ class BE_Events_Calendar {
 	 * Edit Column Titles
 	 *
 	 * @since 1.0.0
+	 *
 	 * @link http://justintadlock.com/archives/2011/06/27/custom-columns-for-custom-post-types
+	 *
 	 * @param array $columns
 	 * @return array
 	 */
@@ -128,7 +130,7 @@ class BE_Events_Calendar {
 
 		// Change Titles
 		$columns['title'] = 'Event';
-		$columns['date'] = 'Published Date';
+		$columns['date']  = 'Published Date';
 
 		// New Columns
 		$new_columns = array(
@@ -137,9 +139,9 @@ class BE_Events_Calendar {
 		);
 
 		// Add new columns after title column
-		$column_end = array_splice( $columns, 2 );
-		$column_start = array_splice( $columns, 0, 2);
-		$columns = array_merge( $column_start, $new_columns, $column_end );
+		$column_end   = array_splice( $columns, 2 );
+		$column_start = array_splice( $columns, 0, 2 );
+		$columns      = array_merge( $column_start, $new_columns, $column_end );
 
 		return $columns;
 	}
@@ -148,29 +150,31 @@ class BE_Events_Calendar {
 	 * Edit Column Content
 	 *
 	 * @since 1.0.0
+	 *
 	 * @link http://justintadlock.com/archives/2011/06/27/custom-columns-for-custom-post-types
+	 *
 	 * @param string $column
 	 * @param int $post_id
 	 */
 	function manage_event_columns( $column, $post_id ) {
 
-		switch( $column ) {
+		switch ( $column ) {
 
 			/* If displaying the 'duration' column. */
 			case 'event_start' :
 
 				/* Get the post meta. */
-				$allday = get_post_meta( $post_id, 'be_event_allday', true );
+				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$start = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
+				$start       = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
 
 				/* If no duration is found, output a default message. */
-				if ( empty( $start ) )
+				if ( empty( $start ) ) {
 					echo __( 'Unknown' );
-
-				/* If there is a duration, append 'minutes' to the text string. */
-				else
+				} /* If there is a duration, append 'minutes' to the text string. */
+				else {
 					echo $start;
+				}
 
 				break;
 
@@ -178,17 +182,17 @@ class BE_Events_Calendar {
 			case 'event_end' :
 
 				/* Get the post meta. */
-				$allday = get_post_meta( $post_id, 'be_event_allday', true );
+				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$end = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
+				$end         = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
 
 				/* If no duration is found, output a default message. */
-				if ( empty( $end ) )
+				if ( empty( $end ) ) {
 					echo __( 'Unknown' );
-
-				/* If there is a duration, append 'minutes' to the text string. */
-				else
+				} /* If there is a duration, append 'minutes' to the text string. */
+				else {
 					echo $end;
+				}
 
 				break;
 
@@ -201,8 +205,10 @@ class BE_Events_Calendar {
 	/**
 	 * Make Columns Sortable
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.
+	 *
 	 * @link http://justintadlock.com/archives/2011/06/27/custom-columns-for-custom-post-types
+	 *
 	 * @param array $columns
 	 * @return array
 	 */
@@ -233,31 +239,31 @@ class BE_Events_Calendar {
 	 */
 	function sort_events( $vars ) {
 
-		/* Check if we're viewing the 'event' post type. */
+		// Check if we're viewing the 'event' post type.
 		if ( isset( $vars['post_type'] ) && 'event' == $vars['post_type'] ) {
 
-			/* Check if 'orderby' is set to 'start_date'. */
+			// Check if 'orderby' is set to 'start_date'.
 			if ( isset( $vars['orderby'] ) && 'event_start' == $vars['orderby'] ) {
 
-				/* Merge the query vars with our custom variables. */
+				// Merge the query vars with our custom variables.
 				$vars = array_merge(
 					$vars,
 					array(
 						'meta_key' => 'be_event_start',
-						'orderby' => 'meta_value_num'
+						'orderby'  => 'meta_value_num',
 					)
 				);
 			}
 
-			/* Check if 'orderby' is set to 'end_date'. */
+			// Check if 'orderby' is set to 'end_date'.
 			if ( isset( $vars['orderby'] ) && 'event_end' == $vars['orderby'] ) {
 
-				/* Merge the query vars with our custom variables. */
+				// Merge the query vars with our custom variables.
 				$vars = array_merge(
 					$vars,
 					array(
 						'meta_key' => 'be_event_end',
-						'orderby' => 'meta_value_num'
+						'orderby'  => 'meta_value_num',
 					)
 				);
 			}
@@ -279,7 +285,7 @@ class BE_Events_Calendar {
 
 		$screen = get_current_screen();
 
-		if  ( 'event' === $screen->post_type ) {
+		if ( 'event' === $screen->post_type ) {
 			$title = 'Enter Event Name Here';
 		}
 
@@ -294,10 +300,11 @@ class BE_Events_Calendar {
 	function taxonomies() {
 
 		$supports = get_theme_support( 'be-events-calendar' );
-		if ( !is_array( $supports ) || !in_array( 'event-category', $supports[0] ) )
+		if ( ! is_array( $supports ) || ! in_array( 'event-category', $supports[0] ) ) {
 			return;
+		}
 
-		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'event', 'recurring_event' ) : array( 'event' );
+		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'event', 'recurring_event', ) : array( 'event' );
 
 		$labels = array(
 			'name'              => 'Categories',
@@ -310,7 +317,7 @@ class BE_Events_Calendar {
 			'update_item'       => 'Update Category',
 			'add_new_item'      => 'Add New Category',
 			'new_item_name'     => 'New Category Name',
-			'menu_name'         => 'Categories'
+			'menu_name'         => 'Categories',
 		);
 
 		register_taxonomy( 'event-category', $post_types, array(
@@ -320,7 +327,7 @@ class BE_Events_Calendar {
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => array( 'slug' => 'event-category' ),
-		));
+		) );
 	}
 
 	/**
@@ -359,15 +366,19 @@ class BE_Events_Calendar {
 		}
 
 		// Load scripts.
-		wp_register_script( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'js/events-admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ) , BE_EVENTS_CALENDAR_VERSION, true );
+		wp_register_script( 'be-events-calendar', BE_EVENTS_CALENDAR_URL . 'js/events-admin.js', array(
+			'jquery',
+			'jquery-ui-core',
+			'jquery-ui-datepicker',
+		), BE_EVENTS_CALENDAR_VERSION, true );
 		wp_enqueue_script( 'be-events-calendar' );
 	}
 
 	/**
-	 * Initialize the metabox
-	 *
-	 * @since 1.0.0
-	 */
+ * Initialize the metabox
+ *
+ * @since 1.0.0
+ */
 	function metabox_register() {
 
 		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array( $this, 'render_metabox' ), 'event', 'normal', 'high' );
@@ -380,15 +391,15 @@ class BE_Events_Calendar {
 	 */
 	function render_metabox() {
 
-		$start  = get_post_meta( get_the_ID() , 'be_event_start', true );
-		$end    = get_post_meta( get_the_ID() , 'be_event_end',   true );
+		$start  = get_post_meta( get_the_ID(), 'be_event_start', true );
+		$end    = get_post_meta( get_the_ID(), 'be_event_end', true );
 		$allday = get_post_meta( get_the_ID(), 'be_event_allday', true );
 
-		if ( !empty( $start ) && !empty( $end ) ) {
+		if ( ! empty( $start ) && ! empty( $end ) ) {
 			$start_date = date( 'm/d/Y', $start );
-			$start_time = date( 'g:ia',  $start );
-			$end_date   = date( 'm/d/Y', $end   );
-			$end_time   = date( 'g:ia',  $end   );
+			$start_time = date( 'g:ia', $start );
+			$end_date   = date( 'm/d/Y', $end );
+			$end_time   = date( 'g:ia', $end );
 		}
 
 		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
@@ -396,19 +407,28 @@ class BE_Events_Calendar {
 
 		<div class="section" style="min-height:0;">
 			<label for="be-events-calendar-allday">All Day event?</label>
-			<input name="be-events-calendar-allday" type="checkbox" id="be-events-calendar-allday" value="1" <?php checked( '1', $allday ); ?>>
+			<input name="be-events-calendar-allday" type="checkbox" id="be-events-calendar-allday"
+			       value="1" <?php checked( '1', $allday ); ?>>
 		</div>
 		<div class="section">
 			<label for="be-events-calendar-start">Start date and time:</label>
-			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start ) ? $start_date : ''; ?>" placeholder="Date">
-			<input name="be-events-calendar-start-time" type="text"  id="be-events-calendar-start-time" class="be-events-calendar-time" value="<?php echo !empty( $start ) ? $start_time : ''; ?>" placeholder="Time">
+			<input name="be-events-calendar-start" type="text" id="be-events-calendar-start"
+			       class="be-events-calendar-date" value="<?php echo ! empty( $start ) ? $start_date : ''; ?>"
+			       placeholder="Date">
+			<input name="be-events-calendar-start-time" type="text" id="be-events-calendar-start-time"
+			       class="be-events-calendar-time" value="<?php echo ! empty( $start ) ? $start_time : ''; ?>"
+			       placeholder="Time">
 		</div>
 		<div class="section">
 			<label for="be-events-calendar-end">End date and time:</label>
-			<input name="be-events-calendar-end" type="text"  id="be-events-calendar-end" class="be-events-calendar-date" value="<?php echo !empty( $end ) ? $end_date : ''; ?>" placeholder="Date">
-			<input name="be-events-calendar-end-time" type="text"  id="be-events-calendar-end-time" class="be-events-calendar-time" value="<?php echo !empty( $end ) ? $end_time : ''; ?>" placeholder="Time">
+			<input name="be-events-calendar-end" type="text" id="be-events-calendar-end" class="be-events-calendar-date"
+			       value="<?php echo ! empty( $end ) ? $end_date : ''; ?>" placeholder="Date">
+			<input name="be-events-calendar-end-time" type="text" id="be-events-calendar-end-time"
+			       class="be-events-calendar-time" value="<?php echo ! empty( $end ) ? $end_time : ''; ?>"
+			       placeholder="Time">
 		</div>
-		<p class="desc">Date format should be <strong>MM/DD/YYYY</strong>. Time format should be <strong>H:MM am/pm</strong>.<br>Example: 05/12/2015 6:00pm</p>
+		<p class="desc">Date format should be <strong>MM/DD/YYYY</strong>. Time format should be <strong>H:MM
+				am/pm</strong>.<br>Example: 05/12/2015 6:00pm</p>
 		<?php
 	}
 
@@ -416,6 +436,7 @@ class BE_Events_Calendar {
 	 * Save metabox contents
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param int $post_id
 	 * @param array $post
 	 */
@@ -443,22 +464,22 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		 // Bail out if the user doesn't have the correct permissions to update the slider.
+		// Bail out if the user doesn't have the correct permissions to update the slider.
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
 
 		// Make sure the event start/end dates were not left blank before we run the save
-		if ( isset( $_POST['be-events-calendar-start'] ) && isset( $_POST['be-events-calendar-end'] ) && !empty( $_POST['be-events-calendar-start'] ) && !empty( $_POST['be-events-calendar-end'] ) ) {
+		if ( isset( $_POST['be-events-calendar-start'] ) && isset( $_POST['be-events-calendar-end'] ) && ! empty( $_POST['be-events-calendar-start'] ) && ! empty( $_POST['be-events-calendar-end'] ) ) {
 			$start      = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
 			$start_unix = strtotime( $start );
 			$end        = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
 			$end_unix   = strtotime( $end );
 			$allday     = ( isset( $_POST['be-events-calendar-allday'] ) ? '1' : '0' );
 
-			update_post_meta( $post_id, 'be_event_start',  $start_unix );
-			update_post_meta( $post_id, 'be_event_end',    $end_unix   );
-			update_post_meta( $post_id, 'be_event_allday', $allday     );
+			update_post_meta( $post_id, 'be_event_start', $start_unix );
+			update_post_meta( $post_id, 'be_event_end', $end_unix );
+			update_post_meta( $post_id, 'be_event_allday', $allday );
 		}
 	}
 
@@ -466,22 +487,24 @@ class BE_Events_Calendar {
 	 * Modify WordPress query where needed for event listings
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param object $query
 	 */
 	function event_query( $query ) {
 
 		// If you don't want the plugin to mess with the query, use this filter to override it
 		$override = apply_filters( 'be_events_manager_query_override', false );
-		if ( $override )
+		if ( $override ) {
 			return;
+		}
 
-		if ( $query->is_main_query() && !is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event-category' ) ) ) {
+		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event-category' ) ) ) {
 			$meta_query = array(
 				array(
-					'key' => 'be_event_end',
-					'value' => (int) current_time( 'timestamp' ),
-					'compare' => '>'
-				)
+					'key'     => 'be_event_end',
+					'value'   => (int) current_time( 'timestamp' ),
+					'compare' => '>',
+				),
 			);
 			$query->set( 'orderby', 'meta_value_num' );
 			$query->set( 'order', 'ASC' );
