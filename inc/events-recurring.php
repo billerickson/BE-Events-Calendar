@@ -71,18 +71,18 @@ class BE_Recurring_Events {
 		}
 
 		$labels = array(
-			'name'               => 'Recurring Events',
-			'singular_name'      => 'Recurring Event',
-			'add_new'            => 'Add Recurring Event',
-			'add_new_item'       => 'Add New Recurring Event',
-			'edit_item'          => 'Edit Recurring Event',
-			'new_item'           => 'New Recurring Event',
-			'view_item'          => 'View Recurring Event',
-			'search_items'       => 'Search Recurring Events',
-			'not_found'          => 'No recurring events found',
-			'not_found_in_trash' => 'No recurring events found in trash',
+			'name'               => _x( 'Recurring Events', 'post type general name', 'be-events-calendar' ),
+			'singular_name'      => _x( 'Recurring Event', 'post type singular name', 'be-events-calendar' ),
+			'add_new'            => __( 'Add Recurring Event', 'be-events-calendar' ),
+			'add_new_item'       => __( 'Add New Recurring Event', 'be-events-calendar' ),
+			'edit_item'          => __( 'Edit Recurring Event', 'be-events-calendar' ),
+			'new_item'           => __( 'New Recurring Event', 'be-events-calendar' ),
+			'view_item'          => __( 'View Recurring Event', 'be-events-calendar' ),
+			'search_items'       => __( 'Search Recurring Events', 'be-events-calendar' ),
+			'not_found'          => __( 'No recurring events found', 'be-events-calendar' ),
+			'not_found_in_trash' => __( 'No recurring events found in trash', 'be-events-calendar' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => 'Recurring Events',
+			'menu_name'          => _x( 'Recurring Events', 'admin menu', 'be-events-calendar' ),
 		);
 
 		$args = array(
@@ -125,7 +125,7 @@ class BE_Recurring_Events {
 		foreach ( $columns as $key => $label ) {
 			$new_columns[ $key ] = $label;
 			if ( 'title' == $key ) {
-				$new_columns['recurring'] = 'Part of Series';
+				$new_columns['recurring'] = esc_html__( 'Part of Series', 'be-events-calendar' );
 			}
 		}
 
@@ -162,7 +162,7 @@ class BE_Recurring_Events {
 	 */
 	function event_sortable_columns( $columns ) {
 
-		$columns['recurring'] = 'recurring';
+		$columns['recurring'] = esc_html__( 'recurring', 'be-events-calendar' );
 
 		return $columns;
 	}
@@ -219,7 +219,7 @@ class BE_Recurring_Events {
 
 		$screen = get_current_screen();
 		if ( 'event' === $screen->post_type ) {
-			$title = 'Enter Event Name Here';
+			$title = __( 'Enter Event Name Here', 'be-events-calendar' );
 		}
 
 		return $title;
@@ -276,7 +276,7 @@ class BE_Recurring_Events {
 	 */
 	function metabox_register() {
 
-		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array( $this, 'render_metabox' ), 'recurring_event', 'normal', 'high' );
+		add_meta_box( 'be-events-calendar-date-time', esc_html__( 'Date and Time Details', 'be-events-calendar' ), array( $this, 'render_metabox' ), 'recurring_event', 'normal', 'high' );
 	}
 
 	/**
@@ -305,51 +305,59 @@ class BE_Recurring_Events {
 		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
 		?>
 		<div class="section">
-			<p class="title">First Event</p>
-			<p class="subtitle">Serves as a base for all events</p>
+			<p class="title"><?php esc_html_e( 'First Event', 'be-events-calendar' ); ?><</p>
+			<p class="subtitle"><?php esc_html_e( 'Serves as a base for all events', 'be-events-calendar' ); ?></p>
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-start">Start date and time:</label>
+			<label
+				for="be-events-calendar-start"><?php esc_html_e( 'Start date and time:', 'be-events-calendar' ); ?></label>
 			<input name="be-events-calendar-start" type="text" id="be-events-calendar-start"
 			       class="be-events-calendar-date" value="<?php echo ! empty( $start ) ? $start_date : ''; ?>"
-			       placeholder="Date">
+			       placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-start-time" type="text" id="be-events-calendar-start-time"
 			       class="be-events-calendar-time" value="<?php echo ! empty( $start ) ? $start_time : ''; ?>"
-			       placeholder="Time">
+			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-end">End date and time:</label>
+			<label for="be-events-calendar-end"><?php esc_html_e( 'End date and time:', 'be-events-calendar' ); ?></label>
 			<input name="be-events-calendar-end" type="text" id="be-events-calendar-end" class="be-events-calendar-date"
-			       value="<?php echo ! empty( $end ) ? $end_date : ''; ?>" placeholder="Date">
+			       value="<?php echo ! empty( $end ) ? $end_date : ''; ?>"
+			       placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-end-time" type="text" id="be-events-calendar-end-time"
 			       class="be-events-calendar-time" value="<?php echo ! empty( $end ) ? $end_time : ''; ?>"
-			       placeholder="Time">
+			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
-		<p class="desc">Date format should be <strong>MM/DD/YYYY</strong>. Time format should be <strong>H:MM
-				am/pm</strong>.<br>Example: 05/12/2015 6:00pm</p>
+		<p class="desc">
+			<?php printf( esc_html__( 'Date format should be %s.', 'be-events-calendar'), '<strong>MM/DD/YYYY</strong>' ); ?>
+			<?php printf( esc_html__( 'Time format should be %s.', 'be-events-calendar' ), '<strong>H:MM am/pm</strong>' ); ?>
+			<br><?php esc_html_e( 'Example: 05/12/2015 6:00pm', 'be-events-calendar' ); ?>
+		</p>
 		<hr>
 		<div class="section">
-			<p class="title">Recurring Options</p>
+			<p class="title"><?php esc_html_e( 'Recurring Options', 'be-events-calendar' ); ?></p>
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-repeat">Repeat period:</label>
+			<label for="be-events-calendar-repeat"><?php esc_html_e( 'Repeat period:', 'be-events-calendar' ); ?></label>
 			<select name="be-events-calendar-repeat" id="be-events-calendar-repeat">
-				<option value="daily" <?php selected( 'daily', $recurring ); ?>>Daily</option>
-				<option value="weekly" <?php selected( 'weekly', $recurring ); ?>>Weekly</option>
-				<option value="monthly" <?php selected( 'montly', $recurring ); ?>>Monthly</option>
+				<option value="daily" <?php selected( 'daily', $recurring ); ?>><?php esc_html_e( 'Daily', 'be-events-calendar' ); ?></option>
+				<option value="weekly" <?php selected( 'weekly', $recurring ); ?>><?php esc_html_e( 'Weekly', 'be-events-calendar' ); ?></option>
+				<option value="monthly" <?php selected( 'montly', $recurring ); ?>><?php esc_html_e( 'Monthly', 'be-events-calendar' ); ?></option>
 			</select>
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-repeat-end">Repeat ends:</label>
+			<label for="be-events-calendar-repeat-end"><?php esc_html_e( 'Repeat ends:', 'be-events-calendar' ); ?></label>
 			<input name="be-events-calendar-repeat-end" type="text" id="be-events-calendar-repeat-end"
 			       class="be-events-calendar-date"
 			       value="<?php echo ! empty( $recurring_end ) ? $recurring_end : ''; ?>" placeholder="Date">
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-regenerate">Repeat events:</label>
+			<label for="be-events-calendar-regenerate"><?php esc_html_e( 'Repeat events:', 'be-events-calendar' ); ?></label>
 			<input type="checkbox" name="be-events-calendar-regenerate" id="be-events-calendar-regenerate"
 			       value="1" <?php checked( '1', $regenerate ); ?>>
-			<span class="check-desc"><strong>This will delete all scheduled events!</strong> Past events will be unchanged.</span>
+			<span class="check-desc">
+				<strong><?php esc_html_e( 'This will delete all scheduled events!', 'be-events-calendar' ); ?></strong>
+				<?php esc_html_e( 'Past events will be unchanged.', 'be-events-calendar' ); ?>
+			</span>
 		</div>
 		<?php
 	}

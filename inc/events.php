@@ -24,6 +24,9 @@ class BE_Events_Calendar {
 
 		// Load the plugin base
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
+
+		// Load Text Domain
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 	}
 
 	/**
@@ -82,18 +85,18 @@ class BE_Events_Calendar {
 	function post_type() {
 
 		$labels = array(
-			'name'               => 'Events',
-			'singular_name'      => 'Event',
-			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Event',
-			'edit_item'          => 'Edit Event',
-			'new_item'           => 'New Event',
-			'view_item'          => 'View Event',
-			'search_items'       => 'Search Events',
-			'not_found'          => 'No events found',
-			'not_found_in_trash' => 'No events found in trash',
+			'name'               => _x( 'Events', 'post type general name' , 'be-events-calendar' ),
+			'singular_name'      => _x( 'Event', 'post type singular name', 'be-events-calendar' ),
+			'add_new'            => __( 'Add New', 'be-events-calendar' ),
+			'add_new_item'       => __( 'Add New Event', 'be-events-calendar' ),
+			'edit_item'          => __( 'Edit Event', 'be-events-calendar' ),
+			'new_item'           => __( 'New Event', 'be-events-calendar' ),
+			'view_item'          => __( 'View Event', 'be-events-calendar' ),
+			'search_items'       => __( 'Search Events', 'be-events-calendar' ),
+			'not_found'          => __( 'No events found', 'be-events-calendar' ),
+			'not_found_in_trash' => __( 'No events found in trash', 'be-events-calendar' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => 'Events',
+			'menu_name'          => _x( 'Events', 'admin menu', 'be-events-calendar' ),
 		);
 
 		$args = array(
@@ -129,13 +132,13 @@ class BE_Events_Calendar {
 	function edit_event_columns( $columns ) {
 
 		// Change Titles
-		$columns['title'] = 'Event';
-		$columns['date']  = 'Published Date';
+		$columns['title'] = esc_html__( 'Event', 'be-events-calendar' );
+		$columns['date']  = esc_html__( 'Published Date', 'be-events-calendar' );
 
 		// New Columns
 		$new_columns = array(
-			'event_start' => 'Starts',
-			'event_end'   => 'Ends',
+			'event_start' => esc_html__( 'Starts', 'be-events-calendar' ),
+			'event_end'   => esc_html__( 'Ends', 'be-events-calendar' ),
 		);
 
 		// Add new columns after title column
@@ -170,7 +173,7 @@ class BE_Events_Calendar {
 
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) ) {
-					echo __( 'Unknown' );
+					esc_html_e( 'Unknown', 'be-events-calendar' );
 				} /* If there is a duration, append 'minutes' to the text string. */
 				else {
 					echo $start;
@@ -188,7 +191,7 @@ class BE_Events_Calendar {
 
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) ) {
-					echo __( 'Unknown' );
+					esc_html_e( 'Unknown', 'be-events-calendar' );
 				} /* If there is a duration, append 'minutes' to the text string. */
 				else {
 					echo $end;
@@ -286,7 +289,7 @@ class BE_Events_Calendar {
 		$screen = get_current_screen();
 
 		if ( 'event' === $screen->post_type ) {
-			$title = 'Enter Event Name Here';
+			$title = __( 'Enter Event Name Here', 'be-events-calendar' );
 		}
 
 		return $title;
@@ -307,17 +310,17 @@ class BE_Events_Calendar {
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'event', 'recurring_event', ) : array( 'event' );
 
 		$labels = array(
-			'name'              => 'Categories',
-			'singular_name'     => 'Category',
-			'search_items'      => 'Search Categories',
-			'all_items'         => 'All Categories',
-			'parent_item'       => 'Parent Category',
-			'parent_item_colon' => 'Parent Category:',
-			'edit_item'         => 'Edit Category',
-			'update_item'       => 'Update Category',
-			'add_new_item'      => 'Add New Category',
-			'new_item_name'     => 'New Category Name',
-			'menu_name'         => 'Categories',
+			'name'              => __( 'Categories', 'be-events-calendar' ),
+			'singular_name'     => __( 'Category', 'be-events-calendar' ),
+			'search_items'      => __( 'Search Categories', 'be-events-calendar' ),
+			'all_items'         => __( 'All Categories', 'be-events-calendar' ),
+			'parent_item'       => __( 'Parent Category', 'be-events-calendar' ),
+			'parent_item_colon' => __( 'Parent Category:', 'be-events-calendar' ),
+			'edit_item'         => __( 'Edit Category', 'be-events-calendar' ),
+			'update_item'       => __( 'Update Category', 'be-events-calendar' ),
+			'add_new_item'      => __( 'Add New Category', 'be-events-calendar' ),
+			'new_item_name'     => __( 'New Category Name', 'be-events-calendar' ),
+			'menu_name'         => __( 'Categories', 'be-events-calendar' ),
 		);
 
 		register_taxonomy( 'event-category', $post_types, array(
@@ -381,7 +384,7 @@ class BE_Events_Calendar {
  */
 	function metabox_register() {
 
-		add_meta_box( 'be-events-calendar-date-time', 'Date and Time Details', array( $this, 'render_metabox' ), 'event', 'normal', 'high' );
+		add_meta_box( 'be-events-calendar-date-time', esc_html__( 'Date and Time Details', 'be-events-calendar' ), array( $this, 'render_metabox' ), 'event', 'normal', 'high' );
 	}
 
 	/**
@@ -406,29 +409,29 @@ class BE_Events_Calendar {
 		?>
 
 		<div class="section" style="min-height:0;">
-			<label for="be-events-calendar-allday">All Day event?</label>
+			<label for="be-events-calendar-allday"><?php esc_html_e( 'All Day event?', 'be-events-calendar' ); ?></label>
 			<input name="be-events-calendar-allday" type="checkbox" id="be-events-calendar-allday"
 			       value="1" <?php checked( '1', $allday ); ?>>
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-start">Start date and time:</label>
-			<input name="be-events-calendar-start" type="text" id="be-events-calendar-start"
-			       class="be-events-calendar-date" value="<?php echo ! empty( $start ) ? $start_date : ''; ?>"
-			       placeholder="Date">
+			<label for="be-events-calendar-start"><?php esc_html_e( 'Start date and time:', 'be-events-calendar' ); ?></label>
+			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start ) ? $start_date : ''; ?>" placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-start-time" type="text" id="be-events-calendar-start-time"
 			       class="be-events-calendar-time" value="<?php echo ! empty( $start ) ? $start_time : ''; ?>"
-			       placeholder="Time">
+			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-end">End date and time:</label>
-			<input name="be-events-calendar-end" type="text" id="be-events-calendar-end" class="be-events-calendar-date"
-			       value="<?php echo ! empty( $end ) ? $end_date : ''; ?>" placeholder="Date">
+			<label for="be-events-calendar-end"><?php esc_html_e( 'End date and time:', 'be-events-calendar' ); ?></label>
+			<input name="be-events-calendar-end" type="text"  id="be-events-calendar-end" class="be-events-calendar-date" value="<?php echo !empty( $end ) ? $end_date : ''; ?>" placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-end-time" type="text" id="be-events-calendar-end-time"
 			       class="be-events-calendar-time" value="<?php echo ! empty( $end ) ? $end_time : ''; ?>"
-			       placeholder="Time">
+			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
-		<p class="desc">Date format should be <strong>MM/DD/YYYY</strong>. Time format should be <strong>H:MM
-				am/pm</strong>.<br>Example: 05/12/2015 6:00pm</p>
+		<p class="desc">
+			<?php printf( esc_html__( 'Date format should be %s.', 'be-events-calendar'), '<strong>MM/DD/YYYY</strong>' ); ?>
+			<?php printf( esc_html__( 'Time format should be %s.', 'be-events-calendar' ), '<strong>H:MM am/pm</strong>' ); ?>
+			<br><?php esc_html_e( 'Example: 05/12/2015 6:00pm', 'be-events-calendar' ); ?>
+		</p>
 		<?php
 	}
 
@@ -511,6 +514,15 @@ class BE_Events_Calendar {
 			$query->set( 'meta_query', $meta_query );
 			$query->set( 'meta_key', 'be_event_start' );
 		}
+	}
+
+	/**
+	 * Load Text Domain
+	 *
+	 * @since 1.4.0
+	 */
+	function load_plugin_textdomain() {
+		load_plugin_textdomain( 'be-events-calendar', FALSE, basename( plugin_basename( BE_EVENTS_CALENDAR_DIR ) ) . '/languages/' );
 	}
 
 }
