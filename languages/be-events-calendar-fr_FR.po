@@ -1,0 +1,334 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BE Events Calendar\n"
+"POT-Creation-Date: 2017-04-25 10:08+0200\n"
+"PO-Revision-Date: 2017-04-25 10:08+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: be-events-calendar.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: inc/events-recurring.php:74
+msgctxt "post type general name"
+msgid "Recurring Events"
+msgstr "Événements récurrents"
+
+#: inc/events-recurring.php:75
+msgctxt "post type singular name"
+msgid "Recurring Event"
+msgstr "Événement récurrent"
+
+#: inc/events-recurring.php:76
+msgid "Add Recurring Event"
+msgstr "Ajouter un événement récurrent"
+
+#: inc/events-recurring.php:77
+msgid "Add New Recurring Event"
+msgstr "Ajouter un nouvel événement récurrent"
+
+#: inc/events-recurring.php:78
+msgid "Edit Recurring Event"
+msgstr "Modifier l&rsquo;événement récurrent"
+
+#: inc/events-recurring.php:79
+msgid "New Recurring Event"
+msgstr "Nouvel événement récurrent"
+
+#: inc/events-recurring.php:80
+msgid "View Recurring Event"
+msgstr "Voir l&rsquo;événement récurrent"
+
+#: inc/events-recurring.php:81
+msgid "Search Recurring Events"
+msgstr "Rechercher dans les événements récurrents"
+
+#: inc/events-recurring.php:82
+msgid "No recurring events found"
+msgstr "Aucun événement récurrent trouvé"
+
+#: inc/events-recurring.php:83
+msgid "No recurring events found in trash"
+msgstr "Aucun événement récurrent trouvé dans la corbeille"
+
+#: inc/events-recurring.php:85
+msgctxt "admin menu"
+msgid "Recurring Events"
+msgstr "Événements récurrents"
+
+#: inc/events-recurring.php:128
+msgid "Part of Series"
+msgstr "Partie de la série"
+
+#: inc/events-recurring.php:165
+msgid "recurring"
+msgstr "récurrent"
+
+#: inc/events-recurring.php:222 inc/events.php:292
+msgid "Enter Event Name Here"
+msgstr "Saisissez le nom de l&rsquo;événement ici"
+
+#: inc/events-recurring.php:279 inc/events.php:387
+msgid "Date and Time Details"
+msgstr "Détails de date et d&rsquo;heure"
+
+#: inc/events-recurring.php:308
+msgid "First Event"
+msgstr "Premier événement"
+
+#: inc/events-recurring.php:309
+msgid "Serves as a base for all events"
+msgstr "Sert de base pour tous les événements"
+
+#: inc/events-recurring.php:313 inc/events.php:417
+msgid "Start date and time:"
+msgstr "Date et heure de début&nbsp;:"
+
+#: inc/events-recurring.php:316 inc/events-recurring.php:325 inc/events.php:418
+#: inc/events.php:425
+msgid "Date"
+msgstr "Date"
+
+#: inc/events-recurring.php:319 inc/events-recurring.php:328 inc/events.php:421
+#: inc/events.php:428
+msgid "Time"
+msgstr "Heure"
+
+#: inc/events-recurring.php:322 inc/events.php:424
+msgid "End date and time:"
+msgstr "Date et heure de fin&nbsp;:"
+
+#: inc/events-recurring.php:331 inc/events.php:431
+#, php-format
+msgid "Date format should be %s."
+msgstr "Le format de de date doit être %s."
+
+#: inc/events-recurring.php:332 inc/events.php:432
+#, php-format
+msgid "Time format should be %s."
+msgstr "Le format de l&rsquo;heure date doit être %s."
+
+#: inc/events-recurring.php:333 inc/events.php:433
+msgid "Example: 05/12/2015 6:00pm"
+msgstr "Exemple&nbsp;: 05/12/2015 6:00pm"
+
+#: inc/events-recurring.php:337
+msgid "Recurring Options"
+msgstr "Options de récurrence"
+
+#: inc/events-recurring.php:340
+msgid "Repeat period:"
+msgstr "Période de répétition&nbsp;:"
+
+#: inc/events-recurring.php:342
+msgid "Daily"
+msgstr "Quotidien"
+
+#: inc/events-recurring.php:343
+msgid "Weekly"
+msgstr "Hebdomadaire"
+
+#: inc/events-recurring.php:344
+msgid "Monthly"
+msgstr "Mensuel"
+
+#: inc/events-recurring.php:348
+msgid "Repeat ends:"
+msgstr "Fin de la répétition&nbsp;:"
+
+#: inc/events-recurring.php:354
+msgid "Repeat events:"
+msgstr "Répéter les événements&nbsp;:"
+
+#: inc/events-recurring.php:358
+msgid "This will delete all scheduled events!"
+msgstr "Cela supprimera tous les événements programmés&nbsp;!"
+
+#: inc/events-recurring.php:359
+msgid "Past events will be unchanged."
+msgstr "Les événements passés seront inchangées."
+
+#: inc/events.php:88
+msgctxt "post type general name"
+msgid "Events"
+msgstr "Événements"
+
+#: inc/events.php:89
+msgctxt "post type singular name"
+msgid "Event"
+msgstr "Événement"
+
+#: inc/events.php:90
+msgid "Add New"
+msgstr "Ajouter"
+
+#: inc/events.php:91
+msgid "Add New Event"
+msgstr "Ajouter un nouvel événement"
+
+#: inc/events.php:92
+msgid "Edit Event"
+msgstr "Modifier l&rsquo;événement"
+
+#: inc/events.php:93
+msgid "New Event"
+msgstr "Nouvel événement"
+
+#: inc/events.php:94
+msgid "View Event"
+msgstr "Voir l&rsquo;événement"
+
+#: inc/events.php:95
+msgid "Search Events"
+msgstr "Rechercher dans les événements"
+
+#: inc/events.php:96
+msgid "No events found"
+msgstr "Aucun événement trouvé"
+
+#: inc/events.php:97
+msgid "No events found in trash"
+msgstr "Aucun événement trouvé dans la corbeille"
+
+#: inc/events.php:99
+msgctxt "admin menu"
+msgid "Events"
+msgstr "Événements"
+
+#: inc/events.php:135
+msgid "Event"
+msgstr "Événement"
+
+#: inc/events.php:136
+msgid "Published Date"
+msgstr "Date de publication"
+
+#: inc/events.php:140
+msgid "Starts"
+msgstr "Débute"
+
+#: inc/events.php:141
+msgid "Ends"
+msgstr "Finit"
+
+#: inc/events.php:176 inc/events.php:194
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: inc/events.php:313 inc/events.php:323
+msgid "Categories"
+msgstr "Catégories"
+
+#: inc/events.php:314
+msgid "Category"
+msgstr "Catégorie"
+
+#: inc/events.php:315
+msgid "Search Categories"
+msgstr "Rechercher dans les catégories"
+
+#: inc/events.php:316
+msgid "All Categories"
+msgstr "Toutes les catégories"
+
+#: inc/events.php:317
+msgid "Parent Category"
+msgstr "Catégorie parente"
+
+#: inc/events.php:318
+msgid "Parent Category:"
+msgstr "Catégorie parente&nbsp;:"
+
+#: inc/events.php:319
+msgid "Edit Category"
+msgstr "Modifier la catégorie"
+
+#: inc/events.php:320
+msgid "Update Category"
+msgstr "Mettre à jour la catégorie"
+
+#: inc/events.php:321
+msgid "Add New Category"
+msgstr "Ajouter une nouvelle catégorie"
+
+#: inc/events.php:322
+msgid "New Category Name"
+msgstr "Nom de la nouvelle catégorie"
+
+#: inc/events.php:412
+msgid "All Day event?"
+msgstr "Événement sur toute la journée&nbsp;?"
+
+#: inc/widget-calendar.php:151
+msgid "Sun"
+msgstr "Dim"
+
+#: inc/widget-calendar.php:152
+msgid "Mon"
+msgstr "Lun"
+
+#: inc/widget-calendar.php:153
+msgid "Tues"
+msgstr "Mar"
+
+#: inc/widget-calendar.php:154
+msgid "Wed"
+msgstr "Mer"
+
+#: inc/widget-calendar.php:155
+msgid "Thu"
+msgstr "Jeu"
+
+#: inc/widget-calendar.php:156
+msgid "Fri"
+msgstr "Ven"
+
+#: inc/widget-calendar.php:157
+msgid "Sat"
+msgstr "Sam"
+
+#: inc/widget-upcoming-events.php:22 inc/widget-upcoming-events.php:108
+msgid "Upcoming Events"
+msgstr "Événements à venir"
+
+#: inc/widget-upcoming-events.php:110
+msgid "View All Event Information"
+msgstr "Voir toutes les informations de l&rsquo;événement"
+
+#: inc/widget-upcoming-events.php:114
+msgid "Title:"
+msgstr "Titre&nbsp;:"
+
+#: inc/widget-upcoming-events.php:115
+msgid "How Many:"
+msgstr "Combien&nbsp;:"
+
+#: inc/widget-upcoming-events.php:116
+msgid "More Text:"
+msgstr "Texte «&nbsp;Lire la suite&nbsp;»&nbsp;:"
+
+#. Plugin Name of the plugin/theme
+msgid "BE Events Calendar"
+msgstr "BE Events Calendar"
+
+#. Description of the plugin/theme
+msgid "Allows you to manage events."
+msgstr "Vous permet de gérer des événements."
+
+#. Author of the plugin/theme
+msgid "Bill Erickson"
+msgstr "Bill Erickson"
+
+#~ msgid "Events"
+#~ msgstr "Aucun événement trouvé"
