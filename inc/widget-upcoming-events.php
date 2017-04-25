@@ -19,7 +19,7 @@ class BE_Upcoming_Events extends WP_Widget {
 	 **/
 	function __construct() {
 		$widget_ops = array( 'classname' => 'widget_upcoming_events', 'description' => 'A list of upcoming events.' );
-		parent::__construct( 'upcoming-events-widget', __( 'Upcoming Events' ), $widget_ops );
+		parent::__construct( 'upcoming-events-widget', __( 'Upcoming Events', 'be-events-calendar' ), $widget_ops );
 	}
 
 	/**
@@ -104,12 +104,16 @@ class BE_Upcoming_Events extends WP_Widget {
 	 **/
 	function form( $instance ) {
 
-		$defaults = array( 'title' => 'Upcoming Events', 'count' => 2, 'more_text' => 'View All Event Information' );
+		$defaults = array(
+			'title'     => __( 'Upcoming Events', 'be-events-calendar'),
+			'count'     => 2,
+			'more_text' => __( 'View All Event Information', 'be-events-calendar'),
+		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
 
-		echo '<p><label for="' . $this->get_field_id( 'title' ) . '">Title: <input class="widefat" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" value="' . esc_attr( $instance['title'] ) . '" /></label></p>';
-		echo '<p><label for="' . $this->get_field_id( 'count' ) . '">How Many: <input class="widefat" id="' . $this->get_field_id( 'count' ) . '" name="' . $this->get_field_name( 'count' ) . '" value="' . esc_attr( $instance['count'] ) . '" /></label></p>';
-		echo '<p><label for="' . $this->get_field_id( 'more_text' ) . '">More Text: <input class="widefat" id="' . $this->get_field_id( 'more_text' ) . '" name="' . $this->get_field_name( 'more_text' ) . '" value="' . esc_attr( $instance['more_text'] ) . '" /></label></p>';
+		echo '<p><label for="' . $this->get_field_id( 'title' ) . '">' . esc_html__( 'Title:', 'be-events-calendar' ) . ' <input class="widefat" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" value="' . esc_attr( $instance['title'] ) . '" /></label></p>';
+		echo '<p><label for="' . $this->get_field_id( 'count' ) . '">' . esc_html__( 'How Many:', 'be-events-calendar' ) . ' <input class="widefat" id="' . $this->get_field_id( 'count' ) . '" name="' . $this->get_field_name( 'count' ) . '" value="' . esc_attr( $instance['count'] ) . '" /></label></p>';
+		echo '<p><label for="' . $this->get_field_id( 'more_text' ) . '">' . esc_html__( 'More Text:', 'be-events-calendar' ) . ' <input class="widefat" id="' . $this->get_field_id( 'more_text' ) . '" name="' . $this->get_field_name( 'more_text' ) . '" value="' . esc_attr( $instance['more_text'] ) . '" /></label></p>';
 
 	}
 }

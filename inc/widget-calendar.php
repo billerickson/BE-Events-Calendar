@@ -147,7 +147,15 @@ class BE_Events_Calendar_Widget extends WP_Widget {
 		echo '<table class="be-event-calendar-widget">';
 
 		// Day headings
-		$headings = array( 'Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat' );
+		$headings = array(
+			esc_html__( 'Sun', 'be-events-calendar' ),
+			esc_html__( 'Mon', 'be-events-calendar' ),
+			esc_html__( 'Tues', 'be-events-calendar' ),
+			esc_html__( 'Wed', 'be-events-calendar' ),
+			esc_html__( 'Thu', 'be-events-calendar'),
+			esc_html__( 'Fri', 'be-events-calendar' ),
+			esc_html__( 'Sat', 'be-events-calendar' ),
+		);
 		$headings = apply_filters( 'be_events_calendar_widget_headings', $headings );
 		echo '<thead><tr class="calendar-row"><th class="calendar-day-head">' . implode( '</th><th class="calendar-day-head">', $headings ) . '</th></tr></thead>';
 
