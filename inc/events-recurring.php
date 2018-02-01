@@ -312,19 +312,19 @@ class BE_Recurring_Events {
 			<label
 				for="be-events-calendar-start"><?php esc_html_e( 'Start date and time:', 'be-events-calendar' ); ?></label>
 			<input name="be-events-calendar-start" type="text" id="be-events-calendar-start"
-			       class="be-events-calendar-date" value="<?php echo ! empty( $start ) ? $start_date : ''; ?>"
+			       class="be-events-calendar-date" value="<?php echo ! empty( $start_date ) ? $start_date : ''; ?>"
 			       placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-start-time" type="text" id="be-events-calendar-start-time"
-			       class="be-events-calendar-time" value="<?php echo ! empty( $start ) ? $start_time : ''; ?>"
+			       class="be-events-calendar-time" value="<?php echo ! empty( $start_time ) ? $start_time : ''; ?>"
 			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<div class="section">
 			<label for="be-events-calendar-end"><?php esc_html_e( 'End date and time:', 'be-events-calendar' ); ?></label>
 			<input name="be-events-calendar-end" type="text" id="be-events-calendar-end" class="be-events-calendar-date"
-			       value="<?php echo ! empty( $end ) ? $end_date : ''; ?>"
+			       value="<?php echo ! empty( $end_date ) ? $end_date : ''; ?>"
 			       placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-end-time" type="text" id="be-events-calendar-end-time"
-			       class="be-events-calendar-time" value="<?php echo ! empty( $end ) ? $end_time : ''; ?>"
+			       class="be-events-calendar-time" value="<?php echo ! empty( $end_time ) ? $end_time : ''; ?>"
 			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<p class="desc">
