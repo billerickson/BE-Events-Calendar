@@ -169,14 +169,14 @@ class BE_Events_Calendar {
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$start       = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
+				$start       = get_post_meta( $post_id, 'be_event_start', true );
 
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) ) {
 					esc_html_e( 'Unknown', 'be-events-calendar' );
 				} /* If there is a duration, append 'minutes' to the text string. */
 				else {
-					echo $start;
+					echo esc_attr( date( $date_format, $start ) );
 				}
 
 				break;
@@ -187,14 +187,14 @@ class BE_Events_Calendar {
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$end         = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
+				$end         = get_post_meta( $post_id, 'be_event_end', true );
 
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) ) {
 					esc_html_e( 'Unknown', 'be-events-calendar' );
 				} /* If there is a duration, append 'minutes' to the text string. */
 				else {
-					echo $end;
+					echo esc_attr( date( $date_format, $end ) );
 				}
 
 				break;
