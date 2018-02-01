@@ -163,7 +163,7 @@ class BE_Events_Calendar {
 
 		switch ( $column ) {
 
-			/* If displaying the 'duration' column. */
+			/* If displaying the 'Starts' column. */
 			case 'event_start' :
 
 				/* Get the post meta. */
@@ -181,7 +181,7 @@ class BE_Events_Calendar {
 
 				break;
 
-			/* If displaying the 'genre' column. */
+			/* If displaying the 'Ends' column. */
 			case 'event_end' :
 
 				/* Get the post meta. */
