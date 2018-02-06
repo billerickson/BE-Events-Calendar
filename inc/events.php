@@ -323,7 +323,7 @@ class BE_Events_Calendar {
 			'menu_name'         => __( 'Categories', 'be-events-calendar' ),
 		);
 
-		register_taxonomy( 'event-category', $post_types, array(
+		register_taxonomy( 'event_category', $post_types, array(
 			'hierarchical'      => true,
 			'labels'            => $labels,
 			'show_ui'           => true,
@@ -501,7 +501,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event-category' ) ) ) {
+		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event_category' ) ) ) {
 			$meta_query = array(
 				array(
 					'key'     => 'be_event_end',

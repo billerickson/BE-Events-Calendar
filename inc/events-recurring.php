@@ -487,10 +487,10 @@ class BE_Recurring_Events {
 					// Event Category
 					$supports = get_theme_support( 'be-events-calendar' );
 					if ( is_array( $supports ) && in_array( 'event-category', $supports[0] ) ) {
-						$terms = get_the_terms( $post_id, 'event-category' );
+						$terms = get_the_terms( $post_id, 'event_category' );
 						if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 							$terms = wp_list_pluck( $terms, 'slug' );
-							wp_set_object_terms( $event_id, $terms, 'event-category' );
+							wp_set_object_terms( $event_id, $terms, 'event_category' );
 						}
 					}
 

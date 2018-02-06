@@ -14,7 +14,7 @@ This is a simple, clean base plugin for developing event calendars.
 ## Optional Features
 
 These can be added with add_theme_support( 'be-events-calendar', array() ). Add these keys to the array:
-- 'event-category'. Creates an event-category taxonomy. 
+- 'event-category'. Creates an event_category taxonomy. 
 - 'recurring-events' . Allows for recurring events
 
 ## Dev Notes
