@@ -161,6 +161,12 @@ class BE_Events_Calendar {
 	 */
 	function manage_event_columns( $column, $post_id ) {
 
+		$set_dmy_format = apply_filters( 'be_event_set_dmy_format', false );
+		$date_format    = apply_filters( 'be_event_columns_date_format', $set_dmy_format ? 'j M Y' : 'M j, Y' );
+
+		$set_24_hour_clock = apply_filters( 'be_event_set_24_hour_clock', false );
+		$date_time_format  = apply_filters( 'be_event_columns_date_time_format', $set_24_hour_clock ? $date_format . ' (G:i)' : $date_format . ' (g:i A)' );
+
 		switch ( $column ) {
 
 			/* If displaying the 'Starts' column. */
@@ -168,7 +174,7 @@ class BE_Events_Calendar {
 
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
-				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
+				$date_format = $allday ? $date_format : $date_time_format;
 				$start       = get_post_meta( $post_id, 'be_event_start', true );
 
 				/* If no duration is found, output a default message. */
@@ -186,7 +192,7 @@ class BE_Events_Calendar {
 
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
-				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
+				$date_format = $allday ? $date_format : $date_time_format;
 				$end         = get_post_meta( $post_id, 'be_event_end', true );
 
 				/* If no duration is found, output a default message. */
