@@ -586,7 +586,7 @@ class BE_Events_Calendar {
 	function register_event_location_meta() {
 		register_meta( 'term', 'address', array(
 			'type'              => 'string',
-			'sanitize_callback' => 'sanitize_text_field',
+			'sanitize_callback' => 'sanitize_textarea_field',
 		) );
 
 		register_meta( 'term', 'url', array(
@@ -603,7 +603,7 @@ class BE_Events_Calendar {
 		?>
 		<div class="form-field">
 			<label for="be-event-location-address"><?php esc_html_e( 'Address', 'be-events-calendar' ); ?></label>
-			<input type="text" name="be_event_location_address" class="be-event-location-address" id="be-event-location-address" value="" />
+			<textarea name="be_event_location_address" class="be-event-location-address" id="be-event-location-address" rows="4"></textarea>
 		</div>
 		<?php
 	}
@@ -620,7 +620,7 @@ class BE_Events_Calendar {
 			<th scope="row"><label for="be-event-location-address"><?php esc_html_e( 'Address', 'be-events-calendar' ); ?></label></th>
 			<td>
 				<?php wp_nonce_field( basename( __FILE__ ), 'event_location_address_nonce' ); ?>
-				<input type="text" name="be_event_location_address" class="be-event-location-address" id="be-event-location-address" value="<?php echo esc_attr( $address ); ?>" />
+				<textarea name="be_event_location_address" class="be-event-location-address" id="be-event-location-address" rows="4"><?php echo esc_html( $address ); ?></textarea>
 			</td>
 		</tr>
 		<?php
@@ -637,7 +637,7 @@ class BE_Events_Calendar {
 		}
 
 		$old_value = get_term_meta( $term_id, 'address', true );
-		$new_value = isset( $_POST['be_event_location_address'] ) ? sanitize_text_field( $_POST['be_event_location_address'] ) : '';
+		$new_value = isset( $_POST['be_event_location_address'] ) ? sanitize_textarea_field( $_POST['be_event_location_address'] ) : '';
 
 		if ( $old_value && '' === $new_value ) {
 			delete_term_meta( $term_id, 'address' );
