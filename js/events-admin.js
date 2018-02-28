@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
 	$('.be-events-calendar-date').datepicker({
-		dateFormat: "mm/dd/yy",
+		dateFormat: beEventsCalendar.dateFormat,
 	});
 	$('#be-events-calendar-allday').change(function(event) {
 		if ( $(this).is(":checked") ) {
