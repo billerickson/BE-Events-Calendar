@@ -309,6 +309,10 @@ class BE_Events_Calendar {
 
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'event', 'recurring_event', ) : array( 'event' );
 
+		if ( in_array( 'event-location', $supports[0] ) ) {
+			$this->register_event_location( $post_types );
+		}
+
 		if ( in_array( 'event-category', $supports[0] ) ) {
 			$this->register_event_category( $post_types );
 		}
@@ -343,6 +347,43 @@ class BE_Events_Calendar {
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => array( 'slug' => 'event-category' ),
+		) );
+	}
+
+	/**
+	 * Register an `event_location` taxonomy
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param $post_types
+	 */
+	function register_event_location( $post_types ) {
+		$labels = array(
+			'name'                       => __( 'Locations', 'be-events-calendar' ),
+			'singular_name'              => __( 'Location', 'be-events-calendar' ),
+			'search_items'               => __( 'Search Locations', 'be-events-calendar' ),
+			'popular_items'              => __( 'Popular Locations', 'be-events-calendar' ),
+			'all_items'                  => __( 'All Locations', 'be-events-calendar' ),
+			'edit_item'                  => __( 'Edit Location', 'be-events-calendar' ),
+			'view_item'                  => __( 'View Location', 'be-events-calendar' ),
+			'update_item'                => __( 'Update Location', 'be-events-calendar' ),
+			'add_new_item'               => __( 'Add New Location', 'be-events-calendar' ),
+			'new_item_name'              => __( 'New Location Name', 'be-events-calendar' ),
+			'separate_items_with_commas' => __( 'Separate locations with commas', 'be-events-calendar' ),
+			'add_or_remove_items'        => __( 'Add or remove locations', 'be-events-calendar' ),
+			'choose_from_most_used'      => __( 'Choose from the most used locations', 'be-events-calendar' ),
+			'no_terms'                   => __( 'No locations', 'be-events-calendar' ),
+			'menu_name'                  => __( 'Locations', 'be-events-calendar' ),
+			'back_to_items'              => __( 'Back to Locations', 'be-events-calendar' ),
+		);
+
+		register_taxonomy( 'event_location', $post_types, array(
+			'hierarchical'      => false,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'event-location' ),
 		) );
 	}
 
