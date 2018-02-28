@@ -303,12 +303,25 @@ class BE_Events_Calendar {
 	function taxonomies() {
 
 		$supports = get_theme_support( 'be-events-calendar' );
-		if ( ! is_array( $supports ) || ! in_array( 'event-category', $supports[0] ) ) {
+		if ( ! is_array( $supports ) ) {
 			return;
 		}
 
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'event', 'recurring_event', ) : array( 'event' );
 
+		if ( in_array( 'event-category', $supports[0] ) ) {
+			$this->register_event_category( $post_types );
+		}
+	}
+
+	/**
+	 * Register an `event_category` taxonomy
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param $post_types
+	 */
+	function register_event_category( $post_types ) {
 		$labels = array(
 			'name'              => __( 'Categories', 'be-events-calendar' ),
 			'singular_name'     => __( 'Category', 'be-events-calendar' ),
