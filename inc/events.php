@@ -163,38 +163,38 @@ class BE_Events_Calendar {
 
 		switch ( $column ) {
 
-			/* If displaying the 'duration' column. */
+			/* If displaying the 'Starts' column. */
 			case 'event_start' :
 
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$start       = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_start', true ) ) );
+				$start       = get_post_meta( $post_id, 'be_event_start', true );
 
 				/* If no duration is found, output a default message. */
 				if ( empty( $start ) ) {
 					esc_html_e( 'Unknown', 'be-events-calendar' );
 				} /* If there is a duration, append 'minutes' to the text string. */
 				else {
-					echo $start;
+					echo esc_attr( date( $date_format, $start ) );
 				}
 
 				break;
 
-			/* If displaying the 'genre' column. */
+			/* If displaying the 'Ends' column. */
 			case 'event_end' :
 
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
 				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
-				$end         = esc_attr( date( $date_format, get_post_meta( $post_id, 'be_event_end', true ) ) );
+				$end         = get_post_meta( $post_id, 'be_event_end', true );
 
 				/* If no duration is found, output a default message. */
 				if ( empty( $end ) ) {
 					esc_html_e( 'Unknown', 'be-events-calendar' );
 				} /* If there is a duration, append 'minutes' to the text string. */
 				else {
-					echo $end;
+					echo esc_attr( date( $date_format, $end ) );
 				}
 
 				break;
@@ -323,7 +323,7 @@ class BE_Events_Calendar {
 			'menu_name'         => __( 'Categories', 'be-events-calendar' ),
 		);
 
-		register_taxonomy( 'event-category', $post_types, array(
+		register_taxonomy( 'event_category', $post_types, array(
 			'hierarchical'      => true,
 			'labels'            => $labels,
 			'show_ui'           => true,
@@ -415,16 +415,16 @@ class BE_Events_Calendar {
 		</div>
 		<div class="section">
 			<label for="be-events-calendar-start"><?php esc_html_e( 'Start date and time:', 'be-events-calendar' ); ?></label>
-			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start ) ? $start_date : ''; ?>" placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
+			<input name="be-events-calendar-start" type="text"  id="be-events-calendar-start" class="be-events-calendar-date" value="<?php echo !empty( $start_date ) ? $start_date : ''; ?>" placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-start-time" type="text" id="be-events-calendar-start-time"
-			       class="be-events-calendar-time" value="<?php echo ! empty( $start ) ? $start_time : ''; ?>"
+			       class="be-events-calendar-time" value="<?php echo ! empty( $start_time ) ? $start_time : ''; ?>"
 			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<div class="section">
 			<label for="be-events-calendar-end"><?php esc_html_e( 'End date and time:', 'be-events-calendar' ); ?></label>
-			<input name="be-events-calendar-end" type="text"  id="be-events-calendar-end" class="be-events-calendar-date" value="<?php echo !empty( $end ) ? $end_date : ''; ?>" placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
+			<input name="be-events-calendar-end" type="text"  id="be-events-calendar-end" class="be-events-calendar-date" value="<?php echo !empty( $end_date ) ? $end_date : ''; ?>" placeholder="<?php esc_html_e( 'Date', 'be-events-calendar' ); ?>">
 			<input name="be-events-calendar-end-time" type="text" id="be-events-calendar-end-time"
-			       class="be-events-calendar-time" value="<?php echo ! empty( $end ) ? $end_time : ''; ?>"
+			       class="be-events-calendar-time" value="<?php echo ! empty( $end_time ) ? $end_time : ''; ?>"
 			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<p class="desc">
@@ -501,7 +501,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event-category' ) ) ) {
+		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event_category' ) ) ) {
 			$meta_query = array(
 				array(
 					'key'     => 'be_event_end',
