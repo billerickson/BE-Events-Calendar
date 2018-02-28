@@ -66,9 +66,13 @@ class BE_Events_Calendar {
 
 		// Add term fields
 		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_address_field' ) );
+		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_link_field' ) );
 		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_address_field' ) );
+		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_link_field' ) );
 		add_action( 'edit_event_location', array( $this, 'event_location_save_address_field' ) );
+		add_action( 'edit_event_location', array( $this, 'event_location_save_link_field' ) );
 		add_action( 'create_event_location', array( $this, 'event_location_save_address_field' ) );
+		add_action( 'create_event_location', array( $this, 'event_location_save_link_field' ) );
 
 		// Create Metabox
 		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
@@ -584,6 +588,11 @@ class BE_Events_Calendar {
 			'type'              => 'string',
 			'sanitize_callback' => 'sanitize_text_field',
 		) );
+
+		register_meta( 'term', 'url', array(
+			'type'              => 'string',
+			'sanitize_callback' => 'esc_url',
+		) );
 	}
 
 	/**
@@ -634,6 +643,57 @@ class BE_Events_Calendar {
 			delete_term_meta( $term_id, 'address' );
 		} else if ( $old_value !== $new_value ) {
 			update_term_meta( $term_id, 'address', $new_value );
+		}
+	}
+
+	/**
+	 * Display a link field when adding an event location
+	 */
+	function event_location_add_link_field() {
+		wp_nonce_field( basename( __FILE__ ), 'event_location_link_nonce' );
+		?>
+		<div class="form-field">
+			<label for="be-event-location-link"><?php esc_html_e( 'Link', 'be-events-calendar' ); ?></label>
+			<input type="text" name="be_event_location_link" class="be-event-location-link" id="be-event-location-link" value="" />
+		</div>
+		<?php
+	}
+
+	/**
+	 * Display a link field when editing an event location
+	 *
+	 * @param $term
+	 */
+	function event_location_edit_link_field( $term ) {
+		$url = get_term_meta( $term->term_id, 'url', true );
+		?>
+		<tr class="form-field be-event-location-link-wrap">
+			<th scope="row"><label for="be-event-location-link"><?php esc_html_e( 'Link', 'be-events-calendar' ); ?></label></th>
+			<td>
+				<?php wp_nonce_field( basename( __FILE__ ), 'event_location_link_nonce' ); ?>
+				<input type="url" name="be_event_location_link" class="be-event-location-link" id="be-event-location-link" value="<?php echo esc_attr( $url ); ?>" />
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
+	 * Save the link field
+	 *
+	 * @param $term_id
+	 */
+	function event_location_save_link_field( $term_id ) {
+		if ( ! isset( $_POST['event_location_link_nonce'] ) || ! wp_verify_nonce( $_POST['event_location_link_nonce'], basename( __FILE__ ) ) ) {
+			return;
+		}
+
+		$old_value = get_term_meta( $term_id, 'url', true );
+		$new_value = isset( $_POST['be_event_location_link'] ) ? sanitize_text_field( $_POST['be_event_location_link'] ) : '';
+
+		if ( $old_value && '' === $new_value ) {
+			delete_term_meta( $term_id, 'url' );
+		} else if ( $old_value !== $new_value ) {
+			update_term_meta( $term_id, 'url', $new_value );
 		}
 	}
 
