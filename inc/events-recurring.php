@@ -267,6 +267,10 @@ class BE_Recurring_Events {
 			'jquery-ui-datepicker',
 		), BE_EVENTS_CALENDAR_VERSION, true );
 		wp_enqueue_script( 'be-events-calendar' );
+
+		$l18n_data['dateFormat'] = apply_filters( 'be_event_set_dmy_format', false ) ? 'dd/mm/yy' : 'mm/dd/yy';
+
+		wp_localize_script( 'be-events-calendar', 'beEventsCalendar', $l18n_data );
 	}
 
 	/**
@@ -286,6 +290,12 @@ class BE_Recurring_Events {
 	 */
 	function render_metabox() {
 
+		$set_dmy_format = apply_filters( 'be_event_set_dmy_format', false );
+		$date_format    = $set_dmy_format ? 'd/m/Y' : 'm/d/Y';
+
+		$set_24_hour_clock = apply_filters( 'be_event_set_24_hour_clock', false );
+		$time_format       = $set_24_hour_clock ? 'G:i' : 'g:ia';
+
 		$start         = get_post_meta( get_the_ID(), 'be_event_start', true );
 		$end           = get_post_meta( get_the_ID(), 'be_event_end', true );
 		$recurring     = get_post_meta( get_the_ID(), 'be_recurring_period', true );
@@ -293,13 +303,13 @@ class BE_Recurring_Events {
 		$regenerate    = get_post_meta( get_the_ID(), 'be_regenerate_events', true );
 
 		if ( ! empty( $start ) && ! empty( $end ) ) {
-			$start_date = date( 'm/d/Y', $start );
-			$start_time = date( 'g:ia', $start );
-			$end_date   = date( 'm/d/Y', $end );
-			$end_time   = date( 'g:ia', $end );
+			$start_date = date( $date_format, $start );
+			$start_time = date( $time_format, $start );
+			$end_date   = date( $date_format, $end );
+			$end_time   = date( $time_format, $end );
 		}
 		if ( ! empty( $recurring_end ) ) {
-			$recurring_end = date( 'm/d/Y', $recurring_end );
+			$recurring_end = date( $date_format, $recurring_end );
 		}
 
 		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
@@ -328,9 +338,9 @@ class BE_Recurring_Events {
 			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<p class="desc">
-			<?php printf( esc_html__( 'Date format should be %s.', 'be-events-calendar'), '<strong>MM/DD/YYYY</strong>' ); ?>
-			<?php printf( esc_html__( 'Time format should be %s.', 'be-events-calendar' ), '<strong>H:MM am/pm</strong>' ); ?>
-			<br><?php esc_html_e( 'Example: 05/12/2015 6:00pm', 'be-events-calendar' ); ?>
+			<?php printf( esc_html__( 'Date format should be %s.', 'be-events-calendar'), '<strong>' . ( $set_dmy_format ? 'DD/MM/YYYY' : 'MM/DD/YYYY' ) . '</strong>' ); ?>
+			<?php printf( esc_html__( 'Time format should be %s.', 'be-events-calendar' ), '<strong>' . ( $set_24_hour_clock ? 'H:MM' : 'H:MM' ) . '</strong>' ); ?>
+			<br><?php printf( esc_html__( 'Example: %s.', 'be-events-calendar' ), ( $set_dmy_format ? '21/05/2015' : '05/21/2015' ) . ' ' . ( $set_24_hour_clock ? '18:00' : '6:00pm' ) ); ?>
 		</p>
 		<hr>
 		<div class="section">
@@ -407,15 +417,17 @@ class BE_Recurring_Events {
 		     && ! empty( $_POST['be-events-calendar-end'] )
 		     && ! empty( $_POST['be-events-calendar-repeat-end'] )
 		) {
-			$start      = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
-			$start_unix = strtotime( $start );
-			$end        = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
-			$end_unix   = strtotime( $end );
+			$start           = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
+			$start_unix      = strtotime( $set_dmy_format ? str_replace('/', '-', $start ) : $start );
+			$end             = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
+			$end_unix        = strtotime( $set_dmy_format ? str_replace('/', '-', $end ) : $end );
+			$repeat_end      = $_POST['be-events-calendar-repeat-end'];
+			$repeat_end_unix = strtotime( $set_dmy_format ? str_replace('/', '-', $repeat_end ) : $repeat_end );
 
 			update_post_meta( $post_id, 'be_event_start', $start_unix );
 			update_post_meta( $post_id, 'be_event_end', $end_unix );
 			update_post_meta( $post_id, 'be_recurring_period', $_POST['be-events-calendar-repeat'] );
-			update_post_meta( $post_id, 'be_recurring_end', strtotime( $_POST['be-events-calendar-repeat-end'] ) );
+			update_post_meta( $post_id, 'be_recurring_end', $repeat_end_unix );
 
 			if ( isset( $_POST['be-events-calendar-regenerate'] ) ) {
 				update_post_meta( $post_id, 'be_regenerate_events', '1' );
