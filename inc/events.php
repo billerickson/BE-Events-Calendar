@@ -309,13 +309,14 @@ class BE_Events_Calendar {
 		}
 
 		$post_types = in_array( 'recurring-events', $supports[0] ) ? array( 'event', 'recurring_event', ) : array( 'event' );
+		$taxonomies = self::get_theme_supported_taxonomies();
 
-		if ( in_array( 'event-location', $supports[0] ) ) {
-			$this->register_event_location( $post_types );
-		}
+		foreach ( $taxonomies as $taxonomy ) {
+			$method_name = 'register_' . $taxonomy;
 
-		if ( in_array( 'event-category', $supports[0] ) ) {
-			$this->register_event_category( $post_types );
+			if ( method_exists( $this, $method_name ) ) {
+				call_user_func( array( $this, $method_name ), $post_types );
+			}
 		}
 	}
 
