@@ -94,6 +94,7 @@ class BE_Recurring_Events {
 			'query_var'          => true,
 			'rewrite'            => true,
 			'capability_type'    => 'post',
+			'taxonomies'         => BE_Events_Calendar::get_theme_supported_taxonomies(),
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,

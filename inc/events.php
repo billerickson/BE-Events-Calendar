@@ -108,6 +108,7 @@ class BE_Events_Calendar {
 			'query_var'          => true,
 			'rewrite'            => array( 'slug' => 'events', 'with_front' => false ),
 			'capability_type'    => 'post',
+			'taxonomies'         => self::get_theme_supported_taxonomies(),
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
@@ -316,6 +317,30 @@ class BE_Events_Calendar {
 		if ( in_array( 'event-category', $supports[0] ) ) {
 			$this->register_event_category( $post_types );
 		}
+	}
+
+	/**
+	 * Return the theme supported taxonomies
+	 *
+	 * @return array
+	 */
+	static function get_theme_supported_taxonomies() {
+		$taxonomies = array();
+		$supports   = get_theme_support( 'be-events-calendar' );
+
+		if ( ! is_array( $supports ) ) {
+			return $taxonomies;
+		}
+
+		if ( in_array( 'event-location', $supports[0] ) ) {
+			$taxonomies[] = 'event_location';
+		}
+
+		if ( in_array( 'event-category', $supports[0] ) ) {
+			$taxonomies[] = 'event_category';
+		}
+
+		return $taxonomies;
 	}
 
 	/**
