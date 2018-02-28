@@ -305,7 +305,7 @@ class BE_Recurring_Events {
 		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
 		?>
 		<div class="section">
-			<p class="title"><?php esc_html_e( 'First Event', 'be-events-calendar' ); ?><</p>
+			<p class="title"><?php esc_html_e( 'First Event', 'be-events-calendar' ); ?></p>
 			<p class="subtitle"><?php esc_html_e( 'Serves as a base for all events', 'be-events-calendar' ); ?></p>
 		</div>
 		<div class="section">
