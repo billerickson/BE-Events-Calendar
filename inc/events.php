@@ -329,7 +329,7 @@ class BE_Events_Calendar {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'event-category' ),
+			'rewrite'           => array( 'slug' => 'event-category', 'with_front' => false ),
 		) );
 	}
 
