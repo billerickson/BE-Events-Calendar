@@ -165,7 +165,7 @@ class BE_Events_Calendar {
 		$date_format    = apply_filters( 'be_event_columns_date_format', $set_dmy_format ? 'j M Y' : 'M j, Y' );
 
 		$set_24_hour_clock = apply_filters( 'be_event_set_24_hour_clock', false );
-		$date_time_format  = apply_filters( 'be_event_columns_date_time_format', $set_24_hour_clock ? $date_format . ' (G:i)' : $date_format . ' (g:i A)' );
+		$date_time_format  = apply_filters( 'be_event_columns_time_format', $set_24_hour_clock ? $date_format . ' (G:i)' : $date_format . ' (g:i A)' );
 
 		switch ( $column ) {
 
