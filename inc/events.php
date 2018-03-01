@@ -654,7 +654,7 @@ class BE_Events_Calendar {
 		?>
 		<div class="form-field">
 			<label for="be-event-location-link"><?php esc_html_e( 'Link', 'be-events-calendar' ); ?></label>
-			<input type="text" name="be_event_location_link" class="be-event-location-link" id="be-event-location-link" value="" />
+			<input type="url" name="be_event_location_link" class="be-event-location-link" id="be-event-location-link" value="" />
 		</div>
 		<?php
 	}
