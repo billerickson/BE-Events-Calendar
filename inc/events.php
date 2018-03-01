@@ -67,12 +67,16 @@ class BE_Events_Calendar {
 		// Add term fields
 		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_address_field' ) );
 		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_website_field' ) );
+		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_map_field' ) );
 		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_address_field' ) );
 		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_website_field' ) );
+		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_map_field' ) );
 		add_action( 'edit_event_location', array( $this, 'event_location_save_address_field' ) );
 		add_action( 'edit_event_location', array( $this, 'event_location_save_website_field' ) );
+		add_action( 'edit_event_location', array( $this, 'event_location_save_map_field' ) );
 		add_action( 'create_event_location', array( $this, 'event_location_save_address_field' ) );
 		add_action( 'create_event_location', array( $this, 'event_location_save_website_field' ) );
+		add_action( 'create_event_location', array( $this, 'event_location_save_map_field' ) );
 
 		// Create Metabox
 		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
@@ -593,6 +597,11 @@ class BE_Events_Calendar {
 			'type'              => 'string',
 			'sanitize_callback' => 'esc_url',
 		) );
+
+		register_meta( 'term', 'map', array(
+			'type'              => 'string',
+			'sanitize_callback' => 'esc_url',
+		) );
 	}
 
 	/**
@@ -694,6 +703,57 @@ class BE_Events_Calendar {
 			delete_term_meta( $term_id, 'website' );
 		} else if ( $old_value !== $new_value ) {
 			update_term_meta( $term_id, 'website', $new_value );
+		}
+	}
+
+	/**
+	 * Display a map field when adding an event location
+	 */
+	function event_location_add_map_field() {
+		wp_nonce_field( basename( __FILE__ ), 'event_location_map_nonce' );
+		?>
+		<div class="form-field">
+			<label for="be-event-location-map"><?php esc_html_e( 'Map', 'be-events-calendar' ); ?></label>
+			<input type="text" name="be_event_location_map" class="be-event-location-map" id="be-event-location-map" value="" />
+		</div>
+		<?php
+	}
+
+	/**
+	 * Display a map field when editing an event location
+	 *
+	 * @param $term
+	 */
+	function event_location_edit_map_field( $term ) {
+		$url = get_term_meta( $term->term_id, 'map', true );
+		?>
+		<tr class="form-field be-event-location-map-wrap">
+			<th scope="row"><label for="be-event-location-map"><?php esc_html_e( 'Map', 'be-events-calendar' ); ?></label></th>
+			<td>
+				<?php wp_nonce_field( basename( __FILE__ ), 'event_location_map_nonce' ); ?>
+				<input type="url" name="be_event_location_map" class="be-event-location-map" id="be-event-location-map" value="<?php echo esc_attr( $url ); ?>" />
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
+	 * Save the map field
+	 *
+	 * @param $term_id
+	 */
+	function event_location_save_map_field( $term_id ) {
+		if ( ! isset( $_POST['event_location_map_nonce'] ) || ! wp_verify_nonce( $_POST['event_location_map_nonce'], basename( __FILE__ ) ) ) {
+			return;
+		}
+
+		$old_value = get_term_meta( $term_id, 'map', true );
+		$new_value = isset( $_POST['be_event_location_map'] ) ? sanitize_text_field( $_POST['be_event_location_map'] ) : '';
+
+		if ( $old_value && '' === $new_value ) {
+			delete_term_meta( $term_id, 'map' );
+		} else if ( $old_value !== $new_value ) {
+			update_term_meta( $term_id, 'map', $new_value );
 		}
 	}
 
