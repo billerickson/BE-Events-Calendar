@@ -66,13 +66,13 @@ class BE_Events_Calendar {
 
 		// Add term fields
 		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_address_field' ) );
-		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_link_field' ) );
+		add_action( 'event_location_add_form_fields', array( $this, 'event_location_add_website_field' ) );
 		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_address_field' ) );
-		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_link_field' ) );
+		add_action( 'event_location_edit_form_fields', array( $this, 'event_location_edit_website_field' ) );
 		add_action( 'edit_event_location', array( $this, 'event_location_save_address_field' ) );
-		add_action( 'edit_event_location', array( $this, 'event_location_save_link_field' ) );
+		add_action( 'edit_event_location', array( $this, 'event_location_save_website_field' ) );
 		add_action( 'create_event_location', array( $this, 'event_location_save_address_field' ) );
-		add_action( 'create_event_location', array( $this, 'event_location_save_link_field' ) );
+		add_action( 'create_event_location', array( $this, 'event_location_save_website_field' ) );
 
 		// Create Metabox
 		$metabox = apply_filters( 'be_events_manager_metabox_override', false );
@@ -589,7 +589,7 @@ class BE_Events_Calendar {
 			'sanitize_callback' => 'sanitize_textarea_field',
 		) );
 
-		register_meta( 'term', 'url', array(
+		register_meta( 'term', 'website', array(
 			'type'              => 'string',
 			'sanitize_callback' => 'esc_url',
 		) );
@@ -647,53 +647,53 @@ class BE_Events_Calendar {
 	}
 
 	/**
-	 * Display a link field when adding an event location
+	 * Display a website field when adding an event location
 	 */
-	function event_location_add_link_field() {
-		wp_nonce_field( basename( __FILE__ ), 'event_location_link_nonce' );
+	function event_location_add_website_field() {
+		wp_nonce_field( basename( __FILE__ ), 'event_location_website_nonce' );
 		?>
 		<div class="form-field">
-			<label for="be-event-location-link"><?php esc_html_e( 'Link', 'be-events-calendar' ); ?></label>
-			<input type="url" name="be_event_location_link" class="be-event-location-link" id="be-event-location-link" value="" />
+			<label for="be-event-location-website"><?php esc_html_e( 'Website', 'be-events-calendar' ); ?></label>
+			<input type="url" name="be_event_location_website" class="be-event-location-website" id="be-event-location-website" value="" />
 		</div>
 		<?php
 	}
 
 	/**
-	 * Display a link field when editing an event location
+	 * Display a website field when editing an event location
 	 *
 	 * @param $term
 	 */
-	function event_location_edit_link_field( $term ) {
-		$url = get_term_meta( $term->term_id, 'url', true );
+	function event_location_edit_website_field( $term ) {
+		$url = get_term_meta( $term->term_id, 'website', true );
 		?>
-		<tr class="form-field be-event-location-link-wrap">
-			<th scope="row"><label for="be-event-location-link"><?php esc_html_e( 'Link', 'be-events-calendar' ); ?></label></th>
+		<tr class="form-field be-event-location-website-wrap">
+			<th scope="row"><label for="be-event-location-website"><?php esc_html_e( 'Website', 'be-events-calendar' ); ?></label></th>
 			<td>
-				<?php wp_nonce_field( basename( __FILE__ ), 'event_location_link_nonce' ); ?>
-				<input type="url" name="be_event_location_link" class="be-event-location-link" id="be-event-location-link" value="<?php echo esc_attr( $url ); ?>" />
+				<?php wp_nonce_field( basename( __FILE__ ), 'event_location_website_nonce' ); ?>
+				<input type="url" name="be_event_location_website" class="be-event-location-website" id="be-event-location-website" value="<?php echo esc_attr( $url ); ?>" />
 			</td>
 		</tr>
 		<?php
 	}
 
 	/**
-	 * Save the link field
+	 * Save the website field
 	 *
 	 * @param $term_id
 	 */
-	function event_location_save_link_field( $term_id ) {
-		if ( ! isset( $_POST['event_location_link_nonce'] ) || ! wp_verify_nonce( $_POST['event_location_link_nonce'], basename( __FILE__ ) ) ) {
+	function event_location_save_website_field( $term_id ) {
+		if ( ! isset( $_POST['event_location_website_nonce'] ) || ! wp_verify_nonce( $_POST['event_location_website_nonce'], basename( __FILE__ ) ) ) {
 			return;
 		}
 
-		$old_value = get_term_meta( $term_id, 'url', true );
-		$new_value = isset( $_POST['be_event_location_link'] ) ? sanitize_text_field( $_POST['be_event_location_link'] ) : '';
+		$old_value = get_term_meta( $term_id, 'website', true );
+		$new_value = isset( $_POST['be_event_location_website'] ) ? sanitize_text_field( $_POST['be_event_location_website'] ) : '';
 
 		if ( $old_value && '' === $new_value ) {
-			delete_term_meta( $term_id, 'url' );
+			delete_term_meta( $term_id, 'website' );
 		} else if ( $old_value !== $new_value ) {
-			update_term_meta( $term_id, 'url', $new_value );
+			update_term_meta( $term_id, 'website', $new_value );
 		}
 	}
 
