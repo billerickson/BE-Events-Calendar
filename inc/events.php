@@ -161,6 +161,12 @@ class BE_Events_Calendar {
 	 */
 	function manage_event_columns( $column, $post_id ) {
 
+		$set_dmy_format = apply_filters( 'be_event_set_dmy_format', false );
+		$date_format    = apply_filters( 'be_event_columns_date_format', $set_dmy_format ? 'j M Y' : 'M j, Y' );
+
+		$set_24_hour_clock = apply_filters( 'be_event_set_24_hour_clock', false );
+		$date_time_format  = apply_filters( 'be_event_columns_time_format', $set_24_hour_clock ? $date_format . ' (G:i)' : $date_format . ' (g:i A)' );
+
 		switch ( $column ) {
 
 			/* If displaying the 'Starts' column. */
@@ -168,7 +174,7 @@ class BE_Events_Calendar {
 
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
-				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
+				$date_format = $allday ? $date_format : $date_time_format;
 				$start       = get_post_meta( $post_id, 'be_event_start', true );
 
 				/* If no duration is found, output a default message. */
@@ -186,7 +192,7 @@ class BE_Events_Calendar {
 
 				/* Get the post meta. */
 				$allday      = get_post_meta( $post_id, 'be_event_allday', true );
-				$date_format = $allday ? 'M j, Y' : 'M j, Y g:i A';
+				$date_format = $allday ? $date_format : $date_time_format;
 				$end         = get_post_meta( $post_id, 'be_event_end', true );
 
 				/* If no duration is found, output a default message. */
@@ -375,6 +381,10 @@ class BE_Events_Calendar {
 			'jquery-ui-datepicker',
 		), BE_EVENTS_CALENDAR_VERSION, true );
 		wp_enqueue_script( 'be-events-calendar' );
+
+		$l18n_data['dateFormat'] = apply_filters( 'be_event_set_dmy_format', false ) ? 'dd/mm/yy' : 'mm/dd/yy';
+
+		wp_localize_script( 'be-events-calendar', 'beEventsCalendar', $l18n_data );
 	}
 
 	/**
@@ -394,15 +404,21 @@ class BE_Events_Calendar {
 	 */
 	function render_metabox() {
 
+		$set_dmy_format = apply_filters( 'be_event_set_dmy_format', false );
+		$date_format    = $set_dmy_format ? 'd/m/Y' : 'm/d/Y';
+
+		$set_24_hour_clock = apply_filters( 'be_event_set_24_hour_clock', false );
+		$time_format       = $set_24_hour_clock ? 'G:i' : 'g:ia';
+
 		$start  = get_post_meta( get_the_ID(), 'be_event_start', true );
 		$end    = get_post_meta( get_the_ID(), 'be_event_end', true );
 		$allday = get_post_meta( get_the_ID(), 'be_event_allday', true );
 
 		if ( ! empty( $start ) && ! empty( $end ) ) {
-			$start_date = date( 'm/d/Y', $start );
-			$start_time = date( 'g:ia', $start );
-			$end_date   = date( 'm/d/Y', $end );
-			$end_time   = date( 'g:ia', $end );
+			$start_date = date( $date_format, $start );
+			$start_time = date( $time_format, $start );
+			$end_date   = date( $date_format, $end );
+			$end_time   = date( $time_format, $end );
 		}
 
 		wp_nonce_field( 'be_events_calendar_date_time', 'be_events_calendar_date_time_nonce' );
@@ -428,9 +444,9 @@ class BE_Events_Calendar {
 			       placeholder="<?php esc_html_e( 'Time', 'be-events-calendar' ); ?>">
 		</div>
 		<p class="desc">
-			<?php printf( esc_html__( 'Date format should be %s.', 'be-events-calendar'), '<strong>MM/DD/YYYY</strong>' ); ?>
-			<?php printf( esc_html__( 'Time format should be %s.', 'be-events-calendar' ), '<strong>H:MM am/pm</strong>' ); ?>
-			<br><?php esc_html_e( 'Example: 05/12/2015 6:00pm', 'be-events-calendar' ); ?>
+			<?php printf( esc_html__( 'Date format should be %s.', 'be-events-calendar'), '<strong>' . ( $set_dmy_format ? 'DD/MM/YYYY' : 'MM/DD/YYYY' ) . '</strong>' ); ?>
+			<?php printf( esc_html__( 'Time format should be %s.', 'be-events-calendar' ), '<strong>' . ( $set_24_hour_clock ? 'H:MM' : 'H:MM' ) . '</strong>' ); ?>
+			<br><?php printf( esc_html__( 'Example: %s.', 'be-events-calendar' ), ( $set_dmy_format ? '21/05/2015' : '05/21/2015' ) . ' ' . ( $set_24_hour_clock ? '18:00' : '6:00pm' ) ); ?>
 		</p>
 		<?php
 	}
@@ -474,10 +490,12 @@ class BE_Events_Calendar {
 
 		// Make sure the event start/end dates were not left blank before we run the save
 		if ( isset( $_POST['be-events-calendar-start'] ) && isset( $_POST['be-events-calendar-end'] ) && ! empty( $_POST['be-events-calendar-start'] ) && ! empty( $_POST['be-events-calendar-end'] ) ) {
+			$set_dmy_format    = apply_filters( 'be_event_set_dmy_format', false );
+
 			$start      = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
-			$start_unix = strtotime( $start );
+			$start_unix = strtotime( $set_dmy_format ? str_replace('/', '-', $start ) : $start );
 			$end        = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
-			$end_unix   = strtotime( $end );
+			$end_unix   = strtotime( $set_dmy_format ? str_replace('/', '-', $end ) : $end );
 			$allday     = ( isset( $_POST['be-events-calendar-allday'] ) ? '1' : '0' );
 
 			update_post_meta( $post_id, 'be_event_start', $start_unix );
