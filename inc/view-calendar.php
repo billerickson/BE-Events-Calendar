@@ -152,6 +152,8 @@ class BE_Events_Calendar_View {
 		$calendar    = array();
 		$events_args = array(
 			'post_type'  => 'event',
+			'is_main_query' => false,
+			'posts_per_page' => 99,
 			'meta_query' => array(
 				array(
 					'key'     => 'be_event_start',
@@ -161,7 +163,7 @@ class BE_Events_Calendar_View {
 				),
 			),
 		);
-		$events      = new WP_Query( $events_args );
+		$events      = new WP_Query( apply_filters( 'ea_events_calendar_view_query_args', $events_args ) );
 		while ( $events->have_posts() ) : $events->the_post();
 			$all_day         = false;
 			$start_timestamp = get_post_meta( get_the_ID(), 'be_event_start', true );
