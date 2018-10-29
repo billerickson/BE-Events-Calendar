@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: BE Events Calendar\n"
-"POT-Creation-Date: 2017-04-25 10:08+0200\n"
+"POT-Creation-Date: 2018-10-09 15:05+0200\n"
 "PO-Revision-Date: 2017-04-25 09:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.1.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: be-events-calendar.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -67,207 +67,280 @@ msgctxt "admin menu"
 msgid "Recurring Events"
 msgstr ""
 
-#: inc/events-recurring.php:128
+#: inc/events-recurring.php:129
 msgid "Part of Series"
 msgstr ""
 
-#: inc/events-recurring.php:165
+#: inc/events-recurring.php:166
 msgid "recurring"
 msgstr ""
 
-#: inc/events-recurring.php:222 inc/events.php:292
+#: inc/events-recurring.php:223 inc/events.php:313
 msgid "Enter Event Name Here"
 msgstr ""
 
-#: inc/events-recurring.php:279 inc/events.php:387
+#: inc/events-recurring.php:284 inc/events.php:495
 msgid "Date and Time Details"
 msgstr ""
 
-#: inc/events-recurring.php:308
+#: inc/events-recurring.php:319
 msgid "First Event"
 msgstr ""
 
-#: inc/events-recurring.php:309
+#: inc/events-recurring.php:320
 msgid "Serves as a base for all events"
 msgstr ""
 
-#: inc/events-recurring.php:313 inc/events.php:417
+#: inc/events-recurring.php:324 inc/events.php:531
 msgid "Start date and time:"
 msgstr ""
 
-#: inc/events-recurring.php:316 inc/events-recurring.php:325 inc/events.php:418
-#: inc/events.php:425
+#: inc/events-recurring.php:327 inc/events-recurring.php:336 inc/events.php:532
+#: inc/events.php:539
 msgid "Date"
 msgstr ""
 
-#: inc/events-recurring.php:319 inc/events-recurring.php:328 inc/events.php:421
-#: inc/events.php:428
+#: inc/events-recurring.php:330 inc/events-recurring.php:339 inc/events.php:535
+#: inc/events.php:542
 msgid "Time"
 msgstr ""
 
-#: inc/events-recurring.php:322 inc/events.php:424
+#: inc/events-recurring.php:333 inc/events.php:538
 msgid "End date and time:"
 msgstr ""
 
-#: inc/events-recurring.php:331 inc/events.php:431
+#: inc/events-recurring.php:342 inc/events.php:545
 #, php-format
 msgid "Date format should be %s."
 msgstr ""
 
-#: inc/events-recurring.php:332 inc/events.php:432
+#: inc/events-recurring.php:343 inc/events.php:546
 #, php-format
 msgid "Time format should be %s."
 msgstr ""
 
-#: inc/events-recurring.php:333 inc/events.php:433
-msgid "Example: 05/12/2015 6:00pm"
-msgstr ""
-
-#: inc/events-recurring.php:337
-msgid "Recurring Options"
-msgstr ""
-
-#: inc/events-recurring.php:340
-msgid "Repeat period:"
-msgstr ""
-
-#: inc/events-recurring.php:342
-msgid "Daily"
-msgstr ""
-
-#: inc/events-recurring.php:343
-msgid "Weekly"
-msgstr ""
-
-#: inc/events-recurring.php:344
-msgid "Monthly"
+#: inc/events-recurring.php:344 inc/events.php:547
+#, php-format
+msgid "Example: %s."
 msgstr ""
 
 #: inc/events-recurring.php:348
-msgid "Repeat ends:"
+msgid "Recurring Options"
+msgstr ""
+
+#: inc/events-recurring.php:351
+msgid "Repeat period:"
+msgstr ""
+
+#: inc/events-recurring.php:353
+msgid "Daily"
 msgstr ""
 
 #: inc/events-recurring.php:354
-msgid "Repeat events:"
+msgid "Weekly"
 msgstr ""
 
-#: inc/events-recurring.php:358
-msgid "This will delete all scheduled events!"
+#: inc/events-recurring.php:355
+msgid "Monthly"
 msgstr ""
 
 #: inc/events-recurring.php:359
+msgid "Repeat ends:"
+msgstr ""
+
+#: inc/events-recurring.php:365
+msgid "Repeat events:"
+msgstr ""
+
+#: inc/events-recurring.php:369
+msgid "This will delete all scheduled events!"
+msgstr ""
+
+#: inc/events-recurring.php:370
 msgid "Past events will be unchanged."
 msgstr ""
 
-#: inc/events.php:88
+#: inc/events.php:102
 msgctxt "post type general name"
 msgid "Events"
 msgstr ""
 
-#: inc/events.php:89
+#: inc/events.php:103
 msgctxt "post type singular name"
 msgid "Event"
 msgstr ""
 
-#: inc/events.php:90
+#: inc/events.php:104
 msgid "Add New"
 msgstr ""
 
-#: inc/events.php:91
+#: inc/events.php:105
 msgid "Add New Event"
 msgstr ""
 
-#: inc/events.php:92
+#: inc/events.php:106
 msgid "Edit Event"
 msgstr ""
 
-#: inc/events.php:93
+#: inc/events.php:107
 msgid "New Event"
 msgstr ""
 
-#: inc/events.php:94
+#: inc/events.php:108
 msgid "View Event"
 msgstr ""
 
-#: inc/events.php:95
+#: inc/events.php:109
 msgid "Search Events"
 msgstr ""
 
-#: inc/events.php:96
+#: inc/events.php:110
 msgid "No events found"
 msgstr ""
 
-#: inc/events.php:97
+#: inc/events.php:111
 msgid "No events found in trash"
 msgstr ""
 
-#: inc/events.php:99
+#: inc/events.php:113
 msgctxt "admin menu"
 msgid "Events"
 msgstr ""
 
-#: inc/events.php:135
+#: inc/events.php:150
 msgid "Event"
 msgstr ""
 
-#: inc/events.php:136
+#: inc/events.php:151
 msgid "Published Date"
 msgstr ""
 
-#: inc/events.php:140
+#: inc/events.php:155
 msgid "Starts"
 msgstr ""
 
-#: inc/events.php:141
+#: inc/events.php:156
 msgid "Ends"
 msgstr ""
 
-#: inc/events.php:176 inc/events.php:194
+#: inc/events.php:197 inc/events.php:215
 msgid "Unknown"
 msgstr ""
 
-#: inc/events.php:313 inc/events.php:323
+#: inc/events.php:380 inc/events.php:390
 msgid "Categories"
 msgstr ""
 
-#: inc/events.php:314
+#: inc/events.php:381
 msgid "Category"
 msgstr ""
 
-#: inc/events.php:315
+#: inc/events.php:382
 msgid "Search Categories"
 msgstr ""
 
-#: inc/events.php:316
+#: inc/events.php:383
 msgid "All Categories"
 msgstr ""
 
-#: inc/events.php:317
+#: inc/events.php:384
 msgid "Parent Category"
 msgstr ""
 
-#: inc/events.php:318
+#: inc/events.php:385
 msgid "Parent Category:"
 msgstr ""
 
-#: inc/events.php:319
+#: inc/events.php:386
 msgid "Edit Category"
 msgstr ""
 
-#: inc/events.php:320
+#: inc/events.php:387
 msgid "Update Category"
 msgstr ""
 
-#: inc/events.php:321
+#: inc/events.php:388
 msgid "Add New Category"
 msgstr ""
 
-#: inc/events.php:322
+#: inc/events.php:389
 msgid "New Category Name"
 msgstr ""
 
-#: inc/events.php:412
+#: inc/events.php:412 inc/events.php:426
+msgid "Locations"
+msgstr ""
+
+#: inc/events.php:413
+msgid "Location"
+msgstr ""
+
+#: inc/events.php:414
+msgid "Search Locations"
+msgstr ""
+
+#: inc/events.php:415
+msgid "Popular Locations"
+msgstr ""
+
+#: inc/events.php:416
+msgid "All Locations"
+msgstr ""
+
+#: inc/events.php:417
+msgid "Edit Location"
+msgstr ""
+
+#: inc/events.php:418
+msgid "View Location"
+msgstr ""
+
+#: inc/events.php:419
+msgid "Update Location"
+msgstr ""
+
+#: inc/events.php:420
+msgid "Add New Location"
+msgstr ""
+
+#: inc/events.php:421
+msgid "New Location Name"
+msgstr ""
+
+#: inc/events.php:422
+msgid "Separate locations with commas"
+msgstr ""
+
+#: inc/events.php:423
+msgid "Add or remove locations"
+msgstr ""
+
+#: inc/events.php:424
+msgid "Choose from the most used locations"
+msgstr ""
+
+#: inc/events.php:425
+msgid "No locations"
+msgstr ""
+
+#: inc/events.php:427
+msgid "Back to Locations"
+msgstr ""
+
+#: inc/events.php:526
 msgid "All Day event?"
+msgstr ""
+
+#: inc/events.php:632 inc/events.php:647
+msgid "Address"
+msgstr ""
+
+#: inc/events.php:683 inc/events.php:698
+msgid "Website"
+msgstr ""
+
+#: inc/events.php:734 inc/events.php:749
+msgid "Map"
 msgstr ""
 
 #: inc/widget-calendar.php:151
