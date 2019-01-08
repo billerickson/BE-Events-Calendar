@@ -140,6 +140,8 @@ class BE_Events_Calendar {
 			'menu_position'      => null,
 			'supports'           => array( 'title', 'editor', 'thumbnail' ),
 			'menu_icon'          => 'dashicons-calendar',
+			'show_in_rest'       => true,
+			'rest_base'          => 'events',
 		);
 
 		$args = apply_filters( 'be_events_manager_post_type_args', $args );
