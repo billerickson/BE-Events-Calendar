@@ -376,11 +376,11 @@ class BE_Recurring_Events {
 			       value="<?php echo ! empty( $recurring_end ) ? $recurring_end : ''; ?>" placeholder="Date">
 		</div>
 		<div class="section">
-			<label for="be-events-calendar-regenerate"><?php esc_html_e( 'Repeat events:', 'be-events-calendar' ); ?></label>
+			<label for="be-events-calendar-regenerate"><?php esc_html_e( 'Regenerate events:', 'be-events-calendar' ); ?></label>
 			<input type="checkbox" name="be-events-calendar-regenerate" id="be-events-calendar-regenerate"
 			       value="1" <?php checked( '1', $regenerate ); ?>>
 			<span class="check-desc">
-				<strong><?php esc_html_e( 'This will delete all scheduled events!', 'be-events-calendar' ); ?></strong>
+				<strong><?php esc_html_e( 'This will update all events of this serie!', 'be-events-calendar' ); ?></strong>
 				<?php esc_html_e( 'Past events will be unchanged.', 'be-events-calendar' ); ?>
 			</span>
 		</div>
