@@ -111,6 +111,8 @@ class BE_Recurring_Events {
 			'hierarchical'       => false,
 			'menu_position'      => null,
 			'supports'           => array( 'title', 'editor', 'thumbnail' ),
+			'show_in_rest'       => true,
+			'rest_base'          => 'recurring-events',
 		);
 
 		$args = apply_filters( 'be_events_manager_recurring_post_type_args', $args );
