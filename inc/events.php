@@ -411,6 +411,8 @@ class BE_Events_Calendar {
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => array( 'slug' => 'event-category', 'with_front' => false ),
+			'show_in_rest'      => true,
+			'rest_base'         => 'event-categories',
 		) );
 	}
 
@@ -448,6 +450,8 @@ class BE_Events_Calendar {
 			'show_admin_column' => true,
 			'query_var'         => true,
 			'rewrite'           => array( 'slug' => 'event-location' ),
+			'show_in_rest'      => true,
+			'rest_base'         => 'event-locations',
 		) );
 	}
 
