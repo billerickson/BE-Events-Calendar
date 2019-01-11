@@ -808,7 +808,7 @@ class BE_Events_Calendar {
 			return;
 		}
 
-		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( 'event_category' ) ) ) {
+		if ( $query->is_main_query() && ! is_admin() && ( is_post_type_archive( 'event' ) || is_tax( array( 'event_category', 'event_location' ) ) ) ) {
 			$meta_query = array(
 				array(
 					'key'     => 'be_event_end',
