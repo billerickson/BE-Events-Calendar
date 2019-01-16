@@ -432,6 +432,7 @@ class BE_Recurring_Events {
 		     && ! empty( $_POST['be-events-calendar-end'] )
 		     && ! empty( $_POST['be-events-calendar-repeat-end'] )
 		) {
+			$set_dmy_format  = apply_filters( 'be_event_set_dmy_format', false );
 			$start           = $_POST['be-events-calendar-start'] . ' ' . $_POST['be-events-calendar-start-time'];
 			$start_unix      = strtotime( $set_dmy_format ? str_replace('/', '-', $start ) : $start );
 			$end             = $_POST['be-events-calendar-end'] . ' ' . $_POST['be-events-calendar-end-time'];
